@@ -4,5 +4,7 @@
   "main": "index.js",
   "typeing": "./service",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "swagger-axios-codegen": "^0.0.2"
+  }
 }

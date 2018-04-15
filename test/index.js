@@ -1,6 +1,6 @@
 const { codegen } = require('swagger-axios-codegen')
 codegen({
   methodMode: 'path',
-  source:require('./swagger.json')
+  remoteUrl:'https://api.popo-fish.com/swagger/v1/swagger.json'
 })
 
