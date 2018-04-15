@@ -24,7 +24,8 @@ export function refClassName(s: string) {
   let propType = s.slice(s.lastIndexOf('/') + 1)
   if (isGenerics(propType)) {
     const { interfaceClassName, TClassName } = getGenericeClassNames(propType)
-    return `${interfaceClassName}<${toBaseType(TClassName)}>`
+    // return `${interfaceClassName}<${toBaseType(TClassName)}>`
+    return propType.replace(/\[/g, '').replace(/\]/g, '').replace(/,/g, '')
   } else {
     return propType
   }

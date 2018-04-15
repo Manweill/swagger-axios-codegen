@@ -66,8 +66,19 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         pathReplace = requestPathReplace;
       }
 
+      let responseType =
+        v.responses['200'] &&
+          v.responses['200'].schema &&
+          v.responses['200'].schema.$ref ?
+          refClassName(v.responses['200'].schema.$ref) : 'any'
+
       RequestMethods[className] += `
-      ${camelcase(methodName)}(${parameters}options:IRequestOptions={}) {
+      /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+      ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
 
         let headers = {
           'Content-Type': '${contentType}',
@@ -80,6 +91,7 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         ${contentType === 'multipart/form-data' ? formData : ''}
 
         return axios({
+          ...options,
           method: '${method}',
           url: path,
           headers:headers,

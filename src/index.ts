@@ -1,6 +1,8 @@
 import * as fs from 'fs'
+import * as path from 'path'
 import prettier from 'prettier';
 import camelcase from 'camelcase'
+import axios from 'axios';
 import { ISwaggerSource, IDefinition, IDefinitionProperties, IParameter, ISwaggerOptions } from './baseInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
 import { requestCodeGen } from './requestCodeGen'
@@ -9,10 +11,26 @@ import { requestCodeGen } from './requestCodeGen'
 const defaultOptions: ISwaggerOptions = {
   className: 'Service',
   methodMode: 'path',
-  outputFile: './output/api.ts'
+  type: 'ts',
+  outputDir: './service',
+  fileName: 'api.ts'
 }
 
-export function codegen(swaggerSource: ISwaggerSource, params: ISwaggerOptions) {
+export async function codegen(params: ISwaggerOptions) {
+
+  let swaggerSource
+
+  if (params.remoteUrl) {
+    const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
+    fs.writeFileSync('./tempswagger.json', swaggerJson);
+    swaggerSource = require(path.resolve('./tempswagger.json'));
+  } else if (params.source) {
+    swaggerSource = <ISwaggerSource>params.source
+  } else {
+    throw new Error('必须要给一个地址')
+  }
+
+
 
   const options: ISwaggerOptions = {
     ...defaultOptions,
@@ -20,7 +38,7 @@ export function codegen(swaggerSource: ISwaggerSource, params: ISwaggerOptions) 
   }
 
   let apiSource = `
-  import axios from "axios"
+  import axios, { AxiosPromise } from 'axios'
   export interface IRequestOptions{
     headers?:any
   }
@@ -39,8 +57,11 @@ export function codegen(swaggerSource: ISwaggerSource, params: ISwaggerOptions) 
     "semi": false,
     "singleQuote": true
   })
-  fs.writeFileSync(options.outputFile, apiSource)
+  console.log('filepath', path.join(options.outputDir || '', options.fileName || ''));
 
+  if (!fs.existsSync(options.outputDir || '')) {
+    fs.mkdirSync(options.outputDir || '');
+  }
+  fs.writeFileSync(path.join(options.outputDir || '', options.fileName || ''), apiSource)
+  fs.unlinkSync('./tempswagger.json')
 }
-
-

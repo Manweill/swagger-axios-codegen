@@ -41,13 +41,20 @@ function createDefinitionClass(
     }
     // 是个枚举
     else if (v.enum) {
-      propType = v.enum.map(item => `'${item}'`).join('|')
+      propType = v.type === 'string' ? v.enum.map(item => `'${item}'`).join('|') : v.enum.join('|')
     }
     // 基本类型
     else {
       propType = isGenericType && propertiesEnties.length === 1 ? 'T' : toBaseType(v.type)
     }
-    propsStr += `${k}:${propType};\n`
+    propsStr += `
+    /**
+     * 
+     * @type {${propType}}
+     * @memberof ${className}
+     */
+    ${k}:${propType};\n
+    `
     constructorStr += `this['${k}'] = data['${k}'];\n`
     genericeType = isGenericType
       ? hasDefaultGenericType && propertiesEnties.length
@@ -57,9 +64,9 @@ function createDefinitionClass(
   }
 
   return `
-  class ${className}${genericeType} {
+  export class ${className}${genericeType} {
     ${propsStr}
-    constructor(data){
+    constructor(data?:any){
       if(data){
         ${constructorStr}
       }
@@ -72,27 +79,28 @@ export function definitionsCodeGen(definitions: IDefinitions): string {
   let definitionsModels: IDefinitionsClasses = {}
   for (const [k, v] of Object.entries(definitions)) {
     // 是否是泛型类型 PagedResultDto[UserListDto]
-    if (isGenerics(k) && v.type === 'object') {
-      const { interfaceClassName, TClassName } = getGenericeClassNames(k)
-      if (definitionsModels[interfaceClassName] == null) {
-        definitionsModels[interfaceClassName] = {
-          isGeneric: true,
-          value: createDefinitionClass(interfaceClassName, v.properties, true)
-        }
-      }
-    } else {
-      if (definitionsModels[k] && definitionsModels[k].isGeneric) {
-        definitionsModels[k] = {
-          isGeneric: true,
-          value: createDefinitionClass(k, v.properties, true, true)
-        }
-      } else {
-        definitionsModels[k] = {
-          isGeneric: false,
-          value: createDefinitionClass(k, v.properties)
-        }
-      }
+    // if (isGenerics(k) && v.type === 'object') {
+    //   const { interfaceClassName, TClassName } = getGenericeClassNames(k)
+    //   // if (definitionsModels[interfaceClassName] == null) {
+    //   definitionsModels[interfaceClassName] = {
+    //     isGeneric: true,
+    //     value: createDefinitionClass(interfaceClassName, v.properties, true)
+    //   }
+    //   // }
+    // } else {
+    // if (definitionsModels[k] && definitionsModels[k].isGeneric) {
+    //   definitionsModels[k] = {
+    //     isGeneric: true,
+    //     value: createDefinitionClass(k, v.properties, true, true)
+    //   }
+    // } else {
+    let className = refClassName(k)
+    definitionsModels[k] = {
+      isGeneric: false,
+      value: createDefinitionClass(className, v.properties)
     }
+    // }
+    // }
   }
 
   let definitionsClasses = Object.values(definitionsModels)

@@ -1,7 +1,11 @@
 export interface ISwaggerOptions {
-  className: string
-  methodMode: 'operationId' | 'path',
-  outputFile: string
+  className?: string
+  methodMode?: 'operationId' | 'path'
+  type?: 'ts' | 'js'
+  outputDir?: string
+  fileName?: string
+  remoteUrl?: string
+  source?: any
 }
 
 export interface ISwaggerSource {
@@ -29,6 +33,14 @@ export interface IRequestMethod {
   consumes: string[]
   produces: string[]
   parameters: IParameter[]
+  responses: {
+    [key: string]: {
+      description: string
+      schema: {
+        '$ref': string
+      }
+    }
+  }
 }
 
 export type IParameterIn = 'path' | 'formData' | 'query' | 'body'

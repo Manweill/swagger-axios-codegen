@@ -1,7 +1,6 @@
 const { codegen } = require('swagger-axios-codegen')
-const apisource = require('./orionapi.json')
-
-codegen(apisource,{
-  outputFile:'./api.ts',
-  methodMode:'path'
+codegen({
+  methodMode: 'path',
+  source:require('./swagger.json')
 })
+
