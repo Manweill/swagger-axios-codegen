@@ -25,7 +25,7 @@ export function refClassName(s: string) {
   if (isGenerics(propType)) {
     const { interfaceClassName, TClassName } = getGenericeClassNames(propType)
     // return `${interfaceClassName}<${toBaseType(TClassName)}>`
-    return propType.replace(/\[/g, '').replace(/\]/g, '').replace(/,/g, '')
+    return propType.replace(/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/g, '')
   } else {
     return propType
   }

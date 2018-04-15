@@ -22,8 +22,13 @@ export async function codegen(params: ISwaggerOptions) {
 
   if (params.remoteUrl) {
     const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
-    fs.writeFileSync('./tempswagger.json', swaggerJson);
-    swaggerSource = require(path.resolve('./tempswagger.json'));
+    if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
+      fs.writeFileSync('./tempswagger.json', swaggerJson);
+      swaggerSource = require(path.resolve('./tempswagger.json'));
+    } else {
+      swaggerSource = <ISwaggerSource>swaggerJson
+    }
+
   } else if (params.source) {
     swaggerSource = <ISwaggerSource>params.source
   } else {
@@ -63,5 +68,7 @@ export async function codegen(params: ISwaggerOptions) {
     fs.mkdirSync(options.outputDir || '');
   }
   fs.writeFileSync(path.join(options.outputDir || '', options.fileName || ''), apiSource)
-  fs.unlinkSync('./tempswagger.json')
+  if (fs.existsSync('./tempswagger.json')) {
+    fs.unlinkSync('./tempswagger.json');
+  }
 }
