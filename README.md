@@ -1,4 +1,7 @@
 # swagger-axios-codegen
+
+require node > v8.0.0
+
 swagger client to use axios and typescript
 
 ## Get Started

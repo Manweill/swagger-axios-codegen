@@ -2,9 +2,7 @@
   "name": "test",
   "version": "1.0.0",
   "main": "index.js",
-  "typeing":"./service",
+  "typeing": "./service",
   "license": "MIT",
-  "dependencies": {
-    "swagger-axios-codegen": "*"
-  }
+  "dependencies": {}
 }
