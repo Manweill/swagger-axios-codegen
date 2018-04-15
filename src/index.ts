@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import prettier from 'prettier';
 import camelcase from 'camelcase'
 import { ISwaggerSource, IDefinition, IDefinitionProperties, IParameter, ISwaggerOptions } from './baseInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
@@ -11,14 +12,12 @@ const defaultOptions: ISwaggerOptions = {
   outputFile: './output/api.ts'
 }
 
-export function codegen(params: ISwaggerOptions) {
+export function codegen(swaggerSource: ISwaggerSource, params: ISwaggerOptions) {
 
   const options: ISwaggerOptions = {
     ...defaultOptions,
     ...params
   }
-
-  const swaggerSource: ISwaggerSource = require('../api/orionapi.json')
 
   let apiSource = `
   import axios from "axios"
@@ -31,7 +30,17 @@ export function codegen(params: ISwaggerOptions) {
 
   apiSource += requestCodeGen(swaggerSource.paths, options)
   apiSource += definitionsCodeGen(swaggerSource.definitions)
-
+  apiSource = prettier.format(apiSource, {
+    "printWidth": 120,
+    "tabWidth": 2,
+    "parser": "babylon",
+    "trailingComma": "none",
+    "jsxBracketSameLine": false,
+    "semi": false,
+    "singleQuote": true
+  })
   fs.writeFileSync(options.outputFile, apiSource)
 
 }
+
+

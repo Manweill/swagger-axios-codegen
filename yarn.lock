@@ -14,6 +14,10 @@
   version "9.6.0"
   resolved "http://r.cnpmjs.org/@types/node/download/@types/node-9.6.0.tgz#d3480ee666df9784b1001a1872a2f6ccefb6c2d7"
 
+"@types/prettier@^1.12.0":
+  version "1.12.0"
+  resolved "http://r.cnpmjs.org/@types/prettier/download/@types/prettier-1.12.0.tgz#61ed6bdc64386f49c9e1f179cf84ef26ddc4740c"
+
 abbrev@1:
   version "1.1.1"
   resolved "http://r.cnpmjs.org/abbrev/download/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"

@@ -1,5 +1,3 @@
-import { format } from 'url'
-
 export interface ISwaggerOptions {
   className: string
   methodMode: 'operationId' | 'path',
