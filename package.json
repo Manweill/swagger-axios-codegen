@@ -1,0 +1,26 @@
+{
+  "name": "swagger-axios-codegen",
+  "version": "0.0.1",
+  "main": "./dist/index",
+  "author": "Manweill",
+  "license": "MIT",
+  "scripts": {
+    "prestart": "tsc -p ./src",
+    "precommit": "prettier --write --config .prettierrc ./src/*.ts",
+    "start": "node ./dist/index && prettier --write --config .prettierrc ./output/*.ts"
+  },
+  "peerDependencies": {
+    "axios": "0.17.0"
+  },
+  "dependencies": {
+    "camelcase": "^5.0.0",
+    "js-beautify": "^1.7.5",
+    "prettier": "^1.12.0"
+  },
+  "devDependencies": {
+    "@types/camelcase": "^4.1.0",
+    "@types/js-beautify": "^0.0.31",
+    "@types/node": "^9.6.0",
+    "axios": "^0.18.0"
+  }
+}
