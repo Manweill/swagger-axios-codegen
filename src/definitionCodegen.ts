@@ -1,4 +1,4 @@
-import { IDefinitionProperties, IDefinitions } from './baseInterfaces'
+import { IDefinitionProperties, IDefinitions, IDefinitionProperty } from './baseInterfaces'
 import { refClassName, toBaseType, getGenericeClassNames, isGenerics } from './utils'
 
 export interface IDefinitionsClasses {
@@ -6,6 +6,36 @@ export interface IDefinitionsClasses {
     isGeneric: boolean
     value: string
   }
+}
+
+function propTrueType(v: IDefinitionProperty, isGenericType: boolean) {
+  let propType = ''
+  if (v.$ref) {
+    // 是引用类型
+    propType = refClassName(v.$ref)
+  }
+  //是个数组
+  else if (v.items) {
+    if (v.items.$ref) {
+      // 是个引用类型
+      propType = refClassName(v.items.$ref) + '[]'
+    } else {
+      if (v.items.type === "array") {
+        propType = propTrueType(v.items, isGenericType) + '[]'
+      } else {
+        propType = toBaseType(v.items.type) + '[]'
+      }
+    }
+  }
+  // 是个枚举
+  else if (v.enum) {
+    propType = v.type === 'string' ? v.enum.map(item => `'${item}'`).join('|') : v.enum.join('|')
+  }
+  // 基本类型
+  else {
+    propType = toBaseType(v.type)
+  }
+  return propType
 }
 
 /**
@@ -25,28 +55,28 @@ function createDefinitionClass(
   let genericeType = ''
   const propertiesEnties = Object.entries(properties)
   for (const [k, v] of propertiesEnties) {
-    let propType = ''
-    if (v.$ref) {
-      // 是引用类型
-      propType = refClassName(v.$ref)
-    }
-    //是个数组
-    else if (v.items) {
-      if (v.items.$ref) {
-        // 是个引用类型
-        propType = isGenericType ? 'T[]' : refClassName(v.items.$ref) + '[]'
-      } else {
-        propType = toBaseType(v.items.type) + '[]'
-      }
-    }
-    // 是个枚举
-    else if (v.enum) {
-      propType = v.type === 'string' ? v.enum.map(item => `'${item}'`).join('|') : v.enum.join('|')
-    }
-    // 基本类型
-    else {
-      propType = isGenericType && propertiesEnties.length === 1 ? 'T' : toBaseType(v.type)
-    }
+    let propType = propTrueType(v, isGenericType);
+    // if (v.$ref) {
+    //   // 是引用类型
+    //   propType = refClassName(v.$ref)
+    // }
+    // //是个数组
+    // else if (v.items) {
+    //   if (v.items.$ref) {
+    //     // 是个引用类型
+    //     propType = isGenericType ? 'T[]' : refClassName(v.items.$ref) + '[]'
+    //   } else {
+    //     propType = toBaseType(v.items.type) + '[]'
+    //   }
+    // }
+    // // 是个枚举
+    // else if (v.enum) {
+    //   propType = v.type === 'string' ? v.enum.map(item => `'${item}'`).join('|') : v.enum.join('|')
+    // }
+    // // 基本类型
+    // else {
+    //   propType = isGenericType && propertiesEnties.length === 1 ? 'T' : toBaseType(v.type)
+    // }
     propsStr += `
     /**
      * 

@@ -32,6 +32,9 @@ export function refClassName(s: string) {
 }
 
 export function toBaseType(s: string) {
+  if (s === undefined || s === null || s.length === 0) {
+    return 'any | null'
+  }
   let result = ''
   switch (s) {
     case 'array':

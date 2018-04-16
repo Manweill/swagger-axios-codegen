@@ -84,8 +84,5 @@ export interface IDefinitionProperty {
   format: string
   maxLength: number
   $ref: string
-  items: {
-    type: string
-    $ref: string
-  }
+  items: IDefinitionProperty
 }
