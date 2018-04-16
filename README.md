@@ -14,7 +14,7 @@ swagger client to use axios and typescript
 
 export interface ISwaggerOptions {
   className: string
-  methodMode: 'operationId' | 'path',
+  methodNameMode: 'operationId' | 'path',
   type: 'ts' | 'js',  // just create to ts
   outputDir: string,
   fileName: string
@@ -23,7 +23,7 @@ export interface ISwaggerOptions {
 
 const defaultOptions = {
   className: 'Service',
-  methodMode: 'path',
+  methodNameMode: 'operationId',
   type: 'ts',
   outputDir: './service',
   fileName: 'api.ts'
@@ -37,7 +37,7 @@ const defaultOptions = {
 
 const { codegen } = require('swagger-axios-codegen')
 codegen({
-  methodMode: 'path',
+  methodNameMode: 'operationId',
   source:require('./swagger.json')
 })
 
@@ -49,7 +49,7 @@ codegen({
 
 const { codegen } = require('swagger-axios-codegen')
 codegen({
-  methodMode: 'path',
+  methodNameMode: 'operationId',
   remoteUrl:'You remote Url'
 })
 

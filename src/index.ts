@@ -10,7 +10,7 @@ import { requestCodeGen } from './requestCodeGen'
 
 const defaultOptions: ISwaggerOptions = {
   className: 'Service',
-  methodMode: 'path',
+  methodNameMode: 'operationId',
   type: 'ts',
   outputDir: './service',
   fileName: 'api.ts'

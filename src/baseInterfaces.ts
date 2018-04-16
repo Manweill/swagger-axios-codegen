@@ -1,6 +1,6 @@
 export interface ISwaggerOptions {
   className?: string
-  methodMode?: 'operationId' | 'path'
+  methodNameMode?: 'operationId' | 'path'
   type?: 'ts' | 'js'
   outputDir?: string
   fileName?: string
