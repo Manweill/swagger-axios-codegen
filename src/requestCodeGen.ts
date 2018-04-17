@@ -10,7 +10,7 @@ export interface IRequestMethods {
  * @param params
  */
 function getRequestParameters(params: IParameter[]) {
-  let requesetParameters = ''
+  let requestParameters = ''
   let requestFormData = ''
   let requestPathReplace = ''
   params.forEach(p => {
@@ -26,7 +26,7 @@ function getRequestParameters(params: IParameter[]) {
       propType = toBaseType(p.type)
     }
     const paramName = camelcase(p.name)
-    requesetParameters += `${paramName}${p.required ? '' : '?'}:${propType},`
+    requestParameters += `${paramName}${p.required ? '' : '?'}:${propType},`
     // 如果参数是从formData 提交
     if (p.in === 'formData') {
       requestFormData += `
@@ -39,7 +39,7 @@ function getRequestParameters(params: IParameter[]) {
       requestPathReplace += `path = path.replace('{${paramName}}',parameters['${paramName}']+'')\n`
     }
   })
-  return { requesetParameters, requestFormData, requestPathReplace }
+  return { requestParameters, requestFormData, requestPathReplace }
 }
 
 export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string {
@@ -48,7 +48,7 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
   for (const [path, request] of Object.entries(paths)) {
     let methodName = getMethodName(path)
     for (const [method, v] of Object.entries(request)) {
-      methodName = options.methodMode === 'operationId' ? v.operationId : methodName
+      methodName = options.methodNameMode === 'operationId' ? v.operationId : methodName
       const contentType = v.consumes && v.consumes.includes('multipart/form-data') ? 'multipart/form-data' : 'application/json'
       let formData = ''
       let pathReplace = ''
@@ -60,8 +60,8 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       }
       let parameters = ''
       if (v.parameters) {
-        const { requesetParameters, requestFormData, requestPathReplace } = getRequestParameters(v.parameters)
-        parameters = `parameters: {${requesetParameters}},`
+        const { requestParameters, requestFormData, requestPathReplace } = getRequestParameters(v.parameters)
+        parameters = `parameters: {${requestParameters}},`
         formData = requestFormData ? 'let data = new FormData();\n' + requestFormData : ''
         pathReplace = requestPathReplace;
       }

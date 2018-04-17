@@ -1,6 +1,6 @@
 export interface ISwaggerOptions {
   className?: string
-  methodMode?: 'operationId' | 'path'
+  methodNameMode?: 'operationId' | 'path'
   type?: 'ts' | 'js'
   outputDir?: string
   fileName?: string
@@ -84,8 +84,5 @@ export interface IDefinitionProperty {
   format: string
   maxLength: number
   $ref: string
-  items: {
-    type: string
-    $ref: string
-  }
+  items: IDefinitionProperty
 }
