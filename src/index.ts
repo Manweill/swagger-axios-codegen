@@ -13,7 +13,8 @@ const defaultOptions: ISwaggerOptions = {
   methodNameMode: 'operationId',
   type: 'ts',
   outputDir: './service',
-  fileName: 'api.ts'
+  fileName: 'index.ts',
+  useStaticMethod: false
 }
 
 export async function codegen(params: ISwaggerOptions) {

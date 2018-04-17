@@ -88,7 +88,7 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-      ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
+      ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
 
         let headers = {
           'Content-Type': '${contentType}',
