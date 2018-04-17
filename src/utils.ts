@@ -7,7 +7,7 @@ export const isGenerics = (s: string) => /^.+\[.+\]$/.test(s)
  * 分解泛型接口
  * @param definitionClassName
  */
-export function getGenericeClassNames(definitionClassName: string) {
+export function getGenericsClassNames(definitionClassName: string) {
   const splitIndex = definitionClassName.indexOf(GENERIC_SPLIT_KEY)
   // 泛型基类 PagedResultDto
   const interfaceClassName = definitionClassName.slice(0, splitIndex)
@@ -23,7 +23,7 @@ export function getGenericeClassNames(definitionClassName: string) {
 export function refClassName(s: string) {
   let propType = s.slice(s.lastIndexOf('/') + 1)
   if (isGenerics(propType)) {
-    const { interfaceClassName, TClassName } = getGenericeClassNames(propType)
+    const { interfaceClassName, TClassName } = getGenericsClassNames(propType)
     // return `${interfaceClassName}<${toBaseType(TClassName)}>`
     return propType.replace(/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/g, '')
   } else {
