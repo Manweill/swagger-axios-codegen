@@ -13,6 +13,8 @@ function getRequestParameters(params: IParameter[]) {
   let requestParameters = ''
   let requestFormData = ''
   let requestPathReplace = ''
+  let queryParameters: string[] = []
+  let bodyParameters: string[] = []
   params.forEach(p => {
     let propType = ''
     // 引用类型定义
@@ -36,10 +38,17 @@ function getRequestParameters(params: IParameter[]) {
       `
     }
     else if (p.in === 'path') {
-      requestPathReplace += `path = path.replace('{${paramName}}',parameters['${paramName}']+'')\n`
+      requestPathReplace += `url = url.replace('{${paramName}}',parameters['${paramName}']+'')\n`
+    }
+    else if (p.in === 'query') {
+      queryParameters.push(`'${paramName}':parameters['${paramName}']`)
+    }
+    else if (p.in === 'body') {
+      var body = p.schema ? `...parameters['${paramName}']` : `'${paramName}':parameters['${paramName}']`
+      bodyParameters.push(body)
     }
   })
-  return { requestParameters, requestFormData, requestPathReplace }
+  return { requestParameters, requestFormData, requestPathReplace, queryParameters, bodyParameters }
 }
 
 export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string {
@@ -59,11 +68,12 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         RequestMethods[className] = ''
       }
       let parameters = ''
+      let parsedParameters
       if (v.parameters) {
-        const { requestParameters, requestFormData, requestPathReplace } = getRequestParameters(v.parameters)
-        parameters = `parameters: {${requestParameters}},`
-        formData = requestFormData ? 'let data = new FormData();\n' + requestFormData : ''
-        pathReplace = requestPathReplace;
+        parsedParameters = getRequestParameters(v.parameters)
+        parameters = `parameters: {${parsedParameters.requestParameters}},`
+        formData = parsedParameters.requestFormData ? 'let data = new FormData();\n' + parsedParameters.requestFormData : ''
+        pathReplace = parsedParameters.requestPathReplace;
       }
 
       let responseType =
@@ -78,25 +88,29 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-      ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
+      ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
 
         let headers = {
           'Content-Type': '${contentType}',
           ...options.headers
         }
 
-        let path = '${path}'
+        let url = '${path}'
         ${pathReplace}
+
+        let search = ${parsedParameters && parsedParameters.queryParameters.length > 0 ? "{" + parsedParameters.queryParameters.join(',') + "}" : null}
+        let body = ${parsedParameters && parsedParameters.bodyParameters.length > 0 ? "{" + parsedParameters.bodyParameters.join(',') + "}" : null}
 
         ${contentType === 'multipart/form-data' ? formData : ''}
 
         return axios({
           ...options,
           method: '${method}',
-          url: path,
+          url,
+          search:search,
           headers:headers,
           ${parameters ? contentType === 'multipart/form-data' ? 'data:data'
-          : 'data:parameters' : ''
+          : 'data:body' : ''
         }
         })
       }
