@@ -98,20 +98,19 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         let url = '${path}'
         ${pathReplace}
 
-        let search = ${parsedParameters && parsedParameters.queryParameters.length > 0 ? "{" + parsedParameters.queryParameters.join(',') + "}" : null}
+        let params = ${parsedParameters && parsedParameters.queryParameters.length > 0 ? "{" + parsedParameters.queryParameters.join(',') + "}" : null}
         let body = ${parsedParameters && parsedParameters.bodyParameters.length > 0 ? "{" + parsedParameters.bodyParameters.join(',') + "}" : null}
 
         ${contentType === 'multipart/form-data' ? formData : ''}
 
         return axios({
           ...options,
-          method: '${method}',
+          method:'${method}',
           url,
-          search:search,
+          params:params,
           headers:headers,
           ${parameters ? contentType === 'multipart/form-data' ? 'data:data'
-          : 'data:body' : ''
-        }
+          : 'data:body' : ''}
         })
       }
       `
