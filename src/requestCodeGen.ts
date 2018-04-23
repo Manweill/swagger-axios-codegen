@@ -2,9 +2,15 @@ import camelcase from 'camelcase'
 import { toBaseType, refClassName, getMethodName } from './utils'
 import { IParameter, IPaths, ISwaggerOptions } from './baseInterfaces'
 
+declare class FormData {
+  append: Function
+}
+
 export interface IRequestMethods {
   [key: string]: string
 }
+
+const methodNameChange = { get: 'GET', post: 'POST', put: 'PUT', delete: 'DELETE' }
 /**
  * 生成参数
  * @param params
@@ -72,7 +78,7 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       if (v.parameters) {
         parsedParameters = getRequestParameters(v.parameters)
         parameters = `parameters: {${parsedParameters.requestParameters}},`
-        formData = parsedParameters.requestFormData ? 'let data = new FormData();\n' + parsedParameters.requestFormData : ''
+        formData = parsedParameters.requestFormData ? 'data = new FormData();\n' + parsedParameters.requestFormData : ''
         pathReplace = parsedParameters.requestPathReplace;
       }
 
@@ -82,36 +88,32 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
           v.responses['200'].schema.$ref ?
           refClassName(v.responses['200'].schema.$ref) : 'any'
 
+      // 模版
       RequestMethods[className] += `
       /**
          * 
-         * @param {*} [options] Override http request option.
+         * @param {IRequestOptions} [options] Override http request option.
          * @throws {RequiredError}
          */
       ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
 
-        let headers = {
-          'Content-Type': '${contentType}',
-          ...options.headers
-        }
+        const configs = <AxiosRequestConfig>{ ...options };
+        configs.headers['Content-Type'] = '${contentType}';
 
         let url = '${path}'
         ${pathReplace}
+        configs.url = url;
 
-        let params = ${parsedParameters && parsedParameters.queryParameters.length > 0 ? "{" + parsedParameters.queryParameters.join(',') + "}" : null}
-        let body = ${parsedParameters && parsedParameters.bodyParameters.length > 0 ? "{" + parsedParameters.bodyParameters.join(',') + "}" : null}
+        ${parsedParameters && parsedParameters.queryParameters.length > 0 ? "configs.params = {" + parsedParameters.queryParameters.join(',') + "}" : ''};
+
+        let data = null;
+        ${parsedParameters && parsedParameters.bodyParameters.length > 0 ? "data = {" + parsedParameters.bodyParameters.join(',') + "}" : ''};
 
         ${contentType === 'multipart/form-data' ? formData : ''}
 
-        return axios({
-          ...options,
-          method:'${method}',
-          url,
-          params:params,
-          headers:headers,
-          ${parameters ? contentType === 'multipart/form-data' ? 'data:data'
-          : 'data:body' : ''}
-        })
+        configs.data = data;
+
+        return axios(configs);
       }
       `
     }

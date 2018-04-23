@@ -2,9 +2,14 @@
   "name": "test",
   "version": "1.0.0",
   "main": "index.js",
-  "typeing": "./service",
+  "typing": "./service",
   "license": "MIT",
   "dependencies": {
-    "swagger-axios-codegen": "^0.0.2"
+    "axios": "^0.18.0",
+    "swagger-axios-codegen": "^0.0.2",
+    "typescript": "2.7.1"
+  },
+  "scripts": {
+    "api": "tsc -p ./axiosSwag/"
   }
 }

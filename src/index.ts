@@ -44,7 +44,7 @@ export async function codegen(params: ISwaggerOptions) {
   }
 
   let apiSource = `
-  import axios, { AxiosPromise } from 'axios'
+  import axios, { AxiosPromise, AxiosRequestConfig } from 'axios'
   export interface IRequestOptions{
     headers?:any
   }
@@ -57,10 +57,10 @@ export async function codegen(params: ISwaggerOptions) {
   apiSource = prettier.format(apiSource, {
     "printWidth": 120,
     "tabWidth": 2,
-    "parser": "babylon",
+    "parser": "typescript",
     "trailingComma": "none",
     "jsxBracketSameLine": false,
-    "semi": false,
+    "semi": true,
     "singleQuote": true
   })
   console.log('filepath', path.join(options.outputDir || '', options.fileName || ''));
