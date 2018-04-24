@@ -98,7 +98,10 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
 
         const configs = <AxiosRequestConfig>{ ...options };
-        configs.headers['Content-Type'] = '${contentType}';
+        configs.headers = {
+          ...options.headers,
+          'Content-Type':'${contentType}'
+        }
 
         let url = '${path}'
         ${pathReplace}

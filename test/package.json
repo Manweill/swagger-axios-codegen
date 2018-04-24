@@ -10,6 +10,6 @@
     "typescript": "2.7.1"
   },
   "scripts": {
-    "api": "tsc -p ./axiosSwag/"
+    "api": "node ./axiosSwag/codegen.js"
   }
 }
