@@ -97,7 +97,7 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
          */
       ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
 
-        const configs = <AxiosRequestConfig>{ ...options };
+        const configs = <AxiosRequestConfig>{ ...options,method:'${method}' };
         configs.headers = {
           ...options.headers,
           'Content-Type':'${contentType}'
