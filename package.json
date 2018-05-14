@@ -1,6 +1,6 @@
 {
   "name": "swagger-axios-codegen",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "main": "./dist/index",
   "typings": "./dist/",
   "author": "Manwei Leung <mic.liangwenwei@foxmail.com>",
@@ -13,7 +13,6 @@
     "build": "tsc -p ./src",
     "prestart": "npm run build",
     "precommit": "prettier --write --config .prettierrc ./src/*.ts",
-    "prepublish": "npm run build",
     "start": "node ./dist/index"
   },
   "dependencies": {

@@ -132,11 +132,6 @@ export function definitionsCodeGen(definitions: IDefinitions): string {
       }
     })
 
-    if (className == 'ChatMessageDto') {
-      console.log(className, enums);
-      // console.log('definitionsModels', definitionsModels);
-    }
-
     definitionsModels[k] = {
       isGeneric: false,
       value: model
