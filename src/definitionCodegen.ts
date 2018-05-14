@@ -1,5 +1,6 @@
 import { IDefinitionProperties, IDefinitions, IDefinitionProperty } from './baseInterfaces'
 import { refClassName, toBaseType, getGenericsClassNames, isGenerics } from './utils'
+import camelcase from 'camelcase';
 
 export interface IDefinitionsClasses {
   [key: string]: {
@@ -10,6 +11,7 @@ export interface IDefinitionsClasses {
 
 function propTrueType(v: IDefinitionProperty, isGenericType: boolean) {
   let propType = ''
+  let isEnum = false
   if (v.$ref) {
     // 是引用类型
     propType = refClassName(v.$ref)
@@ -29,13 +31,16 @@ function propTrueType(v: IDefinitionProperty, isGenericType: boolean) {
   }
   // 是个枚举
   else if (v.enum) {
-    propType = v.type === 'string' ? v.enum.map(item => `'${item}'`).join('|') : v.enum.join('|')
+    isEnum = true
+    propType = v.type === 'string' ?
+      v.enum.map(item => `${item}='${item}'`).join(',') :
+      v.enum.map(item => `${item}=${item}`).join(',')
   }
   // 基本类型
   else {
     propType = toBaseType(v.type)
   }
-  return propType
+  return { propType, isEnum }
 }
 
 /**
@@ -53,39 +58,28 @@ function createDefinitionClass(
   let propsStr = ''
   let constructorStr = ''
   let genericsType = ''
+  /** 枚举值 */
+  let enums = []
   const propertiesEntities = Object.entries(properties)
   for (const [k, v] of propertiesEntities) {
-    let propType = propTrueType(v, isGenericType);
-    // if (v.$ref) {
-    //   // 是引用类型
-    //   propType = refClassName(v.$ref)
-    // }
-    // //是个数组
-    // else if (v.items) {
-    //   if (v.items.$ref) {
-    //     // 是个引用类型
-    //     propType = isGenericType ? 'T[]' : refClassName(v.items.$ref) + '[]'
-    //   } else {
-    //     propType = toBaseType(v.items.type) + '[]'
-    //   }
-    // }
-    // // 是个枚举
-    // else if (v.enum) {
-    //   propType = v.type === 'string' ? v.enum.map(item => `'${item}'`).join('|') : v.enum.join('|')
-    // }
-    // // 基本类型
-    // else {
-    //   propType = isGenericType && propertiesEntities.length === 1 ? 'T' : toBaseType(v.type)
-    // }
+    let { propType, isEnum } = propTrueType(v, isGenericType);
+    if (isEnum) {
+      let enumName = `Enum${className}${camelcase(k, { pascalCase: true })}`
+      enums.push({
+        name: enumName, text: `export enum ${enumName}{
+        ${propType}
+      }`})
+      propType = enumName
+    }
     propsStr += `
     /**
-     * 
+     * ${v.description}
      * @type {${propType}}
-     * @memberof ${className}
      */
     ${k}:${propType};\n
     `
     constructorStr += `this['${k}'] = data['${k}'];\n`
+    // 判断是不是泛型类型
     genericsType = isGenericType
       ? hasDefaultGenericType && propertiesEntities.length
         ? `<T=${toBaseType(v.type)}>`
@@ -93,7 +87,9 @@ function createDefinitionClass(
       : ''
   }
 
-  return `
+  return {
+    enums,
+    model: `
   export class ${className}${genericsType} {
     ${propsStr}
     constructor(data?:any){
@@ -103,6 +99,7 @@ function createDefinitionClass(
     }
   }
   `
+  }
 }
 
 export function definitionsCodeGen(definitions: IDefinitions): string {
@@ -125,9 +122,24 @@ export function definitionsCodeGen(definitions: IDefinitions): string {
     //   }
     // } else {
     let className = refClassName(k)
+    const { enums, model } = createDefinitionClass(className, v.properties)
+
+
+    enums.forEach(item => {
+      definitionsModels[item.name] = {
+        isGeneric: false,
+        value: item.text
+      }
+    })
+
+    if (className == 'ChatMessageDto') {
+      console.log(className, enums);
+      // console.log('definitionsModels', definitionsModels);
+    }
+
     definitionsModels[k] = {
       isGeneric: false,
-      value: createDefinitionClass(className, v.properties)
+      value: model
     }
     // }
     // }
