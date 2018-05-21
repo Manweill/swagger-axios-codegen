@@ -1,6 +1,7 @@
 import { IDefinitionProperties, IDefinitions, IDefinitionProperty } from './baseInterfaces'
 import { refClassName, toBaseType, getGenericsClassNames, isGenerics } from './utils'
 import camelcase from 'camelcase';
+import pascalcase from 'pascalcase';
 
 export interface IDefinitionsClasses {
   [key: string]: {
@@ -64,7 +65,7 @@ function createDefinitionClass(
   for (const [k, v] of propertiesEntities) {
     let { propType, isEnum } = propTrueType(v, isGenericType);
     if (isEnum) {
-      let enumName = `Enum${className}${camelcase(k, { pascalCase: true })}`
+      let enumName = `Enum${className}${pascalcase(k)}`
       enums.push({
         name: enumName, text: `export enum ${enumName}{
         ${propType}
