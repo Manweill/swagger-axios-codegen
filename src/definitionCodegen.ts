@@ -74,7 +74,7 @@ function createDefinitionClass(
     }
     propsStr += `
     /** ${v.description || ''} */
-    ${k}:${propType};\n
+    ${k}:${propType};\n·
     `
     constructorStr += `this['${k}'] = data['${k}'];\n`
     // 判断是不是泛型类型
