@@ -33,8 +33,8 @@ function propTrueType(v: IDefinitionProperty, isGenericType: boolean) {
   else if (v.enum) {
     isEnum = true
     propType = v.type === 'string' ?
-      v.enum.map(item => `${item}='${item}'`).join(',') :
-      v.enum.map(item => `${item}=${item}`).join(',')
+      v.enum.map(item => `'${item}'='${item}'`).join(',') :
+      v.enum.map(item => `'${item}'=${item}`).join(',')
   }
   // 基本类型
   else {
