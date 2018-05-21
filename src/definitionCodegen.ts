@@ -72,10 +72,7 @@ function createDefinitionClass(
       propType = enumName
     }
     propsStr += `
-    /**
-     * ${v.description}
-     * @type {${propType}}
-     */
+    /** ${v.description || ''} */
     ${k}:${propType};\n
     `
     constructorStr += `this['${k}'] = data['${k}'];\n`

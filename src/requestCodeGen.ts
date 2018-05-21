@@ -9,7 +9,9 @@ declare class FormData {
 export interface IRequestMethods {
   [key: string]: string
 }
-
+export interface IRequestMethodInput {
+  [key: string]: string[]
+}
 const methodNameChange = { get: 'GET', post: 'POST', put: 'PUT', delete: 'DELETE' }
 /**
  * 生成参数
@@ -34,23 +36,27 @@ function getRequestParameters(params: IParameter[]) {
       propType = toBaseType(p.type)
     }
     const paramName = camelcase(p.name)
-    requestParameters += `${paramName}${p.required ? '' : '?'}:${propType},`
+    requestParameters += `
+    /** ${p.description || ''} */
+    ${paramName}${p.required ? '' : '?'}:${propType},
+    `
+
     // 如果参数是从formData 提交
     if (p.in === 'formData') {
       requestFormData += `
-      if(parameters['${paramName}']){
-        data.append('${paramName}',parameters['${paramName}'],'${paramName}')
+      if(params['${paramName}']){
+        data.append('${paramName}',params['${paramName}'],'${paramName}')
       }\n
       `
     }
     else if (p.in === 'path') {
-      requestPathReplace += `url = url.replace('{${paramName}}',parameters['${paramName}']+'')\n`
+      requestPathReplace += `url = url.replace('{${paramName}}',params['${paramName}']+'')\n`
     }
     else if (p.in === 'query') {
-      queryParameters.push(`'${paramName}':parameters['${paramName}']`)
+      queryParameters.push(`'${paramName}':params['${paramName}']`)
     }
     else if (p.in === 'body') {
-      var body = p.schema ? `...parameters['${paramName}']` : `'${paramName}':parameters['${paramName}']`
+      var body = p.schema ? `...params['${paramName}']` : `'${paramName}':params['${paramName}']`
       bodyParameters.push(body)
     }
   })
@@ -59,7 +65,7 @@ function getRequestParameters(params: IParameter[]) {
 
 export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string {
   const RequestMethods: IRequestMethods = {}
-
+  const RequestMethodInputs: IRequestMethodInput = {}
   for (const [path, request] of Object.entries(paths)) {
     let methodName = getMethodName(path)
     for (const [method, v] of Object.entries(request)) {
@@ -77,9 +83,23 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       let parsedParameters
       if (v.parameters) {
         parsedParameters = getRequestParameters(v.parameters)
-        parameters = `parameters: {${parsedParameters.requestParameters}},`
+        let methodParamsName = `I${methodName}Params`
+
+        if (RequestMethodInputs[methodParamsName]) {
+          methodParamsName = `I${methodName}Params` + RequestMethodInputs[methodParamsName].length
+        } else {
+          RequestMethodInputs[methodParamsName] = []
+        }
+
+        RequestMethodInputs[`I${methodName}Params`].push(`
+        export interface ${methodParamsName}{
+          ${parsedParameters.requestParameters}
+        }`)
+
+        parameters = `params: ${methodParamsName},`
         formData = parsedParameters.requestFormData ? 'data = new FormData();\n' + parsedParameters.requestFormData : ''
         pathReplace = parsedParameters.requestPathReplace;
+
       }
 
       let responseType =
@@ -91,7 +111,7 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       // 模版
       RequestMethods[className] += `
       /**
-         * 
+         * ${v.summary || ''}
          * @param {IRequestOptions} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -130,5 +150,11 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       ${v}
     }`
   }
+  Object.values(RequestMethodInputs).forEach(item => {
+    item.forEach(text => {
+      RequestClasses += text
+    })
+
+  })
   return RequestClasses
 }
