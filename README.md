@@ -15,7 +15,7 @@ swagger client to use axios and typescript
 export interface ISwaggerOptions {
   className: string
   methodNameMode: 'operationId' | 'path'
-  type: 'ts' | 'js'  // just create to ts
+  type: 'ts' | 'js'  // only implement ts
   outputDir: string
   fileName: string
   useStaticMethod: boolean
@@ -33,7 +33,8 @@ const defaultOptions = {
 
 ## Example
 
-#### use local swagger api json
+### use local swagger api json
+
 ```js 
 
 const { codegen } = require('swagger-axios-codegen')
@@ -45,7 +46,7 @@ codegen({
 
 ```
 
-#### use remote swagger api json
+### use remote swagger api json
 ```js 
 
 const { codegen } = require('swagger-axios-codegen')
@@ -57,11 +58,11 @@ codegen({
 
 ```
 
-#### use static method
+### use static method
 
 ```
 codegen({
-    methodNameMode: 'path',
+    methodNameMode: 'operationId',
     remoteUrl: 'http://localhost:22742/swagger/v1/swagger.json',
     outputDir: '.',
     useStaticMethod:true
@@ -69,7 +70,18 @@ codegen({
 
 ```
 
-and then use like this
+before
+
+
+```
+
+import { UserService } from './service'
+const userService = new UserService()
+await userService.GetAll();
+
+```
+
+after
 
 ```
 
