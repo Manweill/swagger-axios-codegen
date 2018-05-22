@@ -43,8 +43,7 @@ function getRequestParameters(params: IParameter[]) {
 
     // 如果参数是从formData 提交
     if (p.in === 'formData') {
-      requestFormData += `
-      if(params['${paramName}']){
+      requestFormData += `if(params['${paramName}']){
         data.append('${paramName}',params['${paramName}'],'${paramName}')
       }\n
       `
@@ -78,6 +77,7 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         RequestMethods[className] = ''
       }
       let parameters = ''
+      let handleNullParameters = ''
       let parsedParameters
       if (v.parameters) {
         parsedParameters = getRequestParameters(v.parameters)
@@ -89,12 +89,12 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
           RequestMethodInputs[methodParamsName] = []
         }
 
-        RequestMethodInputs[`I${methodName}Params`].push(`
-        export interface ${methodParamsName}{
-          ${parsedParameters.requestParameters}
-        }`)
+        RequestMethodInputs[`I${methodName}Params`].push(`export interface ${methodParamsName}{
+            ${parsedParameters.requestParameters}
+          }`)
 
-        parameters = `params: ${methodParamsName}={},`
+        parameters = `params: ${methodParamsName},`
+        handleNullParameters = `params  = params || <${methodParamsName}>{}`
         formData = parsedParameters.requestFormData ? 'data = new FormData();\n' + parsedParameters.requestFormData : ''
         pathReplace = parsedParameters.requestPathReplace
       }
@@ -111,11 +111,10 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
          * @param {IRequestOptions} [options] Override http request option.
          * @throws {RequiredError}
          */
-      ${options.useStaticMethod ? 'static' : ''} ${camelcase(
-        methodName
-      )}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
-
-        const configs = <AxiosRequestConfig>{ ...options,method:'${method}' };
+      ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
+        
+        ${handleNullParameters}
+        const configs:AxiosRequestConfig = {...options, method: "${method}" };
         configs.headers = {
           ...options.headers,
           'Content-Type':'${contentType}'
@@ -126,16 +125,16 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         configs.url = url;
 
         ${
-          parsedParameters && parsedParameters.queryParameters.length > 0
-            ? 'configs.params = {' + parsedParameters.queryParameters.join(',') + '}'
-            : ''
+        parsedParameters && parsedParameters.queryParameters.length > 0
+          ? 'configs.params = {' + parsedParameters.queryParameters.join(',') + '}'
+          : ''
         };
 
         let data = null;
         ${
-          parsedParameters && parsedParameters.bodyParameters.length > 0
-            ? 'data = {' + parsedParameters.bodyParameters.join(',') + '}'
-            : ''
+        parsedParameters && parsedParameters.bodyParameters.length > 0
+          ? 'data = {' + parsedParameters.bodyParameters.join(',') + '}'
+          : ''
         };
 
         ${contentType === 'multipart/form-data' ? formData : ''}

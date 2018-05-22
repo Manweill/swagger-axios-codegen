@@ -5,15 +5,13 @@ export interface IRequestOptions {
 
 export class ProductsService {
   /**
-   *
+   * Product Types
    * @param {IRequestOptions} [options] Override http request option.
    * @throws {RequiredError}
    */
-  static products(
-    parameters: { latitude: number; longitude: number },
-    options: IRequestOptions = {}
-  ): AxiosPromise<any> {
-    const configs = <AxiosRequestConfig>{ ...options };
+  static products(params: IproductsParams, options: IRequestOptions = {}): AxiosPromise<any> {
+    params = params || <IproductsParams>{};
+    const configs: AxiosRequestConfig = { ...options, method: 'get' };
     configs.headers = {
       ...options.headers,
       'Content-Type': 'application/json'
@@ -23,7 +21,7 @@ export class ProductsService {
 
     configs.url = url;
 
-    configs.params = { latitude: parameters['latitude'], longitude: parameters['longitude'] };
+    configs.params = { latitude: params['latitude'], longitude: params['longitude'] };
 
     let data = null;
     configs.data = data;
@@ -33,15 +31,13 @@ export class ProductsService {
 }
 export class EstimatesService {
   /**
-   *
+   * Price Estimates
    * @param {IRequestOptions} [options] Override http request option.
    * @throws {RequiredError}
    */
-  static price(
-    parameters: { startLatitude: number; startLongitude: number; endLatitude: number; endLongitude: number },
-    options: IRequestOptions = {}
-  ): AxiosPromise<any> {
-    const configs = <AxiosRequestConfig>{ ...options };
+  static price(params: IpriceParams, options: IRequestOptions = {}): AxiosPromise<any> {
+    params = params || <IpriceParams>{};
+    const configs: AxiosRequestConfig = { ...options, method: 'get' };
     configs.headers = {
       ...options.headers,
       'Content-Type': 'application/json'
@@ -52,10 +48,10 @@ export class EstimatesService {
     configs.url = url;
 
     configs.params = {
-      startLatitude: parameters['startLatitude'],
-      startLongitude: parameters['startLongitude'],
-      endLatitude: parameters['endLatitude'],
-      endLongitude: parameters['endLongitude']
+      startLatitude: params['startLatitude'],
+      startLongitude: params['startLongitude'],
+      endLatitude: params['endLatitude'],
+      endLongitude: params['endLongitude']
     };
 
     let data = null;
@@ -65,15 +61,13 @@ export class EstimatesService {
   }
 
   /**
-   *
+   * Time Estimates
    * @param {IRequestOptions} [options] Override http request option.
    * @throws {RequiredError}
    */
-  static time(
-    parameters: { startLatitude: number; startLongitude: number; customerUuid?: string; productId?: string },
-    options: IRequestOptions = {}
-  ): AxiosPromise<any> {
-    const configs = <AxiosRequestConfig>{ ...options };
+  static time(params: ItimeParams, options: IRequestOptions = {}): AxiosPromise<any> {
+    params = params || <ItimeParams>{};
+    const configs: AxiosRequestConfig = { ...options, method: 'get' };
     configs.headers = {
       ...options.headers,
       'Content-Type': 'application/json'
@@ -84,10 +78,10 @@ export class EstimatesService {
     configs.url = url;
 
     configs.params = {
-      startLatitude: parameters['startLatitude'],
-      startLongitude: parameters['startLongitude'],
-      customerUuid: parameters['customerUuid'],
-      productId: parameters['productId']
+      startLatitude: params['startLatitude'],
+      startLongitude: params['startLongitude'],
+      customerUuid: params['customerUuid'],
+      productId: params['productId']
     };
 
     let data = null;
@@ -98,12 +92,13 @@ export class EstimatesService {
 }
 export class UserService {
   /**
-   *
+   * User Profile
    * @param {IRequestOptions} [options] Override http request option.
    * @throws {RequiredError}
    */
-  static me(parameters: {}, options: IRequestOptions = {}): AxiosPromise<Profile> {
-    const configs = <AxiosRequestConfig>{ ...options };
+  static me(params: ImeParams, options: IRequestOptions = {}): AxiosPromise<Profile> {
+    params = params || <ImeParams>{};
+    const configs: AxiosRequestConfig = { ...options, method: 'get' };
     configs.headers = {
       ...options.headers,
       'Content-Type': 'application/json'
@@ -120,15 +115,13 @@ export class UserService {
   }
 
   /**
-   *
+   * User Activity
    * @param {IRequestOptions} [options] Override http request option.
    * @throws {RequiredError}
    */
-  static history(
-    parameters: { offset?: number; limit?: number },
-    options: IRequestOptions = {}
-  ): AxiosPromise<Activities> {
-    const configs = <AxiosRequestConfig>{ ...options };
+  static history(params: IhistoryParams, options: IRequestOptions = {}): AxiosPromise<Activities> {
+    params = params || <IhistoryParams>{};
+    const configs: AxiosRequestConfig = { ...options, method: 'get' };
     configs.headers = {
       ...options.headers,
       'Content-Type': 'application/json'
@@ -138,7 +131,7 @@ export class UserService {
 
     configs.url = url;
 
-    configs.params = { offset: parameters['offset'], limit: parameters['limit'] };
+    configs.params = { offset: params['offset'], limit: params['limit'] };
 
     let data = null;
     configs.data = data;
@@ -146,40 +139,61 @@ export class UserService {
     return axios(configs);
   }
 }
+export interface IproductsParams {
+  /** Latitude component of location. */
+  latitude: number;
+
+  /** Longitude component of location. */
+  longitude: number;
+}
+export interface IpriceParams {
+  /** Latitude component of start location. */
+  startLatitude: number;
+
+  /** Longitude component of start location. */
+  startLongitude: number;
+
+  /** Latitude component of end location. */
+  endLatitude: number;
+
+  /** Longitude component of end location. */
+  endLongitude: number;
+}
+export interface ItimeParams {
+  /** Latitude component of start location. */
+  startLatitude: number;
+
+  /** Longitude component of start location. */
+  startLongitude: number;
+
+  /** Unique customer identifier to be used for experience customization. */
+  customerUuid?: string;
+
+  /** Unique identifier representing a specific product for a given latitude & longitude. */
+  productId?: string;
+}
+export interface ImeParams {}
+export interface IhistoryParams {
+  /** Offset the list of returned results by this amount. Default is zero. */
+  offset?: number;
+
+  /** Number of items to retrieve. Default is 5, maximum is 100. */
+  limit?: number;
+}
 export class Product {
-  /**
-   *
-   * @type {string}
-   * @memberof Product
-   */
+  /** Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles. */
   product_id: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Product
-   */
+  /** Description of product. */
   description: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Product
-   */
+  /** Display name of product. */
   display_name: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Product
-   */
+  /** Capacity of product. For example, 4 people. */
   capacity: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Product
-   */
+  /** Image URL representing the product. */
   image: string;
 
   constructor(data?: any) {
@@ -194,53 +208,25 @@ export class Product {
 }
 
 export class PriceEstimate {
-  /**
-   *
-   * @type {string}
-   * @memberof PriceEstimate
-   */
+  /** Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles */
   product_id: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof PriceEstimate
-   */
+  /** [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code. */
   currency_code: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof PriceEstimate
-   */
+  /** Display name of product. */
   display_name: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof PriceEstimate
-   */
+  /** Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or "Metered" for TAXI. */
   estimate: string;
 
-  /**
-   *
-   * @type {number}
-   * @memberof PriceEstimate
-   */
+  /** Lower bound of the estimated price. */
   low_estimate: number;
 
-  /**
-   *
-   * @type {number}
-   * @memberof PriceEstimate
-   */
+  /** Upper bound of the estimated price. */
   high_estimate: number;
 
-  /**
-   *
-   * @type {number}
-   * @memberof PriceEstimate
-   */
+  /** Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier. */
   surge_multiplier: number;
 
   constructor(data?: any) {
@@ -257,39 +243,19 @@ export class PriceEstimate {
 }
 
 export class Profile {
-  /**
-   *
-   * @type {string}
-   * @memberof Profile
-   */
+  /** First name of the Uber user. */
   first_name: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Profile
-   */
+  /** Last name of the Uber user. */
   last_name: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Profile
-   */
+  /** Email address of the Uber user */
   email: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Profile
-   */
+  /** Image URL of the Uber user. */
   picture: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Profile
-   */
+  /** Promo code of the Uber user. */
   promo_code: string;
 
   constructor(data?: any) {
@@ -304,11 +270,7 @@ export class Profile {
 }
 
 export class Activity {
-  /**
-   *
-   * @type {string}
-   * @memberof Activity
-   */
+  /** Unique identifier for the activity */
   uuid: string;
 
   constructor(data?: any) {
@@ -319,32 +281,16 @@ export class Activity {
 }
 
 export class Activities {
-  /**
-   *
-   * @type {number}
-   * @memberof Activities
-   */
+  /** Position in pagination. */
   offset: number;
 
-  /**
-   *
-   * @type {number}
-   * @memberof Activities
-   */
+  /** Number of items to retrieve (100 max). */
   limit: number;
 
-  /**
-   *
-   * @type {number}
-   * @memberof Activities
-   */
+  /** Total number of items available. */
   count: number;
 
-  /**
-   *
-   * @type {Activity[]}
-   * @memberof Activities
-   */
+  /**  */
   history: Activity[];
 
   constructor(data?: any) {
@@ -358,25 +304,13 @@ export class Activities {
 }
 
 export class Error {
-  /**
-   *
-   * @type {number}
-   * @memberof Error
-   */
+  /**  */
   code: number;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Error
-   */
+  /**  */
   message: string;
 
-  /**
-   *
-   * @type {string}
-   * @memberof Error
-   */
+  /**  */
   fields: string;
 
   constructor(data?: any) {
