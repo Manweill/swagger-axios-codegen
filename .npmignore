@@ -64,3 +64,4 @@ typings/
 /api/**
 /src/**
 node_modules/
+test/
