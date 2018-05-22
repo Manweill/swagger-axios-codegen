@@ -30,12 +30,13 @@ function propTrueType(v: IDefinitionProperty, isGenericType: boolean) {
       }
     }
   }
-  // 是个枚举
-  else if (v.enum) {
+  // 是枚举 并且是字符串类型
+  else if (v.enum && v.type === 'string') {
     isEnum = true
-    propType = v.type === 'string' ?
-      v.enum.map(item => `'${item}'='${item}'`).join(',') :
-      v.enum.map(item => `'${item}'=${item}`).join(',')
+    propType = v.enum.map(item => `'${item}'='${item}'`).join(',')
+  }
+  else if (v.enum) {
+    propType = v.type === 'string' ? v.enum.map(item => `'${item}'`).join('|') : v.enum.join('|')
   }
   // 基本类型
   else {
