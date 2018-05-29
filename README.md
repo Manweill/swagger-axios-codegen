@@ -6,7 +6,7 @@ swagger client to use axios and typescript
 
 ## Get Started
 
-[[Example](./test)
+[Example](./test)
 
 ```
   yarn add swagger-axios-codegen
