@@ -10,6 +10,6 @@
     "typescript": "2.7.1"
   },
   "scripts": {
-    "api": "node ./axiosSwag/codegen.js"
+    "build:api": "cd ./ASwag && node codegen.js && tsc"
   }
 }

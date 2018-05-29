@@ -1,0 +1,17 @@
+{
+  "include": [
+    "../node_modules/axios"
+  ],
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "esnext", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */
+    "module": "esnext",
+    "lib": [
+      "es2017","dom"
+    ],
+    "declaration": true, /* Generates corresponding '.d.ts' file. */
+    "sourceMap": true, /* Generates corresponding '.map' file. */
+    "outDir": "../src/service", /* Redirect output structure to the directory. */
+    "rootDir": "./", /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+    }
+}

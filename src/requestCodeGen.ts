@@ -1,4 +1,5 @@
 import camelcase from 'camelcase'
+import pascalcase from 'pascalcase';
 import { toBaseType, refClassName, getMethodName } from './utils'
 import { IParameter, IPaths, ISwaggerOptions } from './baseInterfaces'
 
@@ -80,16 +81,19 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       let handleNullParameters = ''
       let parsedParameters
       if (v.parameters) {
+        // 获取到接口的参数
         parsedParameters = getRequestParameters(v.parameters)
-        let methodParamsName = `I${methodName}Params`
+        //参数类型的名字
+        let methodParamsName = `I${pascalcase(methodName)}Params`
 
+        // 如果存在该参数类型的名字，则在参数类型的名字后面+1
         if (RequestMethodInputs[methodParamsName]) {
-          methodParamsName = `I${methodName}Params` + RequestMethodInputs[methodParamsName].length
+          methodParamsName = `I${pascalcase(methodName)}Params` + RequestMethodInputs[methodParamsName].length
         } else {
           RequestMethodInputs[methodParamsName] = []
         }
 
-        RequestMethodInputs[`I${methodName}Params`].push(`export interface ${methodParamsName}{
+        RequestMethodInputs[`I${pascalcase(methodName)}Params`].push(`export interface ${methodParamsName}{
             ${parsedParameters.requestParameters}
           }`)
 
@@ -108,10 +112,8 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       RequestMethods[className] += `
       /**
          * ${v.summary || ''}
-         * @param {IRequestOptions} [options] Override http request option.
-         * @throws {RequiredError}
          */
-      ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):AxiosPromise<${responseType}> {
+      ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
         
         ${handleNullParameters}
         const configs:AxiosRequestConfig = {...options, method: "${method}" };
@@ -141,7 +143,13 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
 
         configs.data = data;
 
-        return axios(configs);
+        return new Promise((resolve, reject) => {
+          axios(configs).then(res => {
+            resolve(res.data);
+          }).catch(err => {
+            reject(err);
+          });
+        });
       }
       `
     }
