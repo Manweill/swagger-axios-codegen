@@ -124,8 +124,6 @@ typings/
 .next
 
 /output/**
-/dist/**
-/api/**
 
 /api/**
 /src/**
