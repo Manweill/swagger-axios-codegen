@@ -33,17 +33,23 @@ ms@2.0.0:
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
-prettier@^1.12.0:
-  version "1.13.2"
-  resolved "http://registry.npm.taobao.org/prettier/download/prettier-1.13.2.tgz#412b87bc561cb11074d2877a33a38f78c2303cda"
+pascalcase@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/pascalcase/-/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
 
-swagger-axios-codegen@^0.0.2:
-  version "0.0.2"
-  resolved "http://registry.npm.taobao.org/swagger-axios-codegen/download/swagger-axios-codegen-0.0.2.tgz#076a344dcd8196a4df4a4dc97c1181f373760694"
+prettier@^1.12.1:
+  version "1.13.4"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.4.tgz#31bbae6990f13b1093187c731766a14036fa72e6"
+
+swagger-axios-codegen@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/swagger-axios-codegen/-/swagger-axios-codegen-0.2.5.tgz#1929fed5a37f36954acd19e283443369fd43167e"
   dependencies:
+    axios "^0.18.0"
     camelcase "^5.0.0"
-    prettier "^1.12.0"
+    pascalcase "^0.1.1"
+    prettier "^1.12.1"
 
-typescript@2.7.1:
-  version "2.7.1"
-  resolved "http://registry.npm.taobao.org/typescript/download/typescript-2.7.1.tgz#bb3682c2c791ac90e7c6210b26478a8da085c359"
+typescript@2.9.1:
+  version "2.9.1"
+  resolved "http://registry.npm.taobao.org/typescript/download/typescript-2.9.1.tgz#fdb19d2c67a15d11995fd15640e373e09ab09961"

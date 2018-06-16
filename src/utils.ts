@@ -25,7 +25,7 @@ export function refClassName(s: string) {
   if (isGenerics(propType)) {
     const { interfaceClassName, TClassName } = getGenericsClassNames(propType)
     // return `${interfaceClassName}<${toBaseType(TClassName)}>`
-    return propType.replace(/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/g, '')
+    return trimString(propType.replace(/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/g, '_'), '_', 'right')
   } else {
     return propType
   }
@@ -68,3 +68,16 @@ export function getMethodName(path: string) {
   }
   return ''
 }
+
+
+export function trimString(str: string, char: string, type: string) {
+  if (char) {
+    if (type == 'left') {
+      return str.replace(new RegExp('^\\' + char + '+', 'g'), '');
+    } else if (type == 'right') {
+      return str.replace(new RegExp('\\' + char + '+$', 'g'), '');
+    }
+    return str.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '');
+  }
+  return str.replace(/^\s+|\s+$/g, '');
+};

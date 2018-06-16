@@ -4,9 +4,11 @@ require node > v8.0.0
 
 swagger client to use axios and typescript
 
+it will always resolve `axios.response.data` or reject `axios.error` with Promise
+
 ## Get Started
 
-[Example](./test)
+[Example](./example)
 
 ```
   yarn add swagger-axios-codegen
@@ -92,3 +94,5 @@ import { UserService } from './service'
 await UserService.GetAll();
 
 ```
+
+Welcome PR an commit issue

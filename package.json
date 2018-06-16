@@ -13,7 +13,8 @@
     "build": "tsc -p ./src",
     "prestart": "npm run build",
     "precommit": "prettier --write --config .prettierrc ./src/*.ts",
-    "start": "node ./dist/index"
+    "start": "node ./dist/index",
+    "watch": "tsc --watch -p ./src "
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -25,6 +26,7 @@
     "@types/camelcase": "^4.1.0",
     "@types/node": "^9.6.0",
     "@types/prettier": "^1.12.2",
-    "typescript": "^2.8.3"
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.1"
   }
 }

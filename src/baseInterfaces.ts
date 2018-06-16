@@ -51,19 +51,25 @@ export interface IParameter {
   name: string
   description: string
   required: string
-  schema: {
-    $ref: string
-    items: {
-      type: string
-      $ref: string
-    }
-  }
+  schema: IParameterSchema
   items: {
     type: string
     $ref: string
   }
   type: string
   format: string
+}
+
+export interface IParameterSchema {
+  $ref: string
+  items?: IParameterItems
+}
+
+
+export interface IParameterItems {
+  type?: string
+  $ref: string
+  item?: IParameterItems
 }
 
 export interface IDefinitions {

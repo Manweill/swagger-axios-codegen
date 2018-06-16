@@ -5,12 +5,12 @@ import pascalcase from 'pascalcase';
 
 export interface IDefinitionsClasses {
   [key: string]: {
-    isGeneric: boolean
     value: string
   }
 }
 
-function propTrueType(v: IDefinitionProperty, isGenericType: boolean) {
+
+function propTrueType(v: IDefinitionProperty) {
   let propType = ''
   let isEnum = false
   if (v.$ref) {
@@ -24,7 +24,7 @@ function propTrueType(v: IDefinitionProperty, isGenericType: boolean) {
       propType = refClassName(v.items.$ref) + '[]'
     } else {
       if (v.items.type === "array") {
-        propType = propTrueType(v.items, isGenericType) + '[]'
+        propType = propTrueType(v.items) + '[]'
       } else {
         propType = toBaseType(v.items.type) + '[]'
       }
@@ -53,9 +53,7 @@ function propTrueType(v: IDefinitionProperty, isGenericType: boolean) {
  */
 function createDefinitionClass(
   className: string,
-  properties: IDefinitionProperties,
-  isGenericType: boolean = false,
-  hasDefaultGenericType = false
+  properties: IDefinitionProperties
 ) {
   let propsStr = ''
   let constructorStr = ''
@@ -64,7 +62,7 @@ function createDefinitionClass(
   let enums = []
   const propertiesEntities = Object.entries(properties)
   for (const [k, v] of propertiesEntities) {
-    let { propType, isEnum } = propTrueType(v, isGenericType);
+    let { propType, isEnum } = propTrueType(v);
     if (isEnum) {
       let enumName = `Enum${className}${pascalcase(k)}`
       enums.push({
@@ -78,18 +76,12 @@ function createDefinitionClass(
     ${k}:${propType};\n
     `
     constructorStr += `this['${k}'] = data['${k}'];\n`
-    // 判断是不是泛型类型
-    genericsType = isGenericType
-      ? hasDefaultGenericType && propertiesEntities.length
-        ? `<T=${toBaseType(v.type)}>`
-        : '<T>'
-      : ''
   }
 
   return {
     enums,
     model: `
-  export class ${className}${genericsType} {
+  export class ${className} {
     ${propsStr}
     constructor(data?:any){
       if(data){
@@ -104,39 +96,20 @@ function createDefinitionClass(
 export function definitionsCodeGen(definitions: IDefinitions): string {
   let definitionsModels: IDefinitionsClasses = {}
   for (const [k, v] of Object.entries(definitions)) {
-    // 是否是泛型类型 PagedResultDto[UserListDto]
-    // if (isGenerics(k) && v.type === 'object') {
-    //   const { interfaceClassName, TClassName } = getGenericsClassNames(k)
-    //   // if (definitionsModels[interfaceClassName] == null) {
-    //   definitionsModels[interfaceClassName] = {
-    //     isGeneric: true,
-    //     value: createDefinitionClass(interfaceClassName, v.properties, true)
-    //   }
-    //   // }
-    // } else {
-    // if (definitionsModels[k] && definitionsModels[k].isGeneric) {
-    //   definitionsModels[k] = {
-    //     isGeneric: true,
-    //     value: createDefinitionClass(k, v.properties, true, true)
-    //   }
-    // } else {
+
     let className = refClassName(k)
     const { enums, model } = createDefinitionClass(className, v.properties)
 
 
     enums.forEach(item => {
       definitionsModels[item.name] = {
-        isGeneric: false,
         value: item.text
       }
     })
 
     definitionsModels[k] = {
-      isGeneric: false,
       value: model
     }
-    // }
-    // }
   }
 
   let definitionsClasses = Object.values(definitionsModels)
