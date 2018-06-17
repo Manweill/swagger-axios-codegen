@@ -3,9 +3,9 @@ import pascalcase from 'pascalcase';
 import { toBaseType, refClassName, getMethodName } from './utils'
 import { IParameter, IPaths, ISwaggerOptions } from './baseInterfaces'
 
-declare class FormData {
-  append: Function;
-}
+// declare class FormData {
+//   append: Function;
+// }
 
 export interface IRequestMethods {
   [key: string]: string;
