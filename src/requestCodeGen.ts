@@ -1,5 +1,4 @@
-import camelcase from 'camelcase'
-import pascalcase from 'pascalcase';
+import { camelCase, capitalize } from 'lodash/fp';
 import { toBaseType, refClassName, getMethodName } from './utils'
 import { IParameter, IPaths, ISwaggerOptions } from './baseInterfaces'
 
@@ -36,7 +35,7 @@ function getRequestParameters(params: IParameter[]) {
     else {
       propType = toBaseType(p.type)
     }
-    const paramName = camelcase(p.name)
+    const paramName = camelCase(p.name)
     requestParameters += `
     /** ${p.description || ''} */
     ${paramName}${p.required ? '' : '?'}:${propType},
@@ -63,15 +62,18 @@ function getRequestParameters(params: IParameter[]) {
 export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string {
   const RequestMethods: IRequestMethods = {}
   const RequestMethodInputs: IRequestMethodInput = {}
+
   for (const [path, request] of Object.entries(paths)) {
     let methodName = getMethodName(path)
     for (const [method, v] of Object.entries(request)) {
+
       methodName = options.methodNameMode === 'operationId' ? v.operationId : methodName
       const contentType =
         v.consumes && v.consumes.includes('multipart/form-data') ? 'multipart/form-data' : 'application/json'
       let formData = ''
       let pathReplace = ''
       // 获取类名
+      if (!v.tags) continue;
       const className = v.tags[0]
       // 是否存在
       if (!RequestMethods[className]) {
@@ -84,16 +86,16 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         // 获取到接口的参数
         parsedParameters = getRequestParameters(v.parameters)
         //参数类型的名字
-        let methodParamsName = `I${pascalcase(methodName)}Params`
+        let methodParamsName = `I${capitalize(methodName)}Params`
 
         // 如果存在该参数类型的名字，则在参数类型的名字后面+1
         if (RequestMethodInputs[methodParamsName]) {
-          methodParamsName = `I${pascalcase(methodName)}Params` + RequestMethodInputs[methodParamsName].length
+          methodParamsName = `I${capitalize(methodName)}Params` + RequestMethodInputs[methodParamsName].length
         } else {
           RequestMethodInputs[methodParamsName] = []
         }
 
-        RequestMethodInputs[`I${pascalcase(methodName)}Params`].push(`export interface ${methodParamsName}{
+        RequestMethodInputs[`I${capitalize(methodName)}Params`].push(`export interface ${methodParamsName}{
             ${parsedParameters.requestParameters}
           }`)
 
@@ -113,8 +115,8 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       /**
          * ${v.summary || ''}
          */
-      ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
-        
+      ${options.useStaticMethod ? 'static' : ''} ${camelCase(methodName)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
+      return new Promise((resolve, reject) => {
         ${handleNullParameters}
         const configs:AxiosRequestConfig = {...options, method: "${method}" };
         configs.headers = {
@@ -132,26 +134,25 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
           : ''
         };
 
-        let data = null;
-        ${
+          let data = null;
+          ${
         parsedParameters && parsedParameters.bodyParameters.length > 0
           ? 'data = {' + parsedParameters.bodyParameters.join(',') + '}'
           : ''
         };
 
-        ${contentType === 'multipart/form-data' ? formData : ''}
+          ${contentType === 'multipart/form-data' ? formData : ''}
 
-        configs.data = data;
+          configs.data = data;
 
-        return new Promise((resolve, reject) => {
+        
           axios(configs).then(res => {
             resolve(res.data);
           }).catch(err => {
             reject(err);
           });
-        });
-      }
-      `
+      });
+    }`;
     }
   }
 

@@ -95,4 +95,4 @@ await UserService.GetAll();
 
 ```
 
-Welcome PR an commit issue
+Welcome PR and commit issue

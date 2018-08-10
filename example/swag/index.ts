@@ -8,23 +8,23 @@ export class ProductsService {
    * Product Types
    */
   static products(params: IProductsParams, options: IRequestOptions = {}): Promise<any> {
-    params = params || <IProductsParams>{};
-    const configs: AxiosRequestConfig = { ...options, method: 'get' };
-    configs.headers = {
-      ...options.headers,
-      'Content-Type': 'application/json'
-    };
-
-    let url = '/products';
-
-    configs.url = url;
-
-    configs.params = { latitude: params['latitude'], longitude: params['longitude'] };
-
-    let data = null;
-    configs.data = data;
-
     return new Promise((resolve, reject) => {
+      params = params || <IProductsParams>{};
+      const configs: AxiosRequestConfig = { ...options, method: 'get' };
+      configs.headers = {
+        ...options.headers,
+        'Content-Type': 'application/json'
+      };
+
+      let url = '/products';
+
+      configs.url = url;
+
+      configs.params = { latitude: params['latitude'], longitude: params['longitude'] };
+
+      let data = null;
+      configs.data = data;
+
       axios(configs)
         .then(res => {
           resolve(res.data);
@@ -40,28 +40,28 @@ export class EstimatesService {
    * Price Estimates
    */
   static price(params: IPriceParams, options: IRequestOptions = {}): Promise<any> {
-    params = params || <IPriceParams>{};
-    const configs: AxiosRequestConfig = { ...options, method: 'get' };
-    configs.headers = {
-      ...options.headers,
-      'Content-Type': 'application/json'
-    };
-
-    let url = '/estimates/price';
-
-    configs.url = url;
-
-    configs.params = {
-      startLatitude: params['startLatitude'],
-      startLongitude: params['startLongitude'],
-      endLatitude: params['endLatitude'],
-      endLongitude: params['endLongitude']
-    };
-
-    let data = null;
-    configs.data = data;
-
     return new Promise((resolve, reject) => {
+      params = params || <IPriceParams>{};
+      const configs: AxiosRequestConfig = { ...options, method: 'get' };
+      configs.headers = {
+        ...options.headers,
+        'Content-Type': 'application/json'
+      };
+
+      let url = '/estimates/price';
+
+      configs.url = url;
+
+      configs.params = {
+        startLatitude: params['startLatitude'],
+        startLongitude: params['startLongitude'],
+        endLatitude: params['endLatitude'],
+        endLongitude: params['endLongitude']
+      };
+
+      let data = null;
+      configs.data = data;
+
       axios(configs)
         .then(res => {
           resolve(res.data);
@@ -71,33 +71,32 @@ export class EstimatesService {
         });
     });
   }
-
   /**
    * Time Estimates
    */
   static time(params: ITimeParams, options: IRequestOptions = {}): Promise<any> {
-    params = params || <ITimeParams>{};
-    const configs: AxiosRequestConfig = { ...options, method: 'get' };
-    configs.headers = {
-      ...options.headers,
-      'Content-Type': 'application/json'
-    };
-
-    let url = '/estimates/time';
-
-    configs.url = url;
-
-    configs.params = {
-      startLatitude: params['startLatitude'],
-      startLongitude: params['startLongitude'],
-      customerUuid: params['customerUuid'],
-      productId: params['productId']
-    };
-
-    let data = null;
-    configs.data = data;
-
     return new Promise((resolve, reject) => {
+      params = params || <ITimeParams>{};
+      const configs: AxiosRequestConfig = { ...options, method: 'get' };
+      configs.headers = {
+        ...options.headers,
+        'Content-Type': 'application/json'
+      };
+
+      let url = '/estimates/time';
+
+      configs.url = url;
+
+      configs.params = {
+        startLatitude: params['startLatitude'],
+        startLongitude: params['startLongitude'],
+        customerUuid: params['customerUuid'],
+        productId: params['productId']
+      };
+
+      let data = null;
+      configs.data = data;
+
       axios(configs)
         .then(res => {
           resolve(res.data);
@@ -113,21 +112,21 @@ export class UserService {
    * User Profile
    */
   static me(params: IMeParams, options: IRequestOptions = {}): Promise<Profile> {
-    params = params || <IMeParams>{};
-    const configs: AxiosRequestConfig = { ...options, method: 'get' };
-    configs.headers = {
-      ...options.headers,
-      'Content-Type': 'application/json'
-    };
-
-    let url = '/me';
-
-    configs.url = url;
-
-    let data = null;
-    configs.data = data;
-
     return new Promise((resolve, reject) => {
+      params = params || <IMeParams>{};
+      const configs: AxiosRequestConfig = { ...options, method: 'get' };
+      configs.headers = {
+        ...options.headers,
+        'Content-Type': 'application/json'
+      };
+
+      let url = '/me';
+
+      configs.url = url;
+
+      let data = null;
+      configs.data = data;
+
       axios(configs)
         .then(res => {
           resolve(res.data);
@@ -137,28 +136,27 @@ export class UserService {
         });
     });
   }
-
   /**
    * User Activity
    */
   static history(params: IHistoryParams, options: IRequestOptions = {}): Promise<Activities> {
-    params = params || <IHistoryParams>{};
-    const configs: AxiosRequestConfig = { ...options, method: 'get' };
-    configs.headers = {
-      ...options.headers,
-      'Content-Type': 'application/json'
-    };
-
-    let url = '/history';
-
-    configs.url = url;
-
-    configs.params = { offset: params['offset'], limit: params['limit'] };
-
-    let data = null;
-    configs.data = data;
-
     return new Promise((resolve, reject) => {
+      params = params || <IHistoryParams>{};
+      const configs: AxiosRequestConfig = { ...options, method: 'get' };
+      configs.headers = {
+        ...options.headers,
+        'Content-Type': 'application/json'
+      };
+
+      let url = '/history';
+
+      configs.url = url;
+
+      configs.params = { offset: params['offset'], limit: params['limit'] };
+
+      let data = null;
+      configs.data = data;
+
       axios(configs)
         .then(res => {
           resolve(res.data);

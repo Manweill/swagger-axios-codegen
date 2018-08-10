@@ -1,7 +1,6 @@
 import { IDefinitionProperties, IDefinitions, IDefinitionProperty } from './baseInterfaces'
-import { refClassName, toBaseType, getGenericsClassNames, isGenerics } from './utils'
-import camelcase from 'camelcase';
-import pascalcase from 'pascalcase';
+import { refClassName, toBaseType } from './utils'
+import { capitalize } from 'lodash/fp';
 
 export interface IDefinitionsClasses {
   [key: string]: {
@@ -10,21 +9,29 @@ export interface IDefinitionsClasses {
 }
 
 
-function propTrueType(v: IDefinitionProperty) {
+function propTrueType(v: IDefinitionProperty): { propType: string, isEnum: boolean, isArray: boolean } {
   let propType = ''
   let isEnum = false
+  let isArray = false
   if (v.$ref) {
     // 是引用类型
     propType = refClassName(v.$ref)
   }
   //是个数组
   else if (v.items) {
+    isArray = true
     if (v.items.$ref) {
       // 是个引用类型
       propType = refClassName(v.items.$ref) + '[]'
     } else {
       if (v.items.type === "array") {
-        propType = propTrueType(v.items) + '[]'
+        const result = propTrueType(v.items)
+        propType = result.propType
+        isEnum = result.isEnum
+      } else if (!!v.items.enum) {
+        const result = propTrueType(v.items)
+        propType = result.propType
+        isEnum = result.isEnum
       } else {
         propType = toBaseType(v.items.type) + '[]'
       }
@@ -42,7 +49,7 @@ function propTrueType(v: IDefinitionProperty) {
   else {
     propType = toBaseType(v.type)
   }
-  return { propType, isEnum }
+  return { propType, isEnum, isArray }
 }
 
 /**
@@ -62,14 +69,14 @@ function createDefinitionClass(
   let enums = []
   const propertiesEntities = Object.entries(properties)
   for (const [k, v] of propertiesEntities) {
-    let { propType, isEnum } = propTrueType(v);
+    let { propType, isEnum, isArray } = propTrueType(v);
     if (isEnum) {
-      let enumName = `Enum${className}${pascalcase(k)}`
+      let enumName = `Enum${className}${capitalize(k)}`
       enums.push({
         name: enumName, text: `export enum ${enumName}{
         ${propType}
       }`})
-      propType = enumName
+      propType = isArray ? enumName + '[]' : enumName
     }
     propsStr += `
     /** ${v.description || ''} */

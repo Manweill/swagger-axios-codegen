@@ -1,7 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import prettier from 'prettier';
-import camelcase from 'camelcase'
 import axios from 'axios';
 import { ISwaggerSource, IDefinition, IDefinitionProperties, IParameter, ISwaggerOptions } from './baseInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
