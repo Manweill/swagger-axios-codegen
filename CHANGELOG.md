@@ -1,6 +1,6 @@
 # 0.2.7
 
-- Optimization: Optimize generation rules when an property of the entity is an enumerated array
+- Optimization: Optimize generation rules when an property of the entity is an enumerated array [example](./example/swagger.enumArray.json)
 - Fix: Skip the current method when the tags are empty
 
 ## 0.2.6
