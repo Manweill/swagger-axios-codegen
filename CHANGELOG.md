@@ -1,14 +1,11 @@
-## 0.2.7
+# 0.2.7
 
-- 优化：当实体的属性为枚举数组时，优化他的生成规则 , [example](./example/swagger.enumArray.json)
-- 修复：当tags为空时，跳过生成当前方法
-
+- Optimization: Optimize generation rules when an property of the entity is an enumerated array
+- Fix: Skip the current method when the tags are empty
 
 ## 0.2.6
+ - Adjust the generated class name
 
-- 调整生成的class name的名称
-
-## 0.2.5
-
-- 使用 `Promise` 代替 `AxiosPromise`。如果接口调用成功，默认返回response.data
-- 修改README.md
+ ## 0.2.5
+ - Use ‘Promise’ instead of ‘AxiosPromise’. If the interface is called successfully, the response.data is returned by default. 
+ - Modify REANDME.md
