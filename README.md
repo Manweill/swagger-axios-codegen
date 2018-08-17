@@ -6,6 +6,8 @@ swagger client to use axios and typescript
 
 it will always resolve `axios.response.data` or reject `axios.error` with Promise
 
+## [Change Logs](./CHANGElOG.md)  [中文](./CHANGElOG.zh-CN.md)
+
 ## Get Started
 
 [Example](./example)

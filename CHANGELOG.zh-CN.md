@@ -1,3 +1,6 @@
+## 0.2.8
+- 修复：使用 FormData 提交 非 file 类型的参数的bug
+
 ## 0.2.7
 
 - 优化：当实体的属性为枚举数组时，优化他的生成规则 , [example](./example/swagger.enumArray.json)
