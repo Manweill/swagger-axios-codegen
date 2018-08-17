@@ -1,5 +1,8 @@
 # swagger-axios-codegen
 
+￼[![NpmVersion](https://img.shields.io/npm/v/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
+￼[![npm](https://img.shields.io/npm/dt/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
+
 require node > v8.0.0
 
 swagger client to use axios and typescript
