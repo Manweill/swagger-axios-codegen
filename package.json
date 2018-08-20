@@ -1,6 +1,6 @@
 {
   "name": "swagger-axios-codegen",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "main": "./dist/index",
   "typings": "./dist/",
   "author": "Manwei Leung <mic.liangwenwei@foxmail.com>",

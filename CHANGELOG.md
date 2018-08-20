@@ -1,4 +1,7 @@
-## 0.2.8
+## 0.2.10
+- Fix: Enumeration case conversion
+
+## 0.2.9
 - Fix: A non-file parameter can be submitted correctly using  'FormData'
 
 ## 0.2.7
