@@ -1,4 +1,4 @@
-## 0.2.10
+## 0.2.11
 - Fix: Enumeration case conversion
 
 ## 0.2.9
