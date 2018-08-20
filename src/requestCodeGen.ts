@@ -45,7 +45,7 @@ function getRequestParameters(params: IParameter[]) {
     // 如果参数是从formData 提交
     if (p.in === 'formData') {
       requestFormData += `if(params['${paramName}']){
-        data.append('${paramName}',params['${paramName}'],'${paramName}')
+        data.append('${paramName}',params['${paramName}'])
       }\n
       `
     } else if (p.in === 'path') {

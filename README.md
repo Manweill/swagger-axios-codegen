@@ -1,5 +1,8 @@
 # swagger-axios-codegen
 
+￼[![NpmVersion](https://img.shields.io/npm/v/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
+￼[![npm](https://img.shields.io/npm/dt/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
+
 require node > v8.0.0
 
 swagger client to use axios and typescript
@@ -7,8 +10,6 @@ swagger client to use axios and typescript
 it will always resolve `axios.response.data` or reject `axios.error` with Promise
 
 ## Get Started
-
-[Example](./example)
 
 ```
   yarn add swagger-axios-codegen
@@ -35,7 +36,7 @@ const defaultOptions = {
 }
 ```
 
-## Example
+## [Example](./example)
 
 ### use local swagger api json
 
