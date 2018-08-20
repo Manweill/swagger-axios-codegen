@@ -116,7 +116,7 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       /**
          * ${v.summary || ''}
          */
-      ${options.useStaticMethod ? 'static' : ''} ${pascalcase(methodName)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
+      ${options.useStaticMethod ? 'static' : ''} ${camelcase(methodName)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
       return new Promise((resolve, reject) => {
         ${handleNullParameters}
         const configs:AxiosRequestConfig = {...options, method: "${method}" };
