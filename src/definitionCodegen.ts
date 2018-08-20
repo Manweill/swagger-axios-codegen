@@ -1,6 +1,6 @@
 import { IDefinitionProperties, IDefinitions, IDefinitionProperty } from './baseInterfaces'
 import { refClassName, toBaseType } from './utils'
-import { capitalize } from 'lodash/fp';
+import pascalcase from 'pascalcase';
 
 export interface IDefinitionsClasses {
   [key: string]: {
@@ -71,7 +71,7 @@ function createDefinitionClass(
   for (const [k, v] of propertiesEntities) {
     let { propType, isEnum, isArray } = propTrueType(v);
     if (isEnum) {
-      let enumName = `Enum${className}${capitalize(k)}`
+      let enumName = `Enum${className}${pascalcase(k)}`
       enums.push({
         name: enumName, text: `export enum ${enumName}{
         ${propType}

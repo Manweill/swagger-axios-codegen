@@ -1,4 +1,5 @@
-import { camelCase, capitalize } from 'lodash/fp';
+import camelcase from 'camelcase';
+import pascalcase from 'pascalcase';
 import { toBaseType, refClassName, getMethodName } from './utils'
 import { IParameter, IPaths, ISwaggerOptions } from './baseInterfaces'
 
@@ -35,7 +36,7 @@ function getRequestParameters(params: IParameter[]) {
     else {
       propType = toBaseType(p.type)
     }
-    const paramName = camelCase(p.name)
+    const paramName = camelcase(p.name)
     requestParameters += `
     /** ${p.description || ''} */
     ${paramName}${p.required ? '' : '?'}:${propType},
@@ -86,16 +87,16 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         // 获取到接口的参数
         parsedParameters = getRequestParameters(v.parameters)
         //参数类型的名字
-        let methodParamsName = `I${capitalize(methodName)}Params`
+        let methodParamsName = `I${pascalcase(methodName)}Params`
 
         // 如果存在该参数类型的名字，则在参数类型的名字后面+1
         if (RequestMethodInputs[methodParamsName]) {
-          methodParamsName = `I${capitalize(methodName)}Params` + RequestMethodInputs[methodParamsName].length
+          methodParamsName = `I${pascalcase(methodName)}Params` + RequestMethodInputs[methodParamsName].length
         } else {
           RequestMethodInputs[methodParamsName] = []
         }
 
-        RequestMethodInputs[`I${capitalize(methodName)}Params`].push(`export interface ${methodParamsName}{
+        RequestMethodInputs[`I${pascalcase(methodName)}Params`].push(`export interface ${methodParamsName}{
             ${parsedParameters.requestParameters}
           }`)
 
@@ -115,7 +116,7 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
       /**
          * ${v.summary || ''}
          */
-      ${options.useStaticMethod ? 'static' : ''} ${camelCase(methodName)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
+      ${options.useStaticMethod ? 'static' : ''} ${pascalcase(methodName)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
       return new Promise((resolve, reject) => {
         ${handleNullParameters}
         const configs:AxiosRequestConfig = {...options, method: "${method}" };
