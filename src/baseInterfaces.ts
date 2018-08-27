@@ -63,6 +63,7 @@ export interface IParameter {
 export interface IParameterSchema {
   $ref: string
   items?: IParameterItems
+  type: string
 }
 
 
