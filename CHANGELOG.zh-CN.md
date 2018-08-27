@@ -1,3 +1,8 @@
+## 0.2.12
+
+- 修复了请求参数拥有 schema 并且schema属性只有 type 时候产生的bug（[2964ff0](https://github.com/Manweill/swagger-axios-codegen/pull/1) by [@mingoes](https://github.com/mingoes) ） 
+
+
 ## 0.2.11
 - 修复: 枚举名字大小写转换的问题
 

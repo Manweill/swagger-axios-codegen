@@ -1,13 +1,19 @@
+## 0.2.12
+
+- Fixed bug where schema.type would not be recognized ([2964ff0](https://github.com/Manweill/swagger-axios-codegen/pull/1) by [@mingoes](https://github.com/mingoes))
+
 ## 0.2.11
-- Fix: Enumeration case conversion
+
+- Fixed Enumeration case conversion
 
 ## 0.2.9
-- Fix: A non-file parameter can be submitted correctly using  'FormData'
+
+- Fixed A non-file parameter can be submitted correctly using  'FormData'
 
 ## 0.2.7
 
 - Optimization: Optimize generation rules when an property of the entity is an enumerated array [example](./example/swagger.enumArray.json)
-- Fix: Skip the current method when the tags are empty
+- Fixed Skip the current method when the tags are empty
 
 ## 0.2.6
  - Adjust the generated class name
