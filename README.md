@@ -65,7 +65,7 @@ codegen({
 
 ### use static method
 
-```
+```js
 codegen({
     methodNameMode: 'operationId',
     remoteUrl: 'http://localhost:22742/swagger/v1/swagger.json',
@@ -78,7 +78,7 @@ codegen({
 before
 
 
-```
+```js
 
 import { UserService } from './service'
 const userService = new UserService()
@@ -88,7 +88,7 @@ await userService.GetAll();
 
 after
 
-```
+```js
 
 import { UserService } from './service'
 
