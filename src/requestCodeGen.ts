@@ -28,7 +28,15 @@ function getRequestParameters(params: IParameter[]) {
     let propType = ''
     // 引用类型定义
     if (p.schema) {
-      propType = p.schema.items ? refClassName(p.schema.items.$ref) : refClassName(p.schema.$ref)
+      if (p.schema.items) {
+        propType = refClassName(p.schema.items.$ref)
+      } else if (p.schema.$ref) {
+        propType = refClassName(p.schema.$ref)
+      } else if (p.schema.type) {
+        propType = p.schema.type
+      } else {
+        throw new Error('Could not find property type on schema')
+      }
     } else if (p.items) {
       propType = p.items.$ref ? refClassName(p.items.$ref) + '[]' : toBaseType(p.items.type) + '[]'
     }
