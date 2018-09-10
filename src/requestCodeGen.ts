@@ -143,11 +143,10 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
           : ''
         };
 
-          let data = null;
-          ${
+          let data = ${
         parsedParameters && parsedParameters.bodyParameters.length > 0
-          ? 'data = {' + parsedParameters.bodyParameters.join(',') + '}'
-          : ''
+          ? '{' + parsedParameters.bodyParameters.join(',') + '}'
+          : 'null'
         };
 
           ${contentType === 'multipart/form-data' ? formData : ''}
