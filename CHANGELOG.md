@@ -1,3 +1,8 @@
+## 0.2.13
+
+- Upgrade [example](./example)，adding an [demo](./example/swagger.operationId.json) of using 'operationId' as the method name
+- Fix the exception of definition "let data = null" in the request mothod when using Typescript3.0.0 ([b0dad90](https://github.com/Manweill/swagger-axios-codegen/commit/b0dad90d96e3c9d6c4f033c6ad8adcf4c1bf0b2d) by [kt81](https://github.com/Manweill/swagger-axios-codegen/commits?author=kt81))
+
 ## 0.2.12
 
 - Fixed bug where schema.type would not be recognized ([2964ff0](https://github.com/Manweill/swagger-axios-codegen/pull/1) by [@mingoes](https://github.com/mingoes))

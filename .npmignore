@@ -129,3 +129,4 @@ typings/
 /src/**
 node_modules/
 test/
+example/

@@ -41,9 +41,9 @@ prettier@^1.12.1:
   version "1.13.4"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.4.tgz#31bbae6990f13b1093187c731766a14036fa72e6"
 
-swagger-axios-codegen@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/swagger-axios-codegen/-/swagger-axios-codegen-0.2.5.tgz#1929fed5a37f36954acd19e283443369fd43167e"
+swagger-axios-codegen@^0.2.12:
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/swagger-axios-codegen/-/swagger-axios-codegen-0.2.12.tgz#dcc888941593ecdfbcd5ebd1c5f57538e0a01170"
   dependencies:
     axios "^0.18.0"
     camelcase "^5.0.0"
