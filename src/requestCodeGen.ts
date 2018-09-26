@@ -114,10 +114,19 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         pathReplace = parsedParameters.requestPathReplace
       }
 
-      let responseType =
-        v.responses['200'] && v.responses['200'].schema && v.responses['200'].schema.$ref
-          ? refClassName(v.responses['200'].schema.$ref)
-          : 'any'
+      let responseType: string;
+
+      if (!v.responses['200'] || !v.responses['200'].schema) {
+        responseType = 'any';
+      } else if (v.responses['200'].schema.$ref) {
+        responseType = refClassName(v.responses['200'].schema.$ref)
+      } else {
+        responseType = v.responses[200].schema.type;
+        if (responseType == 'object' || responseType == 'array') {
+          // Direct defining is not supported.
+          responseType = 'any';
+        }
+      }
 
       // 模版
       RequestMethods[className] += `
