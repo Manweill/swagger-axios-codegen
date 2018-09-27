@@ -114,18 +114,31 @@ export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string 
         pathReplace = parsedParameters.requestPathReplace
       }
 
+      // 确定响应的类型
+      // It does not allow the schema defined directly, but only the primitive type is allowed. 
       let responseType: string;
-
       if (!v.responses['200'] || !v.responses['200'].schema) {
         responseType = 'any';
       } else if (v.responses['200'].schema.$ref) {
         responseType = refClassName(v.responses['200'].schema.$ref)
       } else {
-        responseType = v.responses[200].schema.type;
-        if (responseType == 'object' || responseType == 'array') {
-          // Direct defining is not supported.
-          responseType = 'any';
+        let checkType = v.responses[200].schema.type;
+        if (!checkType) {
+          // implicit types
+          if (v.responses[200].schema.items) {
+            responseType = 'array';
+          } else { // if (v.responses[200].schema.properties) // actual check
+            responseType = 'object';
+          }
+        } else {
+          responseType = checkType; // string? -> string
         }
+        if (responseType == 'object') {
+          responseType = 'any';
+        } else if (responseType == 'array') {
+          responseType = 'any[]';
+        }
+        // else ... JSON primitive types (string, boolean, number)
       }
 
       // 模版
