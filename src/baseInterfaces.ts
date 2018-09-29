@@ -38,7 +38,9 @@ export interface IRequestMethod {
     [key: string]: {
       description: string
       schema: {
-        '$ref': string
+        '$ref': string,
+        'type'?: string,
+        'items'?: IParameterItems,
       }
     }
   }
