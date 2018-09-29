@@ -1,3 +1,7 @@
+## 0.2.14
+
+- Adds support of primitive response types ([bbc907](https://github.com/Manweill/swagger-axios-codegen/commit/bbc9072a634a996beab19e1a8fd58ea52b8d09d7) by [kt81](https://github.com/Manweill/swagger-axios-codegen/commits?author=kt81))
+
 ## 0.2.13
 
 - Upgrade [example](./example)，adding an [demo](./example/swagger.operationId.json) of using 'operationId' as the method name
