@@ -1,11 +1,7 @@
 import camelcase from 'camelcase';
 import pascalcase from 'pascalcase';
-import { toBaseType, refClassName, getMethodName } from './utils'
-import { IParameter, IPaths, ISwaggerOptions } from './baseInterfaces'
-
-// declare class FormData {
-//   append: Function;
-// }
+import { toBaseType, refClassName, getMethodName } from '../utils'
+import { IParameter, IPaths, ISwaggerOptions } from '../baseInterfaces'
 
 export interface IRequestMethods {
   [key: string]: string;
@@ -68,7 +64,7 @@ function getRequestParameters(params: IParameter[]) {
   return { requestParameters, requestFormData, requestPathReplace, queryParameters, bodyParameters }
 }
 
-export function requestCodeGen(paths: IPaths, options: ISwaggerOptions): string {
+export function requestCodegen(paths: IPaths, options: ISwaggerOptions): string {
   const RequestMethods: IRequestMethods = {}
   const RequestMethodInputs: IRequestMethodInput = {}
 

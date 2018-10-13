@@ -63,3 +63,7 @@ jspm_packages/
 /output/**
 /dist/**
 /api/**
+__src
+/example/swagger/services
+/example/src/**
+orion.json

@@ -1,12 +1,12 @@
 export interface ISwaggerOptions {
-  className?: string
+  classNameSuffix?: string
   methodNameMode?: 'operationId' | 'path'
-  type?: 'ts' | 'js'
   outputDir?: string
   fileName?: string
   remoteUrl?: string
   source?: any
-  useStaticMethod: boolean
+  useStaticMethod: boolean,
+  multipleFileMode?: boolean
 }
 
 export interface ISwaggerSource {
@@ -81,8 +81,10 @@ export interface IDefinitions {
 
 export interface IDefinition {
   required: string[]
-  type: string
+  type: 'object' | 'array'
   properties: IDefinitionProperties
+  enum: any[],
+  items: IDefinitionProperty
 }
 
 export interface IDefinitionProperties {

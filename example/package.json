@@ -10,6 +10,7 @@
     "typescript": "2.9.1"
   },
   "scripts": {
-    "build:api": "node ./swag/codegen.js && tsc -p ./swag"
+    "build:api": "node ./swagger/codegen.js",
+    "build:api2": "node ./swagger/codegen.js && tsc -p ./swagger"
   }
 }
