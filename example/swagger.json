@@ -450,6 +450,19 @@
         }
       }
     },
+    "Abc": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "ArrayOfAbc": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Abc"
+      }
+    },
     "Error": {
       "type": "object",
       "properties": {
