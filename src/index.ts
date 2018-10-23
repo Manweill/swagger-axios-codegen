@@ -4,7 +4,8 @@ import prettier from 'prettier';
 import axios from 'axios';
 import { ISwaggerSource, ISwaggerOptions } from './baseInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
-import { enumTemplate, classTemplate } from './template';
+import { enumTemplate, classTemplate, serviceHeader } from './template';
+import { requestCodegen } from './requestCodegen';
 
 
 const defaultOptions: ISwaggerOptions = {
@@ -38,7 +39,7 @@ function format(text: string) {
 }
 
 export async function codegen(params: ISwaggerOptions) {
-  console.time('codegen')
+  console.time('finish')
   let swaggerSource
 
   if (params.remoteUrl) {
@@ -53,7 +54,7 @@ export async function codegen(params: ISwaggerOptions) {
   } else if (params.source) {
     swaggerSource = <ISwaggerSource>params.source
   } else {
-    throw new Error('必须要给一个地址')
+    throw new Error('remoteUrl or source must have a value')
   }
 
 
@@ -82,14 +83,23 @@ export async function codegen(params: ISwaggerOptions) {
     })
 
   } else {
-    let apiSource = `
-  import axios, { AxiosPromise, AxiosRequestConfig } from 'axios'
-  export interface IRequestOptions{
-    headers?:any
-  }
-`
-    // apiSource += requestCodeGen(swaggerSource.paths, options)
-    apiSource += definitionsCodeGen(swaggerSource.definitions)
+    let apiSource = serviceHeader
+    apiSource += requestCodegen(swaggerSource.paths, options)
+    const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
+    Object.values(enums).forEach(item => {
+      const text = item.value
+        ? enumTemplate(item.value.name, item.value.enumProps)
+        : item.content || ''
+
+      apiSource += text
+    })
+
+    Object.values(models).forEach(item => {
+      const text = classTemplate(item.value.name, item.value.props, [])
+
+      apiSource += text
+    })
+
     apiSource = prettier.format(apiSource, {
       "printWidth": 120,
       "tabWidth": 2,
@@ -110,5 +120,5 @@ export async function codegen(params: ISwaggerOptions) {
   if (fs.existsSync('./tempswagger.json')) {
     fs.unlinkSync('./tempswagger.json');
   }
-  console.timeEnd('codegen')
+  console.timeEnd('finish')
 }

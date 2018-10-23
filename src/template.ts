@@ -13,7 +13,9 @@ export function classTemplate(name: string, props: IPropDef[], imports: string[]
     }).join('')}
 
   export class ${name} {
+
     ${props.map(p => classPropsTemplate(p.name, p.type, p.desc)).join('')}
+
     constructor(data?:any){
       if(data){
         ${props.map(p => classConstructorTemplate(p.name)).join('')}
@@ -36,10 +38,40 @@ export function classConstructorTemplate(name: string) {
 }
 
 /** 枚举 */
-export function enumTemplate(name: string, result: string) {
+export function enumTemplate(name: string, enumString: string) {
   return `
   export enum ${name}{
-    ${result}
+    ${enumString}
   }
   `
 }
+
+/** request */
+export function requestTemplate(name: string, result: string) {
+  return `
+  export class ${name} {
+    
+  }
+  `
+}
+
+export const serviceHeader = `
+  import axiosStatic, { AxiosPromise, AxiosRequestConfig, AxiosInstance } from 'axios';
+    export interface IRequestOptions {
+      headers?: any;
+    }
+    
+    // Add options interface
+    export interface ServiceOptions {
+      axios?: AxiosInstance,
+    }
+    
+    // Add default options
+    export const serviceOptions: ServiceOptions = {
+    };
+    
+    // Instance selector
+    function axios(configs: AxiosRequestConfig): AxiosPromise {
+      return serviceOptions.axios? serviceOptions.axios.request(configs) : axiosStatic(configs);
+    }
+`

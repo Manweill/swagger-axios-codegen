@@ -20,7 +20,7 @@ export function propTrueType(v: IDefinitionProperty): {
     result.isArray = true
     if (v.items.$ref) {
       // 是个引用类型
-      result. = refClassName(v.items.$ref)
+      result.ref = refClassName(v.items.$ref)
       result.propType = result.ref + '[]'
     } else {
       if (v.items.type === "array") {

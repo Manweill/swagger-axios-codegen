@@ -4,6 +4,5 @@ codegen({
   methodNameMode: 'path',
   source: require('../swagger.json'),
   useStaticMethod: true,
-  outputDir: './swagger/services',
-  multipleFileMode: true
+  outputDir: './swagger/services'
 })
