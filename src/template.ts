@@ -1,3 +1,4 @@
+import camelcase = require("camelcase");
 
 export interface IPropDef {
   name: string
@@ -47,7 +48,61 @@ export function enumTemplate(name: string, enumString: string) {
 }
 
 /** request */
-export function requestTemplate(name: string, result: string) {
+export function requestTemplate(name: string, result: string, options: any) {
+  const summary = '',
+    parameters = '',
+    responseType = '',
+    handleNullParameters = '',
+    method = '',
+    contentType = 'multipart/form-data',
+    path = '',
+    pathReplace = '',
+    parsedParameters = {
+      queryParameters: [],
+      bodyParameters: []
+    },
+    formData = ''
+
+  return `
+  /**
+   * ${summary || ''}
+   */
+  ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
+    return new Promise((resolve, reject) => {
+      ${handleNullParameters}
+      const configs:AxiosRequestConfig = {...options, method: "${method}" };
+      configs.headers = {
+        ...options.headers,
+        'Content-Type':'${contentType}'
+      }
+      let url = '${path}'
+      ${pathReplace}
+      configs.url = url;
+      ${
+    parsedParameters && parsedParameters.queryParameters.length > 0
+      ? 'configs.params = {' + parsedParameters.queryParameters.join(',') + '}'
+      : ''
+    };
+        let data = ${
+    parsedParameters && parsedParameters.bodyParameters.length > 0
+      ? '{' + parsedParameters.bodyParameters.join(',') + '}'
+      : 'null'
+    };
+        ${contentType === 'multipart/form-data' ? formData : ''}
+        configs.data = data;
+      
+        axios(configs).then(res => {
+          resolve(res.data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  }
+  `
+}
+
+/** request */
+export function serviceTemplate(name: string, result: string) {
   return `
   export class ${name} {
     
