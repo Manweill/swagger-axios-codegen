@@ -110,23 +110,78 @@ export function serviceTemplate(name: string, result: string) {
   `
 }
 
-export const serviceHeader = `
-  import axiosStatic, { AxiosPromise, AxiosRequestConfig, AxiosInstance } from 'axios';
-    export interface IRequestOptions {
-      headers?: any;
-    }
-    
-    // Add options interface
-    export interface ServiceOptions {
-      axios?: AxiosInstance,
-    }
-    
-    // Add default options
-    export const serviceOptions: ServiceOptions = {
-    };
-    
-    // Instance selector
-    function axios(configs: AxiosRequestConfig): AxiosPromise {
-      return serviceOptions.axios? serviceOptions.axios.request(configs) : axiosStatic(configs);
-    }
+export const serviceHeader = `/** Generate by swagger-axios-codegen */
+
+import axiosStatic, { AxiosPromise, AxiosRequestConfig, AxiosInstance } from 'axios';
+export interface IRequestOptions {
+  headers?: any;
+}
+
+interface IRequestConfig {
+  method?: any;
+  headers?: any;
+  url?: any;
+  data?: any;
+  params?: any;
+}
+
+// Add options interface
+export interface ServiceOptions {
+  axios?: AxiosInstance,
+}
+
+// Add default options
+export const serviceOptions: ServiceOptions = {
+};
+
+// Instance selector
+function axios(configs: IRequestConfig): AxiosPromise {
+  return serviceOptions.axios? serviceOptions.axios.request(configs) : axiosStatic(configs);
+}
+`
+
+export const customerServiceHeader = `/** Generate by swagger-axios-codegen */
+
+export interface IRequestOptions {
+  headers?: any;
+}
+
+interface IRequestPromise<T=any> extends Promise<IRequestResponse<T>> {}
+
+interface IRequestResponse<T=any> {
+  data: T;
+  status: number;
+  statusText: string;
+  headers: any;
+  config: any;
+  request?: any;
+}
+
+interface IRequestInstance {
+  (config: any): IRequestPromise;
+  (url: string, config?: any): IRequestPromise;
+  request<T = any>(config: any): IRequestPromise<T>;
+}
+
+interface IRequestConfig {
+  method?: any;
+  headers?: any;
+  url?: any;
+  data?: any;
+  params?: any;
+}
+
+// Add options interface
+export interface ServiceOptions {
+  axios?: IRequestInstance,
+}
+
+// Add default options
+export const serviceOptions: ServiceOptions = {
+};
+
+// Instance selector
+function axios(configs: IRequestConfig): IRequestPromise {
+  return serviceOptions.axios && serviceOptions.axios.request(configs);
+}
 `

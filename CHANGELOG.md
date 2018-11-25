@@ -25,8 +25,10 @@
 - Fixed Skip the current method when the tags are empty
 
 ## 0.2.6
- - Adjust the generated class name
 
- ## 0.2.5
- - Use ‘Promise’ instead of ‘AxiosPromise’. If the interface is called successfully, the response.data is returned by default. 
- - Modify REANDME.md
+- Adjust the generated class name
+
+## 0.2.5
+
+- Use ‘Promise’ instead of ‘AxiosPromise’. If the interface is called successfully, the response.data is returned by default. 
+- Modify REANDME.md

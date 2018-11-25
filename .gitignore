@@ -67,3 +67,4 @@ __src
 /example/swagger/services
 /example/src/**
 orion.json
+.DS_Store

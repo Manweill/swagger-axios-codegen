@@ -1,6 +1,6 @@
 {
   "name": "swagger-axios-codegen",
-  "version": "0.2.14",
+  "version": "0.3.0",
   "main": "./dist/index",
   "typings": "./dist/",
   "author": "Manwei Leung <mic.liangwenwei@foxmail.com>",
@@ -20,7 +20,7 @@
     "axios": "^0.18.0",
     "camelcase": "^5.0.0",
     "pascalcase": "^0.1.1",
-    "prettier": "^1.12.1"
+    "prettier": "^1.15.2"
   },
   "devDependencies": {
     "@types/camelcase": "^4.1.0",

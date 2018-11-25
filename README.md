@@ -18,21 +18,23 @@ it will always resolve `axios.response.data` or reject `axios.error` with Promis
 ```js
 
 export interface ISwaggerOptions {
-  className: string
-  methodNameMode: 'operationId' | 'path'
-  type: 'ts' | 'js'  // only implement ts
-  outputDir: string
-  fileName: string
-  useStaticMethod: boolean
+  classNameSuffix?: string
+  methodNameMode?: 'operationId' | 'path'
+  outputDir?: string
+  fileName?: string
+  remoteUrl?: string
+  source?: any
+  useStaticMethod?: boolean 
+  useCustomerRequestInstance?: boolean
 }
 
-
-const defaultOptions = {
-  className: 'Service',
+const defaultOptions: ISwaggerOptions = {
+  classNameSuffix: 'Service',
   methodNameMode: 'operationId',
-  type: 'ts',
   outputDir: './service',
-  fileName: 'index.ts'
+  fileName: 'index.ts',
+  useStaticMethod: true,
+  useCustomerRequestInstance: true
 }
 ```
 

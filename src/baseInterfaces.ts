@@ -5,8 +5,8 @@ export interface ISwaggerOptions {
   fileName?: string
   remoteUrl?: string
   source?: any
-  useStaticMethod: boolean,
-  multipleFileMode?: boolean
+  useStaticMethod?: boolean | undefined
+  useCustomerRequestInstance?: boolean | undefined
 }
 
 export interface ISwaggerSource {

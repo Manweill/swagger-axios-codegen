@@ -4,7 +4,7 @@ import prettier from 'prettier';
 import axios from 'axios';
 import { ISwaggerSource, ISwaggerOptions } from './baseInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
-import { enumTemplate, classTemplate, serviceHeader } from './template';
+import { enumTemplate, classTemplate, serviceHeader, customerServiceHeader } from './template';
 import { requestCodegen } from './requestCodegen';
 
 
@@ -13,8 +13,8 @@ const defaultOptions: ISwaggerOptions = {
   methodNameMode: 'operationId',
   outputDir: './service',
   fileName: 'index.ts',
-  useStaticMethod: false,
-  multipleFileMode: false
+  useStaticMethod: true,
+  useCustomerRequestInstance: false
 }
 
 
@@ -22,8 +22,9 @@ function writeFile(fileDir: string, name: string, data: any) {
   if (!fs.existsSync(fileDir)) {
     fs.mkdirSync(fileDir);
   }
-  const filepath = path.join(fileDir, name + '.ts')
-  fs.writeFileSync(filepath, data)
+  const filename = path.join(fileDir, name)
+  console.log('filename', filename);
+  fs.writeFileSync(filename, data)
 }
 
 function format(text: string) {
@@ -45,8 +46,8 @@ export async function codegen(params: ISwaggerOptions) {
   if (params.remoteUrl) {
     const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
     if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
-      fs.writeFileSync('./tempswagger.json', swaggerJson);
-      swaggerSource = require(path.resolve('./tempswagger.json'));
+      fs.writeFileSync('./cache_swagger.json', swaggerJson);
+      swaggerSource = require(path.resolve('./cache_swagger.json'));
     } else {
       swaggerSource = <ISwaggerSource>swaggerJson
     }
@@ -57,14 +58,13 @@ export async function codegen(params: ISwaggerOptions) {
     throw new Error('remoteUrl or source must have a value')
   }
 
-
-
   const options: ISwaggerOptions = {
     ...defaultOptions,
     ...params
   }
 
-  if (options.multipleFileMode) {
+  // if (options.multipleFileMode) {
+  if (false) {
     const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
     // enums
     Object.values(enums).forEach(item => {
@@ -73,7 +73,7 @@ export async function codegen(params: ISwaggerOptions) {
         : item.content || ''
 
       const fileDir = path.join(options.outputDir || '', 'definitions')
-      writeFile(fileDir, item.name, format(text))
+      writeFile(fileDir, item.name + '.ts', format(text))
     })
 
     Object.values(models).forEach(item => {
@@ -83,7 +83,7 @@ export async function codegen(params: ISwaggerOptions) {
     })
 
   } else {
-    let apiSource = serviceHeader
+    let apiSource = options.useCustomerRequestInstance ? customerServiceHeader : serviceHeader
     apiSource += requestCodegen(swaggerSource.paths, options)
     const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
     Object.values(enums).forEach(item => {
@@ -96,29 +96,13 @@ export async function codegen(params: ISwaggerOptions) {
 
     Object.values(models).forEach(item => {
       const text = classTemplate(item.value.name, item.value.props, [])
-
       apiSource += text
     })
 
-    apiSource = prettier.format(apiSource, {
-      "printWidth": 120,
-      "tabWidth": 2,
-      "parser": "typescript",
-      "trailingComma": "none",
-      "jsxBracketSameLine": false,
-      "semi": true,
-      "singleQuote": true
-    })
-    console.log('filepath', path.join(options.outputDir || '', options.fileName || ''));
-
-    if (!fs.existsSync(options.outputDir || '')) {
-      fs.mkdirSync(options.outputDir || '');
-    }
-    fs.writeFileSync(path.join(options.outputDir || '', options.fileName || ''), apiSource)
-
+    writeFile(options.outputDir || '', options.fileName || '', format(apiSource))
   }
-  if (fs.existsSync('./tempswagger.json')) {
-    fs.unlinkSync('./tempswagger.json');
+  if (fs.existsSync('./cache_swagger.json')) {
+    fs.unlinkSync('./cache_swagger.json');
   }
   console.timeEnd('finish')
 }
