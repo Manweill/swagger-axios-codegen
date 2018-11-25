@@ -4,12 +4,12 @@ import prettier from 'prettier';
 import axios from 'axios';
 import { ISwaggerSource, ISwaggerOptions } from './baseInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
-import { enumTemplate, classTemplate, serviceHeader, customerServiceHeader } from './template';
+import { enumTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate } from './template';
 import { requestCodegen } from './requestCodegen';
 
 
 const defaultOptions: ISwaggerOptions = {
-  classNameSuffix: 'Service',
+  serviceNameSuffix: 'Service',
   methodNameMode: 'operationId',
   outputDir: './service',
   fileName: 'index.ts',
@@ -69,7 +69,7 @@ export async function codegen(params: ISwaggerOptions) {
     // enums
     Object.values(enums).forEach(item => {
       const text = item.value
-        ? enumTemplate(item.value.name, item.value.enumProps)
+        ? enumTemplate(item.value.name, item.value.enumProps, 'Enum')
         : item.content || ''
 
       const fileDir = path.join(options.outputDir || '', 'definitions')
@@ -83,12 +83,28 @@ export async function codegen(params: ISwaggerOptions) {
     })
 
   } else {
-    let apiSource = options.useCustomerRequestInstance ? customerServiceHeader : serviceHeader
-    apiSource += requestCodegen(swaggerSource.paths, options)
+    let apiSource = options.useCustomerRequestInstance
+      ? customerServiceHeader
+      : serviceHeader
+    const requestClasses = requestCodegen(swaggerSource.paths)
+
+    Object.entries(requestClasses).forEach(([className, requests]) => {
+      let text = ''
+      requests.forEach(req => {
+        const reqName = options.methodNameMode == "operationId"
+          ? req.operationId
+          : req.name
+        text += requestTemplate(reqName, req.requestSchema, options)
+      })
+      text = serviceTemplate(className + options.serviceNameSuffix, text)
+      apiSource += text
+    })
+
     const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
+
     Object.values(enums).forEach(item => {
       const text = item.value
-        ? enumTemplate(item.value.name, item.value.enumProps)
+        ? enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
         : item.content || ''
 
       apiSource += text

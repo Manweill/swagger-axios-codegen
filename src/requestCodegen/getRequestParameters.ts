@@ -37,8 +37,7 @@ export function getRequestParameters(params: IParameter[]) {
     const paramName = camelcase(p.name)
     requestParameters += `
     /** ${p.description || ''} */
-    ${paramName}${p.required ? '' : '?'}:${propType},
-    `
+    ${paramName}${p.required ? '' : '?'}:${propType},`
 
     // 如果参数是从formData 提交
     if (p.in === 'formData') {

@@ -36,6 +36,7 @@ export function createDefinitionClass(
       propType = isArray ? enumName + '[]' : enumName
       ref = enumName
     }
+    // 转化引用值到引用列表
     if (!!ref) {
       model.imports.push(ref)
     }

@@ -39,7 +39,7 @@ export function classConstructorTemplate(name: string) {
 }
 
 /** 枚举 */
-export function enumTemplate(name: string, enumString: string) {
+export function enumTemplate(name: string, enumString: string, prefix: string) {
   return `
   export enum ${name}{
     ${enumString}
@@ -47,65 +47,72 @@ export function enumTemplate(name: string, enumString: string) {
   `
 }
 
+interface IRequestSchema {
+  summary: string
+  parameters: string
+  responseType: string
+  method: string
+  contentType: string
+  path: string
+  pathReplace: string
+  parsedParameters: any
+  formData: string
+}
+
 /** request */
-export function requestTemplate(name: string, result: string, options: any) {
-  const summary = '',
+export function requestTemplate(name: string, requestSchema: IRequestSchema, options: any) {
+  let {
+    summary = '',
     parameters = '',
     responseType = '',
-    handleNullParameters = '',
     method = '',
     contentType = 'multipart/form-data',
     path = '',
     pathReplace = '',
-    parsedParameters = {
-      queryParameters: [],
-      bodyParameters: []
-    },
+    parsedParameters = <any>{},
     formData = ''
+  } = requestSchema
+
+  const { queryParameters = [], bodyParameters = [] } = parsedParameters
 
   return `
-  /**
-   * ${summary || ''}
-   */
-  ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
-    return new Promise((resolve, reject) => {
-      ${handleNullParameters}
-      const configs:AxiosRequestConfig = {...options, method: "${method}" };
-      configs.headers = {
-        ...options.headers,
-        'Content-Type':'${contentType}'
-      }
-      let url = '${path}'
-      ${pathReplace}
-      configs.url = url;
-      ${
-    parsedParameters && parsedParameters.queryParameters.length > 0
-      ? 'configs.params = {' + parsedParameters.queryParameters.join(',') + '}'
+/**
+ * ${summary || ''}
+ */
+${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
+  return new Promise((resolve, reject) => {
+    const configs:IRequestConfig = {...options, method: "${method}" };
+    configs.headers = {
+      ...options.headers,
+      'Content-Type':'${contentType}'
+    }
+    let url = '${path}'
+    ${pathReplace}
+    configs.url = url
+    ${parsedParameters && queryParameters.length > 0
+      ? 'configs.params = {' + queryParameters.join(',') + '}'
       : ''
-    };
-        let data = ${
-    parsedParameters && parsedParameters.bodyParameters.length > 0
-      ? '{' + parsedParameters.bodyParameters.join(',') + '}'
+    }
+    let data = ${parsedParameters && bodyParameters.length > 0
+      ? '{' + bodyParameters.join(',') + '}'
       : 'null'
-    };
-        ${contentType === 'multipart/form-data' ? formData : ''}
-        configs.data = data;
-      
-        axios(configs).then(res => {
-          resolve(res.data);
-        }).catch(err => {
-          reject(err);
-        });
+    }
+    ${contentType === 'multipart/form-data' ? formData : ''}
+    configs.data = data;
+    axios(configs).then(res => {
+      resolve(res.data);
+    }).catch(err => {
+      reject(err);
     });
-  }
-  `
+  });
+}`;
 }
 
 /** request */
-export function serviceTemplate(name: string, result: string) {
+export function serviceTemplate(name: string, body: string) {
   return `
   export class ${name} {
-    
+    ${body}
   }
   `
 }

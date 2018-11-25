@@ -1,5 +1,5 @@
 export interface ISwaggerOptions {
-  classNameSuffix?: string
+  serviceNameSuffix?: string
   methodNameMode?: 'operationId' | 'path'
   outputDir?: string
   fileName?: string
