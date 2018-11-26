@@ -10,6 +10,7 @@ import { requestCodegen } from './requestCodegen';
 
 const defaultOptions: ISwaggerOptions = {
   serviceNameSuffix: 'Service',
+  enumNamePrefix: 'Enum',
   methodNameMode: 'operationId',
   outputDir: './service',
   fileName: 'index.ts',

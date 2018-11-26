@@ -39,7 +39,7 @@ export function classConstructorTemplate(name: string) {
 }
 
 /** 枚举 */
-export function enumTemplate(name: string, enumString: string, prefix: string) {
+export function enumTemplate(name: string, enumString: string, prefix?: string) {
   return `
   export enum ${name}{
     ${enumString}
