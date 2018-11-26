@@ -1,385 +1,480 @@
 {
-  "swagger" : "2.0",
-  "info" : {
-    "description" : "Move your app forward with the Uber API",
-    "version" : "1.0.0",
-    "title" : "Uber API"
+  "swagger": "2.0",
+  "info": {
+    "description": "Move your app forward with the Uber API",
+    "version": "1.0.0",
+    "title": "Uber API"
   },
-  "host" : "api.uber.com",
-  "basePath" : "/v1",
-  "schemes" : [ "https" ],
-  "produces" : [ "application/json" ],
-  "paths" : {
-    "/products" : {
-      "get" : {
-        "tags" : [ "Products" ],
-        "summary" : "Product Types",
-        "description" : "The Products endpoint returns information about the *Uber* products\noffered at a given location. The response includes the display name\nand other details about each product, and lists the products in the\nproper display order.\n",
-        "parameters" : [ {
-          "name" : "latitude",
-          "in" : "query",
-          "description" : "Latitude component of location.",
-          "required" : true,
-          "type" : "number",
-          "format" : "double"
-        }, {
-          "name" : "longitude",
-          "in" : "query",
-          "description" : "Longitude component of location.",
-          "required" : true,
-          "type" : "number",
-          "format" : "double"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "An array of products",
-            "schema" : {
-              "type" : "array",
-              "items" : {
-                "$ref" : "#/definitions/Product"
+  "host": "api.uber.com",
+  "basePath": "/v1",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Product Types",
+        "description": "The Products endpoint returns information about the *Uber* products\noffered at a given location. The response includes the display name\nand other details about each product, and lists the products in the\nproper display order.\n",
+        "parameters": [
+          {
+            "name": "latitude",
+            "in": "query",
+            "description": "Latitude component of location.",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "description": "Longitude component of location.",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of products",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Product"
               }
             }
           },
-          "default" : {
-            "description" : "Unexpected error",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
       }
     },
-    "/estimates/price" : {
-      "get" : {
-        "tags" : [ "Estimates" ],
-        "summary" : "Price Estimates",
-        "description" : "The Price Estimates endpoint returns an estimated price range\nfor each product offered at a given location. The price estimate is\nprovided as a formatted string with the full price range and the localized\ncurrency symbol.<br><br>The response also includes low and high estimates,\nand the [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code for\nsituations requiring currency conversion. When surge is active for a particular\nproduct, its surge_multiplier will be greater than 1, but the price estimate\nalready factors in this multiplier.\n",
-        "parameters" : [ {
-          "name" : "start_latitude",
-          "in" : "query",
-          "description" : "Latitude component of start location.",
-          "required" : true,
-          "type" : "number",
-          "format" : "double"
-        }, {
-          "name" : "start_longitude",
-          "in" : "query",
-          "description" : "Longitude component of start location.",
-          "required" : true,
-          "type" : "number",
-          "format" : "double"
-        }, {
-          "name" : "end_latitude",
-          "in" : "query",
-          "description" : "Latitude component of end location.",
-          "required" : true,
-          "type" : "number",
-          "format" : "double"
-        }, {
-          "name" : "end_longitude",
-          "in" : "query",
-          "description" : "Longitude component of end location.",
-          "required" : true,
-          "type" : "number",
-          "format" : "double"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "An array of price estimates by product",
-            "schema" : {
-              "type" : "array",
-              "items" : {
-                "$ref" : "#/definitions/PriceEstimate"
+    "/estimates/price": {
+      "get": {
+        "tags": [
+          "Estimates"
+        ],
+        "summary": "Price Estimates",
+        "description": "The Price Estimates endpoint returns an estimated price range\nfor each product offered at a given location. The price estimate is\nprovided as a formatted string with the full price range and the localized\ncurrency symbol.<br><br>The response also includes low and high estimates,\nand the [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code for\nsituations requiring currency conversion. When surge is active for a particular\nproduct, its surge_multiplier will be greater than 1, but the price estimate\nalready factors in this multiplier.\n",
+        "parameters": [
+          {
+            "name": "start_latitude",
+            "in": "query",
+            "description": "Latitude component of start location.",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "start_longitude",
+            "in": "query",
+            "description": "Longitude component of start location.",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "end_latitude",
+            "in": "query",
+            "description": "Latitude component of end location.",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "end_longitude",
+            "in": "query",
+            "description": "Longitude component of end location.",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of price estimates by product",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PriceEstimate"
               }
             }
           },
-          "default" : {
-            "description" : "Unexpected error",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
       }
     },
-    "/estimates/time" : {
-      "get" : {
-        "tags" : [ "Estimates" ],
-        "summary" : "Time Estimates",
-        "description" : "The Time Estimates endpoint returns ETAs for all products offered at a given location, with the responses expressed as integers in seconds. We recommend that this endpoint be called every minute to provide the most accurate, up-to-date ETAs.",
-        "parameters" : [ {
-          "name" : "start_latitude",
-          "in" : "query",
-          "description" : "Latitude component of start location.",
-          "required" : true,
-          "type" : "number",
-          "format" : "double"
-        }, {
-          "name" : "start_longitude",
-          "in" : "query",
-          "description" : "Longitude component of start location.",
-          "required" : true,
-          "type" : "number",
-          "format" : "double"
-        }, {
-          "name" : "customer_uuid",
-          "in" : "query",
-          "description" : "Unique customer identifier to be used for experience customization.",
-          "required" : false,
-          "type" : "string",
-          "format" : "uuid"
-        }, {
-          "name" : "product_id",
-          "in" : "query",
-          "description" : "Unique identifier representing a specific product for a given latitude & longitude.",
-          "required" : false,
-          "type" : "string"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "An array of products",
-            "schema" : {
-              "type" : "array",
-              "items" : {
-                "$ref" : "#/definitions/Product"
+    "/estimates/time": {
+      "get": {
+        "tags": [
+          "Estimates"
+        ],
+        "summary": "Time Estimates",
+        "description": "The Time Estimates endpoint returns ETAs for all products offered at a given location, with the responses expressed as integers in seconds. We recommend that this endpoint be called every minute to provide the most accurate, up-to-date ETAs.",
+        "parameters": [
+          {
+            "name": "start_latitude",
+            "in": "query",
+            "description": "Latitude component of start location.",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "start_longitude",
+            "in": "query",
+            "description": "Longitude component of start location.",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "customer_uuid",
+            "in": "query",
+            "description": "Unique customer identifier to be used for experience customization.",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "product_id",
+            "in": "query",
+            "description": "Unique identifier representing a specific product for a given latitude & longitude.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of products",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Product"
               }
             }
           },
-          "default" : {
-            "description" : "Unexpected error",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
       }
     },
-    "/me" : {
-      "get" : {
-        "tags" : [ "User" ],
-        "summary" : "User Profile",
-        "description" : "The User Profile endpoint returns information about the Uber user that has authorized with the application.",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "Profile information for a user",
-            "schema" : {
-              "$ref" : "#/definitions/Profile"
+    "/me": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Profile",
+        "description": "The User Profile endpoint returns information about the Uber user that has authorized with the application.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Profile information for a user",
+            "schema": {
+              "$ref": "#/definitions/Profile"
             }
           },
-          "default" : {
-            "description" : "Unexpected error",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
       }
     },
-    "/history" : {
-      "get" : {
-        "tags" : [ "User" ],
-        "summary" : "User Activity",
-        "description" : "The User Activity endpoint returns data about a user's lifetime activity with Uber. The response will include pickup locations and times, dropoff locations and times, the distance of past requests, and information about which products were requested.<br><br>The history array in the response will have a maximum length based on the limit parameter. The response value count may exceed limit, therefore subsequent API requests may be necessary.",
-        "parameters" : [ {
-          "name" : "offset",
-          "in" : "query",
-          "description" : "Offset the list of returned results by this amount. Default is zero.",
-          "required" : false,
-          "type" : "integer",
-          "format" : "int32"
-        }, {
-          "name" : "limit",
-          "in" : "query",
-          "description" : "Number of items to retrieve. Default is 5, maximum is 100.",
-          "required" : false,
-          "type" : "integer",
-          "format" : "int32"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "History information for the given user",
-            "schema" : {
-              "$ref" : "#/definitions/Activities"
+    "/history": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Activity",
+        "description": "The User Activity endpoint returns data about a user's lifetime activity with Uber. The response will include pickup locations and times, dropoff locations and times, the distance of past requests, and information about which products were requested.<br><br>The history array in the response will have a maximum length based on the limit parameter. The response value count may exceed limit, therefore subsequent API requests may be necessary.",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset the list of returned results by this amount. Default is zero.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items to retrieve. Default is 5, maximum is 100.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "History information for the given user",
+            "schema": {
+              "$ref": "#/definitions/Activities"
             }
           },
-          "default" : {
-            "description" : "Unexpected error",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
       }
     }
   },
-  "definitions" : {
-    "Product" : {
-      "type" : "object",
-      "properties" : {
-        "product_id" : {
-          "type" : "string",
-          "description" : "Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles."
+  "definitions": {
+    "Product": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "description": "Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles."
         },
-        "description" : {
-          "type" : "string",
-          "description" : "Description of product."
+        "description": {
+          "type": "string",
+          "description": "Description of product."
         },
-        "display_name" : {
-          "type" : "string",
-          "description" : "Display name of product."
+        "display_name": {
+          "type": "string",
+          "description": "Display name of product."
         },
-        "capacity" : {
-          "type" : "string",
-          "description" : "Capacity of product. For example, 4 people."
+        "capacity": {
+          "type": "string",
+          "description": "Capacity of product. For example, 4 people."
         },
-        "image" : {
-          "type" : "string",
-          "description" : "Image URL representing the product."
+        "image": {
+          "type": "string",
+          "description": "Image URL representing the product."
         }
       },
-      "example" : {
-        "image" : "image",
-        "product_id" : "product_id",
-        "description" : "description",
-        "display_name" : "display_name",
-        "capacity" : "capacity"
+      "example": {
+        "image": "image",
+        "product_id": "product_id",
+        "description": "description",
+        "display_name": "display_name",
+        "capacity": "capacity"
       }
     },
-    "PriceEstimate" : {
-      "type" : "object",
-      "properties" : {
-        "product_id" : {
-          "type" : "string",
-          "description" : "Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles"
+    "PriceEstimate": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "description": "Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles"
         },
-        "currency_code" : {
-          "type" : "string",
-          "description" : "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
+        "currency_code": {
+          "type": "string",
+          "description": "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
         },
-        "display_name" : {
-          "type" : "string",
-          "description" : "Display name of product."
+        "display_name": {
+          "type": "string",
+          "description": "Display name of product."
         },
-        "estimate" : {
-          "type" : "string",
-          "description" : "Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or \"Metered\" for TAXI."
+        "estimate": {
+          "type": "string",
+          "description": "Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or \"Metered\" for TAXI."
         },
-        "low_estimate" : {
-          "type" : "number",
-          "description" : "Lower bound of the estimated price."
+        "low_estimate": {
+          "type": "number",
+          "description": "Lower bound of the estimated price."
         },
-        "high_estimate" : {
-          "type" : "number",
-          "description" : "Upper bound of the estimated price."
+        "high_estimate": {
+          "type": "number",
+          "description": "Upper bound of the estimated price."
         },
-        "surge_multiplier" : {
-          "type" : "number",
-          "description" : "Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier."
+        "surge_multiplier": {
+          "type": "number",
+          "description": "Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier."
         }
       },
-      "example" : {
-        "high_estimate" : 6.02745618307040320615897144307382404804229736328125,
-        "product_id" : "product_id",
-        "low_estimate" : 0.80082819046101150206595775671303272247314453125,
-        "surge_multiplier" : 1.46581298050294517310021547018550336360931396484375,
-        "estimate" : "estimate",
-        "display_name" : "display_name",
-        "currency_code" : "currency_code"
+      "example": {
+        "high_estimate": 6.02745618307040320615897144307382404804229736328125,
+        "product_id": "product_id",
+        "low_estimate": 0.80082819046101150206595775671303272247314453125,
+        "surge_multiplier": 1.46581298050294517310021547018550336360931396484375,
+        "estimate": "estimate",
+        "display_name": "display_name",
+        "currency_code": "currency_code"
       }
     },
-    "Profile" : {
-      "type" : "object",
-      "properties" : {
-        "first_name" : {
-          "type" : "string",
-          "description" : "First name of the Uber user."
+    "Profile": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "description": "First name of the Uber user."
         },
-        "last_name" : {
-          "type" : "string",
-          "description" : "Last name of the Uber user."
+        "last_name": {
+          "type": "string",
+          "description": "Last name of the Uber user."
         },
-        "email" : {
-          "type" : "string",
-          "description" : "Email address of the Uber user"
+        "email": {
+          "type": "string",
+          "description": "Email address of the Uber user"
         },
-        "picture" : {
-          "type" : "string",
-          "description" : "Image URL of the Uber user."
+        "picture": {
+          "type": "string",
+          "description": "Image URL of the Uber user."
         },
-        "promo_code" : {
-          "type" : "string",
-          "description" : "Promo code of the Uber user."
+        "promo_code": {
+          "type": "string",
+          "description": "Promo code of the Uber user."
+        },
+        "role": {
+          "type": "string",
+          "$ref": "#/definitions/RoleType"
         }
       },
-      "example" : {
-        "last_name" : "last_name",
-        "promo_code" : "promo_code",
-        "first_name" : "first_name",
-        "email" : "email",
-        "picture" : "picture"
+      "example": {
+        "last_name": "last_name",
+        "promo_code": "promo_code",
+        "first_name": "first_name",
+        "email": "email",
+        "picture": "picture"
       }
     },
-    "Activity" : {
-      "type" : "object",
-      "properties" : {
-        "uuid" : {
-          "type" : "string",
-          "description" : "Unique identifier for the activity"
+    "Activity": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "Unique identifier for the activity"
         }
       },
-      "example" : {
-        "uuid" : "uuid"
+      "example": {
+        "uuid": "uuid"
       }
     },
-    "Activities" : {
-      "type" : "object",
-      "properties" : {
-        "offset" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Position in pagination."
+    "Activities": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Position in pagination."
         },
-        "limit" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Number of items to retrieve (100 max)."
+        "limit": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of items to retrieve (100 max)."
         },
-        "count" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Total number of items available."
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of items available."
         },
-        "history" : {
-          "type" : "array",
-          "items" : {
-            "$ref" : "#/definitions/Activity"
+        "history": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Activity"
           }
         }
       },
-      "example" : {
-        "offset" : 0,
-        "limit" : 6,
-        "count" : 1,
-        "history" : [ {
-          "uuid" : "uuid"
-        }, {
-          "uuid" : "uuid"
-        } ]
+      "example": {
+        "offset": 0,
+        "limit": 6,
+        "count": 1,
+        "history": [
+          {
+            "uuid": "uuid"
+          },
+          {
+            "uuid": "uuid"
+          }
+        ]
       }
     },
-    "Error" : {
-      "type" : "object",
-      "properties" : {
-        "code" : {
-          "type" : "integer",
-          "format" : "int32"
+    "RoleType": {
+      "type": "string",
+      "description": "Enumeration of Role Type",
+      "enum": [
+        "Admin",
+        "User",
+        "SetSms"
+      ]
+    },
+    "CreateOrUpdateUserInput": {
+      "required": [
+        "cardNo",
+        "userName",
+        "password"
+      ],
+      "type": "object",
+      "properties": {
+        "userId": {
+          "format": "int32",
+          "description": "用户ID(ID来自User表)",
+          "type": "integer"
         },
-        "message" : {
-          "type" : "string"
+        "userRights": {
+          "description": "用户权限",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "enum": [
+              "View",
+              "Operate",
+              "Auth",
+              "Search",
+              "Delete",
+              "UserManage",
+              "UserConfig",
+              "SetTime",
+              "SetNetwork",
+              "SetSms",
+              "SystemManage"
+            ],
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Abc": {
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "ArrayOfAbc": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Abc"
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
         },
-        "fields" : {
-          "type" : "string"
+        "message": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "string"
         }
       }
     }

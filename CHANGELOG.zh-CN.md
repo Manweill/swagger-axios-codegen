@@ -1,7 +1,21 @@
+## 0.3.0
+
+- 增加 `axios` 自定义实例的支持 ([issue 6](https://github.com/Manweill/swagger-axios-codegen/issues/6) with [kt81](https://github.com/kt81))
+- 增加第三方类 `axios` 库的支持，如 [Fly.js](https://github.com/wendux/fly) ，需要设置 `useCustomerRequestInstance = true`
+- 增加 `serviceNameSuffix` 配置，以支持自定义服务的后缀
+- `useStaticMethod = true` 现在为默认配置
+- 优化整体的代码实现和代码逻辑
+- 修复 [issue 2](https://github.com/Manweill/swagger-axios-codegen/issues/2) [issue 3](https://github.com/Manweill/swagger-axios-codegen/issues/3)
+- 配置（如 `tsconfig.json` 、 `npm script`）请参考 [example](./example/swagger.operationId.json)
+
+## 0.2.14
+
+- 添加对请求的原始响应类型的支持 ([bbc907](https://github.com/Manweill/swagger-axios-codegen/commit/bbc9072a634a996beab19e1a8fd58ea52b8d09d7) by [kt81](https://github.com/kt81))
+
 ## 0.2.13
 
 - 更新[example](./example/swagger.operationId.json)，增加使用operationId作为方法名字的例子
-- 修复使用Typescript3.0.0，在请求方法中的 `let data = null；` 的定义会报异常 ([b0dad90](https://github.com/Manweill/swagger-axios-codegen/commit/b0dad90d96e3c9d6c4f033c6ad8adcf4c1bf0b2d) by [kt81](https://github.com/Manweill/swagger-axios-codegen/commits?author=kt81))
+- 修复使用Typescript3.0.0，在请求方法中的 `let data = null；` 的定义会报异常 ([b0dad90](https://github.com/Manweill/swagger-axios-codegen/commit/b0dad90d96e3c9d6c4f033c6ad8adcf4c1bf0b2d) by [kt81](https://github.com/kt81))
 
 ## 0.2.12
 
