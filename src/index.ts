@@ -7,7 +7,6 @@ import { definitionsCodeGen } from './definitionCodegen'
 import { enumTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate } from './template';
 import { requestCodegen } from './requestCodegen';
 
-
 const defaultOptions: ISwaggerOptions = {
   serviceNameSuffix: 'Service',
   enumNamePrefix: 'Enum',
