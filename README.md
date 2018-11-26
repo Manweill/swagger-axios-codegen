@@ -9,6 +9,8 @@ swagger client to use axios and typescript
 
 it will always resolve `axios.response.data` or reject `axios.error` with Promise
 
+support other support similar to `axios` library, for example [Fly.js](https://github.com/wendux/fly), required setting `ISwaggerOptions.useCustomerRequestInstance = true`
+
 ## Get Started
 
 ```
@@ -36,6 +38,7 @@ const defaultOptions: ISwaggerOptions = {
   useStaticMethod: true,
   useCustomerRequestInstance: true
 }
+
 ```
 
 ## [Example](./example)
@@ -95,6 +98,32 @@ after
 import { UserService } from './service'
 
 await UserService.GetAll();
+
+```
+
+
+### use custom axios.instance
+
+```js
+import axios from 'axios'
+import { serviceOptions } from './service'
+const instance = axios.create({
+  baseURL: 'https://some-domain.com/api/',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
+
+serviceOptions.axios = instance
+
+```
+
+### use other library
+
+```js
+import YourLib from '<Your lib>'
+import { serviceOptions } from './service'
+
+serviceOptions.axios = YourLib
 
 ```
 

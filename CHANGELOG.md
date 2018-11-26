@@ -1,3 +1,14 @@
+## 0.3.0
+
+- Support custom `axios.instance` ([issue 6](https://github.com/Manweill/swagger-axios-codegen/issues/6) with [kt81](https://github.com/kt81))
+- Support other support similar to the `axios` library, for example [Fly.js](https://github.com/wendux/fly), required setting `ISwaggerOptions.useCustomerRequestInstance = true`
+- Add `ISwaggerOptions.serviceNameSuffix` ,use for customize `Service` class suffix
+- `ISwaggerOptions.useStaticMethod = true` is default
+- Optimize overall code implementation and logic
+- Fixes [issue 2](https://github.com/Manweill/swagger-axios-codegen/issues/2) [issue 3](https://github.com/Manweill/swagger-axios-codegen/issues/3)
+- Please refer to [example](./example/swagger.operationId.json)（e.g. `tsconfig.json` 、 `npm script`）
+
+
 ## 0.2.14
 
 - Adds support of primitive response types ([bbc907](https://github.com/Manweill/swagger-axios-codegen/commit/bbc9072a634a996beab19e1a8fd58ea52b8d09d7) by [kt81](https://github.com/Manweill/swagger-axios-codegen/commits?author=kt81))

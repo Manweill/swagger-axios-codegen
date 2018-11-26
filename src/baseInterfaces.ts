@@ -73,7 +73,7 @@ export interface IParameterSchema {
 export interface IParameterItems {
   type?: string
   $ref: string
-  item?: IParameterItems
+  items?: IParameterItems
 }
 
 export interface IDefinitions {
