@@ -28,6 +28,7 @@ export function propTrueType(v: IDefinitionProperty): {
         result = { ...result, ...currentResult }
       } else if (!!v.items.enum) {
         const currentResult = propTrueType(v.items)
+        currentResult.propType = `Array<${currentResult.propType}>`
         result = { ...result, ...currentResult }
       } else {
         result.propType = toBaseType(v.items.type) + '[]'
