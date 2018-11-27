@@ -1,6 +1,6 @@
 ## 0.3.4
 
-- fix array of number enums
+- Fix array of number enums [issue 9](https://github.com/Manweill/swagger-axios-codegen/issues/9)
 
 ## 0.3.3
 
@@ -10,7 +10,7 @@
 - `ISwaggerOptions.useStaticMethod = true` is default
 - Optimize overall code implementation and logic
 - Fixes [issue 2](https://github.com/Manweill/swagger-axios-codegen/issues/2) [issue 3](https://github.com/Manweill/swagger-axios-codegen/issues/3)
-- Please refer to [example](./example/swagger.operationId.json)（e.g. `tsconfig.json` 、 `npm script`）
+- Please refer to [example](./example/swagger.operationId.json)（e.g. `tsconfig.json` 、 `npm script`）
 
 
 ## 0.2.14
