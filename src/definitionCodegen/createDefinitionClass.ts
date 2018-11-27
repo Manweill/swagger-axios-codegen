@@ -22,11 +22,12 @@ export function createDefinitionClass(
 ) {
   /** 枚举值 */
   let enums = []
+  let types = []
   let model: IClassDef = { name: className, props: [], imports: [] }
   const propertiesEntities = Object.entries(properties)
   for (const [k, v] of propertiesEntities) {
     // console.log('props name', k)
-    let { propType, isEnum, isArray, ref } = propTrueType(v);
+    let { propType, isEnum, isArray, isType, ref } = propTrueType(v);
     if (isEnum) {
       let enumName = `Enum${className}${pascalcase(k)}`
       enums.push({
@@ -35,6 +36,14 @@ export function createDefinitionClass(
       }`})
       propType = isArray ? enumName + '[]' : enumName
       ref = enumName
+    }
+    if (isType) {
+      let typeName = `I${className}${pascalcase(k)}`
+      enums.push({
+        name: typeName, text: `type ${typeName} = ${propType}`
+      })
+      propType = isArray ? typeName + '[]' : typeName
+      ref = typeName
     }
     // 转化引用值到引用列表
     if (!!ref) {

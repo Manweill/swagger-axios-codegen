@@ -1,4 +1,8 @@
-## 0.3.0
+## 0.3.4
+
+- fix array of number enums
+
+## 0.3.3
 
 - Support custom `axios.instance` ([issue 6](https://github.com/Manweill/swagger-axios-codegen/issues/6) with [kt81](https://github.com/kt81))
 - Support other support similar to the `axios` library, for example [Fly.js](https://github.com/wendux/fly), required setting `ISwaggerOptions.useCustomerRequestInstance = true`

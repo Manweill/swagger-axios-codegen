@@ -463,6 +463,26 @@
         "$ref": "#/definitions/Abc"
       }
     },
+    "NumberArrayEnumModel": {
+      "type": "object",
+      "properties": {
+        "foo": {
+          "uniqueItems": true,
+          "type": "array",
+          "items": {
+            "format": "int32",
+            "enum": [
+              0,
+              1,
+              2,
+              4,
+              8
+            ],
+            "type": "integer"
+          }
+        }
+      }
+    },
     "Error": {
       "type": "object",
       "properties": {

@@ -119,7 +119,7 @@ export function serviceTemplate(name: string, body: string) {
 
 export const serviceHeader = `/** Generate by swagger-axios-codegen */
 
-import axiosStatic, { AxiosPromise, AxiosRequestConfig, AxiosInstance } from 'axios';
+import axiosStatic, { AxiosPromise, AxiosInstance } from 'axios';
 export interface IRequestOptions {
   headers?: any;
 }

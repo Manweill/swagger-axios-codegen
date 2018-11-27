@@ -1,4 +1,8 @@
-## 0.3.0
+## 0.3.4
+
+- 修复数字枚举
+
+## 0.3.3
 
 - 增加 `axios` 自定义实例的支持 ([issue 6](https://github.com/Manweill/swagger-axios-codegen/issues/6) with [kt81](https://github.com/kt81))
 - 增加第三方类 `axios` 库的支持，如 [Fly.js](https://github.com/wendux/fly) ，需要设置 `useCustomerRequestInstance = true`

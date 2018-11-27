@@ -2,12 +2,14 @@ import { refClassName, toBaseType } from "../utils";
 import { IDefinitionProperty } from "../baseInterfaces";
 
 export function propTrueType(v: IDefinitionProperty): {
-  propType: string, isEnum: boolean, isArray: boolean, ref: string
+  propType: string, isEnum: boolean, isArray: boolean, isType: boolean, ref: string
 } {
   let result = {
     propType: '',
     isEnum: false,
     isArray: false,
+    /**ts type definition */
+    isType: false,
     ref: ''
   }
   if (v.$ref) {
@@ -40,6 +42,7 @@ export function propTrueType(v: IDefinitionProperty): {
     result.propType = v.enum.map(item => `'${item}'='${item}'`).join(',')
   }
   else if (v.enum) {
+    result.isType = true
     result.propType = v.type === 'string' ? v.enum.map(item => `'${item}'`).join('|') : v.enum.join('|')
   }
   // 基本类型
