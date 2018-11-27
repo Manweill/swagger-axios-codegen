@@ -40,7 +40,7 @@ export function createDefinitionClass(
     if (isType) {
       let typeName = `I${className}${pascalcase(k)}`
       enums.push({
-        name: typeName, text: `type ${typeName} = ${propType}`
+        name: typeName, text: `type ${typeName} = ${propType};`
       })
       propType = isArray ? typeName + '[]' : typeName
       ref = typeName
