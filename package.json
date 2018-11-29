@@ -9,6 +9,13 @@
     "url": "https://github.com/Manweill/swagger-axios-codegen.git",
     "type": "git"
   },
+  "keywords": [
+    "swagger",
+    "axios",
+    "typescript",
+    "generator",
+    "codegen"
+  ],
   "scripts": {
     "build": "tsc -p ./src",
     "prestart": "npm run build",
