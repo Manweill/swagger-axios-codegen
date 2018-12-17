@@ -1,17 +1,13 @@
 import camelcase = require("camelcase");
+import { IPropDef } from "./baseInterfaces";
 
-export interface IPropDef {
-  name: string
-  type: string
-  desc: string
-}
 
 /** 类模板 */
 export function classTemplate(name: string, props: IPropDef[], imports: string[]) {
   return `
   ${imports.map(imp => {
-      return `import { ${imp} } from '../definitions/${imp}'\n`
-    }).join('')}
+    return `import { ${imp} } from '../definitions/${imp}'\n`
+  }).join('')}
 
   export class ${name} {
 
@@ -59,7 +55,7 @@ interface IRequestSchema {
   formData: string
 }
 
-/** request */
+/** requestTemplate */
 export function requestTemplate(name: string, requestSchema: IRequestSchema, options: any) {
   let {
     summary = '',
@@ -108,7 +104,7 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}optio
 }`;
 }
 
-/** request */
+/** serviceTemplate */
 export function serviceTemplate(name: string, body: string) {
   return `
   export class ${name} {

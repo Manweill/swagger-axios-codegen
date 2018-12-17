@@ -1,3 +1,5 @@
+import { IDefinitionClass, IDefinitionEnum } from "./baseInterfaces";
+
 export const GENERIC_SPLIT_KEY = '['
 
 // 是否是接口类型
@@ -73,11 +75,31 @@ export function getMethodName(path: string) {
 export function trimString(str: string, char: string, type: string) {
   if (char) {
     if (type == 'left') {
-      return str.replace(new RegExp('^\\' + char + '+', 'g'), '');
+      return str.replace(new RegExp('^\\' + char + '+', 'g'), '')
     } else if (type == 'right') {
-      return str.replace(new RegExp('\\' + char + '+$', 'g'), '');
+      return str.replace(new RegExp('\\' + char + '+$', 'g'), '')
     }
-    return str.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '');
+    return str.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '')
   }
-  return str.replace(/^\s+|\s+$/g, '');
-};
+  return str.replace(/^\s+|\s+$/g, '')
+}
+
+export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[], allEnums: IDefinitionEnum[]) {
+  let result: string[] = []
+  imports.forEach(model => {
+    let ref = null
+    ref = allDefinition.find(item => item.name == model)
+    if (ref) {
+      result.push(ref.name)
+      if (ref.value.imports.length > 0) {
+        result = result.concat(findDeepRefs(ref.value.imports, allDefinition, allEnums))
+      }
+    } else {
+      ref = allEnums.find(item => item.name == model)
+      if (ref) {
+        result.push(ref.name)
+      }
+    }
+  })
+  return result;
+}

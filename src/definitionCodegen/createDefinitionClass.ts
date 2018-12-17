@@ -1,13 +1,8 @@
-import { IDefinitionProperties } from "../baseInterfaces";
+import { IDefinitionProperties } from "../saggerInterfaces";
 import { propTrueType } from "./propTrueType";
 import pascalcase from "pascalcase";
-import { IPropDef } from "../template";
+import { IClassDef } from "../baseInterfaces";
 
-export interface IClassDef {
-  name: string
-  props: IPropDef[]
-  imports: string[]
-}
 
 /**
  * 生成类定义

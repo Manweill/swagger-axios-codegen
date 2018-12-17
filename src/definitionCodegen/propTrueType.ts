@@ -1,5 +1,5 @@
 import { refClassName, toBaseType } from "../utils";
-import { IDefinitionProperty } from "../baseInterfaces";
+import { IDefinitionProperty } from "../saggerInterfaces";
 
 export function propTrueType(v: IDefinitionProperty): {
   propType: string, isEnum: boolean, isArray: boolean, isType: boolean, ref: string

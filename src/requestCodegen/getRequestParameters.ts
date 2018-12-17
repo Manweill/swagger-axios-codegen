@@ -1,4 +1,4 @@
-import { IParameter } from "../baseInterfaces";
+import { IParameter } from "../saggerInterfaces";
 
 import { refClassName, toBaseType } from "../utils";
 
@@ -14,6 +14,7 @@ export function getRequestParameters(params: IParameter[]) {
   let requestPathReplace = ''
   let queryParameters: string[] = []
   let bodyParameters: string[] = []
+  let imports: string[] = []
   params.forEach(p => {
     let propType = ''
     // 引用类型定义
@@ -22,13 +23,16 @@ export function getRequestParameters(params: IParameter[]) {
         propType = refClassName(p.schema.items.$ref)
       } else if (p.schema.$ref) {
         propType = refClassName(p.schema.$ref)
+        // console.log('propType', refClassName(p.schema.$ref))
       } else if (p.schema.type) {
         propType = p.schema.type
       } else {
         throw new Error('Could not find property type on schema')
       }
+      imports.push(propType)
     } else if (p.items) {
       propType = p.items.$ref ? refClassName(p.items.$ref) + '[]' : toBaseType(p.items.type) + '[]'
+      imports.push(propType)
     }
     // 基本类型
     else {
@@ -54,5 +58,5 @@ export function getRequestParameters(params: IParameter[]) {
       bodyParameters.push(body)
     }
   })
-  return { requestParameters, requestFormData, requestPathReplace, queryParameters, bodyParameters }
+  return { requestParameters, requestFormData, requestPathReplace, queryParameters, bodyParameters, imports }
 }
