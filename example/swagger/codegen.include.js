@@ -2,7 +2,7 @@ const { codegen } = require('swagger-axios-codegen')
 
 let include = [
   'Products', // tagName
-  'EstimatesService',//tagName
+  'Estimates',//tagName
   { 'User': ['history'] }
 ]
 codegen({

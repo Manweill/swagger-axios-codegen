@@ -132,19 +132,14 @@ serviceOptions.axios = YourLib
 ```js
 
 let include = [
-  'Account', // tagName
-  'Product', // tagName
-  { 
-    Equipment: [
-      'getEquipments' // methodName (operationId or path)
-    ]
-  }
+  'Products', // tagName
+  'Estimates',//tagName
+  { 'User': ['history'] }
 ]
-
-const { codegen } = require('swagger-axios-codegen')
 codegen({
-  methodNameMode: 'operationId',
-  source:require('./swagger.json'),
+  methodNameMode: 'path',
+  source: require('../swagger.json'),
+  outputDir: './swagger/services',
   include
 })
 
