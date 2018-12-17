@@ -1,3 +1,20 @@
+## 0.4.0
+- Support `Service` filter and `Service[method]` filter. for example like this, or use `cd example && yarn build:api-include`
+  ```js
+  let include = [
+    'Products', // tagName
+    'Estimates',//tagName
+    { 'User': ['history'] }
+  ]
+  codegen({
+    methodNameMode: 'path',
+    source: require('../swagger.json'),
+    outputDir: './swagger/services',
+    include
+  })
+  ```
+
+
 ## 0.3.4
 
 - Fix array of number enums [issue 9](https://github.com/Manweill/swagger-axios-codegen/issues/9)

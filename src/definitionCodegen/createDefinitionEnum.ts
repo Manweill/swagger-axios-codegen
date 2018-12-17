@@ -1,9 +1,4 @@
-import { enumTemplate } from "../template";
-
-export interface IEnumDef {
-  name: string
-  enumProps: string
-}
+import { IEnumDef } from "../baseInterfaces";
 
 /**
  * 生成类定义

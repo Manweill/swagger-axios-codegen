@@ -1,22 +1,8 @@
-import { IDefinitions } from '../baseInterfaces'
+import { IDefinitions } from '../saggerInterfaces'
 import { refClassName } from '../utils'
-import { createDefinitionClass, IClassDef } from './createDefinitionClass';
-import { createDefinitionEnum, IEnumDef } from './createDefinitionEnum';
-
-export interface IDefinitionClasses {
-  [key: string]: {
-    value: IClassDef
-    name: string
-  }
-}
-
-export interface IDefinitionEnums {
-  [key: string]: {
-    name: string
-    value?: IEnumDef | null | undefined
-    content?: string | null | undefined
-  }
-}
+import { createDefinitionClass } from './createDefinitionClass';
+import { createDefinitionEnum } from './createDefinitionEnum';
+import { IDefinitionClasses, IDefinitionEnums } from '../baseInterfaces';
 
 export function definitionsCodeGen(definitions: IDefinitions) {
   let definitionModels: IDefinitionClasses = {}

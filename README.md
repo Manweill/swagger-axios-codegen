@@ -19,14 +19,15 @@ support other support similar to `axios` library, for example [Fly.js](https://g
 ```js
 
 export interface ISwaggerOptions {
-  classNameSuffix?: string
+  serviceNameSuffix?: string
   methodNameMode?: 'operationId' | 'path'
   outputDir?: string
   fileName?: string
   remoteUrl?: string
   source?: any
-  useStaticMethod?: boolean 
-  useCustomerRequestInstance?: boolean
+  useStaticMethod?: boolean | undefined
+  useCustomerRequestInstance?: boolean | undefined
+  include?: Array<string | IInclude>
 }
 
 const defaultOptions: ISwaggerOptions = {
@@ -35,7 +36,7 @@ const defaultOptions: ISwaggerOptions = {
   outputDir: './service',
   fileName: 'index.ts',
   useStaticMethod: true,
-  useCustomerRequestInstance: true
+  useCustomerRequestInstance: false
 }
 
 ```
@@ -123,6 +124,24 @@ import YourLib from '<Your lib>'
 import { serviceOptions } from './service'
 
 serviceOptions.axios = YourLib
+
+```
+
+### filter service and method 
+
+```js
+
+let include = [
+  'Products', // tagName
+  'Estimates',//tagName
+  { 'User': ['history'] }
+]
+codegen({
+  methodNameMode: 'path',
+  source: require('../swagger.json'),
+  outputDir: './swagger/services',
+  include
+})
 
 ```
 

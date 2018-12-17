@@ -1,16 +1,18 @@
 import { refClassName, toBaseType } from "../utils";
-import { IRequestMethod } from "../baseInterfaces";
+import { IRequestMethod } from "../saggerInterfaces";
 
 /**
  * 获取请求的返回类型
  */
-export function getResponseType(reqProps: IRequestMethod): string {
+export function getResponseType(reqProps: IRequestMethod): { responseType: string, isRef: boolean } {
   // It does not allow the schema defined directly, but only the primitive type is allowed. 
   let result: string;
+  let isRef = false
   if (!reqProps.responses['200'] || !reqProps.responses['200'].schema) {
     result = 'any';
   } else if (reqProps.responses['200'].schema.$ref) {
     result = refClassName(reqProps.responses['200'].schema.$ref)
+    isRef = true
   } else {
     let checkType = reqProps.responses[200].schema.type;
     if (!checkType) {
@@ -31,5 +33,5 @@ export function getResponseType(reqProps: IRequestMethod): string {
     result = toBaseType(result)
     // else ... JSON primitive types (string, boolean, number)
   }
-  return result
+  return { responseType: result, isRef }
 }

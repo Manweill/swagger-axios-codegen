@@ -1,5 +1,5 @@
 import { getMethodName } from '../utils'
-import { IPaths, ISwaggerOptions } from '../baseInterfaces'
+import { IPaths } from '../saggerInterfaces'
 import { getRequestParameters } from './getRequestParameters';
 import { getResponseType } from './getResponseType';
 
@@ -48,6 +48,11 @@ export function requestCodegen(paths: IPaths): IRequestClass {
         formData = parsedParameters.requestFormData ? 'data = new FormData();\n' + parsedParameters.requestFormData : ''
         pathReplace = parsedParameters.requestPathReplace
       }
+      const { responseType, isRef: refResponseType } = getResponseType(reqProps)
+      // 如果返回值也是引用类型，则加入到类的引用里面
+      if (refResponseType) {
+        parsedParameters.imports.push(responseType)
+      }
 
       requestClasses[className].push({
         name: methodName,
@@ -60,7 +65,7 @@ export function requestCodegen(paths: IPaths): IRequestClass {
           parsedParameters,
           method,
           contentType,
-          responseType: getResponseType(reqProps),
+          responseType,
           formData
         }
       })
