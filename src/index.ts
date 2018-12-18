@@ -76,9 +76,9 @@ export async function codegen(params: ISwaggerOptions) {
 
     let allModel = Object.values(models)
     let allEnum = Object.values(enums)
+    let allImport: string[] = []
 
     options.include.forEach(item => {
-      let allImport: string[] = []
       let includeClassName = ''
       let includeRequests: string[] = null
       if (Object.prototype.toString.call(item) === '[object String]') {
@@ -114,24 +114,24 @@ export async function codegen(params: ISwaggerOptions) {
         text = serviceTemplate(className + options.serviceNameSuffix, text)
         reqSource += text
       }
+    })
 
+    console.log('UserLogin', allModel.filter(item => item.name == 'UserLogin').length)
 
-      allModel.forEach(item => {
-        if (allImport.includes(item.name)) {
-          const text = classTemplate(item.value.name, item.value.props, [])
-          defSource += text
-        }
-      })
+    allModel.forEach(item => {
+      if (allImport.includes(item.name)) {
+        const text = classTemplate(item.value.name, item.value.props, [])
+        defSource += text
+      }
+    })
 
-      allEnum.forEach(item => {
-        if (allImport.includes(item.name)) {
-          const text = item.value
-            ? enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
-            : item.content || ''
-          defSource += text
-        }
-      })
-
+    allEnum.forEach(item => {
+      if (allImport.includes(item.name)) {
+        const text = item.value
+          ? enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
+          : item.content || ''
+        defSource += text
+      }
     })
 
     apiSource += reqSource + defSource

@@ -10,6 +10,9 @@ it will always resolve `axios.response.data` or reject `axios.error` with Promis
 
 support other support similar to `axios` library, for example [Fly.js](https://github.com/wendux/fly), required setting `ISwaggerOptions.useCustomerRequestInstance = true`
 
+## [Example](./example)
+## [ChangeLog](./CHANGELOG.md)
+
 ## Get Started
 
 ```
@@ -40,8 +43,6 @@ const defaultOptions: ISwaggerOptions = {
 }
 
 ```
-
-## [Example](./example)
 
 ### use local swagger api json
 
