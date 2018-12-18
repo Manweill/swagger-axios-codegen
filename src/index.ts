@@ -116,8 +116,6 @@ export async function codegen(params: ISwaggerOptions) {
       }
     })
 
-    console.log('UserLogin', allModel.filter(item => item.name == 'UserLogin').length)
-
     allModel.forEach(item => {
       if (allImport.includes(item.name)) {
         const text = classTemplate(item.value.name, item.value.props, [])
