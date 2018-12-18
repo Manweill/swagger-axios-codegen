@@ -1,3 +1,7 @@
+## 0.4.1
+
+- Fix include filter
+
 ## 0.4.0
 
 - Support `Service` filter and `Service[method]` filter. for example like this, or use `cd example && yarn build:api-include`
