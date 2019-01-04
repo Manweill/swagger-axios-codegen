@@ -38,7 +38,7 @@ const defaultOptions: ISwaggerOptions = {
   methodNameMode: 'operationId',
   outputDir: './service',
   fileName: 'index.ts',
-  useStaticMethod: true,
+  useStaticMethod: true, // >= 0.4
   useCustomerRequestInstance: false
 }
 
