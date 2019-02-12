@@ -58,13 +58,13 @@ export async function codegen(params: ISwaggerOptions) {
         : item.content || ''
 
       const fileDir = path.join(options.outputDir || '', 'definitions')
-      writeFile(fileDir, item.name + '.ts', format(text))
+      writeFile(fileDir, item.name + '.ts', format(text, options))
     })
 
     Object.values(models).forEach(item => {
       const text = classTemplate(item.value.name, item.value.props, item.value.imports)
       const fileDir = path.join(options.outputDir || '', 'definitions')
-      writeFile(fileDir, item.name, format(text))
+      writeFile(fileDir, item.name, format(text, options))
     })
 
   }
@@ -133,7 +133,7 @@ export async function codegen(params: ISwaggerOptions) {
     })
 
     apiSource += reqSource + defSource
-    writeFile(options.outputDir || '', options.fileName || '', format(apiSource))
+    writeFile(options.outputDir || '', options.fileName || '', format(apiSource, options))
   }
   else {
     try {
@@ -166,7 +166,7 @@ export async function codegen(params: ISwaggerOptions) {
       })
 
 
-      writeFile(options.outputDir || '', options.fileName || '', format(apiSource))
+      writeFile(options.outputDir || '', options.fileName || '', format(apiSource, options))
     } catch (error) {
       console.log('error', error)
     }
@@ -187,7 +187,12 @@ function writeFile(fileDir: string, name: string, data: any) {
   fs.writeFileSync(filename, data)
 }
 
-function format(text: string) {
+function format(text: string, options: ISwaggerOptions) {
+  if (options.format) {
+    console.log('use custom formatter')
+    return options.format(text)
+  }
+  console.log('use default formatter')
   return prettier.format(text, {
     "printWidth": 120,
     "tabWidth": 2,

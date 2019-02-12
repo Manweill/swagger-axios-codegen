@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
-    "swagger-axios-codegen": "^0.3.4",
+    "swagger-axios-codegen": "*",
     "typescript": "^3.2.2"
   },
   "scripts": {

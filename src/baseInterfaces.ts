@@ -9,6 +9,7 @@ export interface ISwaggerOptions {
   useStaticMethod?: boolean | undefined
   useCustomerRequestInstance?: boolean | undefined
   include?: Array<string | IInclude>
+  format?: (s: string) => string
 }
 
 export interface IPropDef {
