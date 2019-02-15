@@ -1,3 +1,7 @@
+## 0.5.0
+
+- add custom formatter
+
 ## 0.4.2
 
 - Fix include filter
