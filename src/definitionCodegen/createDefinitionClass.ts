@@ -1,4 +1,4 @@
-import { IDefinitionProperties } from "../saggerInterfaces";
+import { IDefinitionProperties } from "../swaggerInterfaces";
 import { propTrueType } from "./propTrueType";
 import pascalcase from "pascalcase";
 import { IClassDef } from "../baseInterfaces";

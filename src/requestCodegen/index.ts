@@ -1,5 +1,5 @@
 import { getMethodName } from '../utils'
-import { IPaths } from '../saggerInterfaces'
+import { IPaths } from '../swaggerInterfaces'
 import { getRequestParameters } from './getRequestParameters';
 import { getResponseType } from './getResponseType';
 
@@ -34,7 +34,7 @@ export function requestCodegen(paths: IPaths): IRequestClass {
       }
       let parameters = ''
       let handleNullParameters = ''
-      let parsedParameters: any
+      let parsedParameters: any = {}
       if (reqProps.parameters) {
         // 获取到接口的参数
         parsedParameters = getRequestParameters(reqProps.parameters)
@@ -51,7 +51,8 @@ export function requestCodegen(paths: IPaths): IRequestClass {
       const { responseType, isRef: refResponseType } = getResponseType(reqProps)
       // 如果返回值也是引用类型，则加入到类的引用里面
       if (refResponseType) {
-        parsedParameters.imports.push(responseType)
+        let imports = parsedParameters.imports || []
+        parsedParameters.imports = imports.push(responseType)
       }
 
       requestClasses[className].push({

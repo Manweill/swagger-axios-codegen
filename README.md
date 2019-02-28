@@ -11,6 +11,7 @@ it will always resolve `axios.response.data` or reject `axios.error` with Promis
 support other support similar to `axios` library, for example [Fly.js](https://github.com/wendux/fly), required setting `ISwaggerOptions.useCustomerRequestInstance = true`
 
 ## [Example](./example)
+
 ## [ChangeLog](./CHANGELOG.md)
 
 ## Get Started
@@ -23,6 +24,7 @@ support other support similar to `axios` library, for example [Fly.js](https://g
 
 export interface ISwaggerOptions {
   serviceNameSuffix?: string
+  enumNamePrefix?: string
   methodNameMode?: 'operationId' | 'path'
   outputDir?: string
   fileName?: string
@@ -31,15 +33,18 @@ export interface ISwaggerOptions {
   useStaticMethod?: boolean | undefined
   useCustomerRequestInstance?: boolean | undefined
   include?: Array<string | IInclude>
+  format?: (s: string) => string
 }
 
 const defaultOptions: ISwaggerOptions = {
-  classNameSuffix: 'Service',
+  serviceNameSuffix: 'Service',
+  enumNamePrefix: 'Enum',
   methodNameMode: 'operationId',
   outputDir: './service',
   fileName: 'index.ts',
-  useStaticMethod: true, // >= 0.4
-  useCustomerRequestInstance: false
+  useStaticMethod: true,
+  useCustomerRequestInstance: false,
+  include: []
 }
 
 ```

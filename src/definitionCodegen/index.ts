@@ -1,4 +1,4 @@
-import { IDefinitions } from '../saggerInterfaces'
+import { IDefinitions } from '../swaggerInterfaces'
 import { refClassName } from '../utils'
 import { createDefinitionClass } from './createDefinitionClass';
 import { createDefinitionEnum } from './createDefinitionEnum';

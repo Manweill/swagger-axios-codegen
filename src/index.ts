@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import prettier from 'prettier';
 import axios from 'axios';
-import { ISwaggerSource } from './saggerInterfaces'
+import { ISwaggerSource } from './swaggerInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
 import { enumTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate } from './template';
 import { requestCodegen } from './requestCodegen';

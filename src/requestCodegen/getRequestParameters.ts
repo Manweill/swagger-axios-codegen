@@ -1,4 +1,4 @@
-import { IParameter } from "../saggerInterfaces";
+import { IParameter } from "../swaggerInterfaces";
 
 import { refClassName, toBaseType } from "../utils";
 
