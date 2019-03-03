@@ -55,7 +55,7 @@ export function toBaseType(s: string) {
       result = 'any'
       break
     default:
-      result = s
+      result = 'any'
       break
   }
   return result
