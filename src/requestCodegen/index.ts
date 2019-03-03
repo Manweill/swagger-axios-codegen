@@ -27,7 +27,8 @@ export function requestCodegen(paths: IPaths): IRequestClass {
       let pathReplace = ''
       // 获取类名
       if (!reqProps.tags) continue;
-      const className = reqProps.tags[0]
+      const className = reqProps.tags[0].replace(/s/g, '')
+      if (className === '') continue;
       // 是否存在
       if (!requestClasses[className]) {
         requestClasses[className] = []
