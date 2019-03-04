@@ -17,7 +17,7 @@
     "codegen"
   ],
   "scripts": {
-    "build": "tsc -p ./src",
+    "build": "tsc",
     "prestart": "npm run build",
     "precommit": "prettier --write --config .prettierrc ./src/*.ts",
     "start": "node ./dist/index",
@@ -30,7 +30,6 @@
     "prettier": "^1.15.2"
   },
   "devDependencies": {
-    "@types/camelcase": "^4.1.0",
     "@types/node": "^9.6.0",
     "@types/prettier": "^1.12.2",
     "tslint": "^5.10.0",
