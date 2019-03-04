@@ -1,4 +1,4 @@
-import camelcase = require("camelcase");
+import camelcase from 'camelcase'
 import { IPropDef } from "./baseInterfaces";
 
 

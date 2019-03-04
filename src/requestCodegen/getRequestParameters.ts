@@ -1,8 +1,8 @@
-import { IParameter } from "../swaggerInterfaces";
+import { IParameter } from '../swaggerInterfaces'
 
-import { refClassName, toBaseType } from "../utils";
+import { refClassName, toBaseType } from '../utils'
 
-import camelcase = require("camelcase");
+import camelcase from 'camelcase'
 
 /**
  * 生成参数
