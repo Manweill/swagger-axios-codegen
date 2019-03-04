@@ -9,7 +9,8 @@
             "./typings",
             "./typings/camelcase",
             "./node_modules/@types"
-        ]
+        ],
+        "outDir": "dist"
     },
     "files": ["src/index.ts"]
 }

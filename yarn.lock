@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@types/camelcase@^4.1.0":
-  version "4.1.0"
-  resolved "http://registry.npm.taobao.org/@types/camelcase/download/@types/camelcase-4.1.0.tgz#e054f7986f31658d49936261b5cd4588ef29d1ee"
-
 "@types/node@^9.6.0":
   version "9.6.18"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-9.6.18.tgz#092e13ef64c47e986802c9c45a61c1454813b31d"
