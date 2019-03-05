@@ -56,7 +56,8 @@ export function requestCodegen(paths: IPaths): IRequestClass {
       // 如果返回值也是引用类型，则加入到类的引用里面
       if (refResponseType) {
         let imports = parsedParameters.imports || []
-        parsedParameters.imports = imports.push(responseType)
+        imports.push(responseType)
+        parsedParameters.imports = imports
       }
 
       requestClasses[className].push({
