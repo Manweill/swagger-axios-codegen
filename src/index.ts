@@ -170,14 +170,14 @@ export async function codegen(params: ISwaggerOptions) {
       writeFile(options.outputDir || '', options.fileName || '', format(apiSource, options))
     } catch (error) {
       console.log('error', error)
-      err= error
+      err = error
     }
   }
   if (fs.existsSync('./cache_swagger.json')) {
     fs.unlinkSync('./cache_swagger.json');
   }
   console.timeEnd('finish')
-  if(err){
+  if (err) {
     throw err;
   }
 }
