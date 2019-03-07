@@ -17,7 +17,7 @@
     "codegen"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p ./src",
     "prestart": "npm run build",
     "precommit": "prettier --write --config .prettierrc ./src/*.ts",
     "start": "node ./dist/index",
