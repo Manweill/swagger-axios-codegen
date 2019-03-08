@@ -1,5 +1,7 @@
-## 0.5.1
 
+## 0.5.2
+
+Fix [issue 17](https://github.com/Manweill/swagger-axios-codegen/issues/17)
 Fix [issue 13](https://github.com/Manweill/swagger-axios-codegen/issues/13)
 
 ## 0.5.0

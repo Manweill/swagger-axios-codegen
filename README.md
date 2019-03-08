@@ -151,4 +151,6 @@ codegen({
 
 ```
 
-Welcome PR and commit issue
+Welcome PRs and commit issue
+
+⭐⭐⭐⭐⭐
