@@ -21,5 +21,6 @@ steps:
     yarn build:api
   displayName: 'npm install and build:api'
 - script: |
+    cd example
     yarn build:api-include
   displayName: 'build for filter'
