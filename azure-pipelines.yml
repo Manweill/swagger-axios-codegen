@@ -20,6 +20,6 @@ steps:
     yarn install
     yarn build:api
   displayName: 'npm install and build:api'
-- script: 
+- script: |
     yarn build:api-include
   displayName: 'build for filter'
