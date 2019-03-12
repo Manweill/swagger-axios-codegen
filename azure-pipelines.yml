@@ -19,5 +19,7 @@ steps:
     cd example
     yarn install
     yarn build:api
+  displayName: 'npm install and build:api'
+- script: 
     yarn build:api-include
-  displayName: 'npm install and build'
+  displayName: 'build for filter'
