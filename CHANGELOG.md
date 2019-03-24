@@ -1,4 +1,9 @@
 
+## 0.5.3
+
+Fix enum.map is not a function [issue 20](https://github.com/Manweill/swagger-axios-codegen/issues/17)
+Fix class properties was empty [issue 20](https://github.com/Manweill/swagger-axios-codegen/issues/20)
+
 ## 0.5.2
 
 Fix [issue 17](https://github.com/Manweill/swagger-axios-codegen/issues/17)
