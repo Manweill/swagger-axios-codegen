@@ -19,7 +19,7 @@ export function createDefinitionClass(
   let enums = []
   let types = []
   let model: IClassDef = { name: className, props: [], imports: [] }
-  const propertiesEntities = Object.entries(properties)
+  const propertiesEntities = Object.entries(properties || {})
   for (const [k, v] of propertiesEntities) {
     // console.log('props name', k)
     let { propType, isEnum, isArray, isType, ref } = propTrueType(v);

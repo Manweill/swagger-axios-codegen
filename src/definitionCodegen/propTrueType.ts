@@ -39,15 +39,19 @@ export function propTrueType(v: IDefinitionProperty): {
   // 是枚举 并且是字符串类型
   else if (v.enum && v.type === 'string') {
     result.isEnum = true
-    result.propType = v.enum.map(item => `'${item}'='${item}'`).join(',')
+    result.propType = getEnums(v.enum).map(item => `'${item}'='${item}'`).join(',')
   }
   else if (v.enum) {
     result.isType = true
-    result.propType = v.type === 'string' ? v.enum.map(item => `'${item}'`).join('|') : v.enum.join('|')
+    result.propType = v.type === 'string' ? getEnums(v.enum).map(item => `'${item}'`).join('|') : v.enum.join('|')
   }
   // 基本类型
   else {
     result.propType = toBaseType(v.type)
   }
   return result
+}
+
+function getEnums(enumObject: any): any[] {
+  return Object.prototype.toString.call(enumObject) === '[object Object]' ? Object.values(enumObject) : enumObject;
 }
