@@ -1,5 +1,5 @@
 # swagger-axios-codegen
-swagger client to use axios and typescript
+swagger client with axios and typescript
 
 ￼[![NpmVersion](https://img.shields.io/npm/v/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
 ￼[![npm](https://img.shields.io/npm/dm/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
@@ -9,7 +9,7 @@ require node > v8.0.0
 
 it will always resolve `axios.response.data` or reject `axios.error` with Promise
 
-support other support similar to `axios` library, for example [Fly.js](https://github.com/wendux/fly), required setting `ISwaggerOptions.useCustomerRequestInstance = true`
+support other similar to `axios` library, for example [Fly.js](https://github.com/wendux/fly), required setting `ISwaggerOptions.useCustomerRequestInstance = true`
 
 ## [Example](./example)
 
