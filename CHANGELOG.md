@@ -1,5 +1,5 @@
 
-## 0.5.4
+## 0.5.5
 
 Support typescript strict mode [issue 23](https://github.com/Manweill/swagger-axios-codegen/issues/23)
 
