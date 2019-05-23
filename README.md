@@ -1,5 +1,5 @@
 # swagger-axios-codegen
-swagger client with axios and typescript
+A swagger client uses axios and typescript
 
 ￼[![NpmVersion](https://img.shields.io/npm/v/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
 ￼[![npm](https://img.shields.io/npm/dm/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
