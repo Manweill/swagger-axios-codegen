@@ -46,7 +46,7 @@ export function requestCodegen(paths: IPaths): IRequestClass {
           parsedParameters.requestParameters.length > 0
             ? `params: {
               ${parsedParameters.requestParameters}
-          } = <any>{},`
+          } = {} as any,`
             : ''
 
         formData = parsedParameters.requestFormData ? 'data = new FormData();\n' + parsedParameters.requestFormData : ''
