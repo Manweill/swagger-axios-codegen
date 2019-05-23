@@ -1,4 +1,8 @@
 
+## 0.5.4
+
+Support typescript strict mode [issue 23](https://github.com/Manweill/swagger-axios-codegen/issues/23)
+
 ## 0.5.3
 
 Fix enum.map is not a function [issue 20](https://github.com/Manweill/swagger-axios-codegen/issues/17)
