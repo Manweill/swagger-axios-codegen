@@ -16,10 +16,19 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    yarn install
+    yarn start
+    yarn link
+  displayName: 'registered local swagger-axios-codegen package'
+- script: |
     cd example
     yarn install
+    yarn link swagger-axios-codegen
+  displayName: 'import local package'
+- script: |
+    cd example
     yarn build:api
-  displayName: 'npm install and build:api'
+  displayName: 'build api'
 - script: |
     cd example
     yarn build:api-include
