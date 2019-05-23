@@ -13,10 +13,8 @@ export function classTemplate(name: string, props: IPropDef[], imports: string[]
 
     ${props.map(p => classPropsTemplate(p.name, p.type, p.desc)).join('')}
 
-    constructor(data?:any){
-      if(data){
+    constructor(data: (undefined | any) = {}){
         ${props.map(p => classConstructorTemplate(p.name)).join('')}
-      }
     }
   }
   `
