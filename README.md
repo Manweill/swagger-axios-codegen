@@ -4,6 +4,8 @@ A swagger client uses axios and typescript
 ￼[![NpmVersion](https://img.shields.io/npm/v/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
 ￼[![npm](https://img.shields.io/npm/dm/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
 [![Build Status](https://dev.azure.com/manweill/swagger-axios-codegen/_apis/build/status/Manweill.swagger-axios-codegen?branchName=master)](https://dev.azure.com/manweill/swagger-axios-codegen/_build/latest?definitionId=1&branchName=master)
+[![Build](https://img.shields.io/azure-devops/build/manweill/06f956c6-4a97-46cf-8f68-b90c43b86bc5/1/master.svg)](https://img.shields.io/azure-devops/build/manweill/06f956c6-4a97-46cf-8f68-b90c43b86bc5/1/master.svg)
+[![open issues](https://img.shields.io/github/issues-raw/manweill/swagger-axios-codegen.svg)](https://img.shields.io/github/issues-raw/manweill/swagger-axios-codegen.svg)
 
 require node > v8.0.0
 
