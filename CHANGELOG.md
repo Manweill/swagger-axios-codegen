@@ -1,4 +1,8 @@
 
+## 0.5.7
+
+Fix Response type [issue 26](https://github.com/Manweill/swagger-axios-codegen/issues/26)
+
 ## 0.5.5
 
 Support typescript strict mode [issue 23](https://github.com/Manweill/swagger-axios-codegen/issues/23)
