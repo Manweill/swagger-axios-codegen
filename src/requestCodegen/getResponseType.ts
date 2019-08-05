@@ -17,14 +17,19 @@ export function getResponseType(reqProps: IRequestMethod): { responseType: strin
     // 如果是数组
     if (checkType === 'array' || resSchema.items) {
 
-      const refType = resSchema.items.$ref
-        ? refClassName(resSchema.items.$ref) || 'any'
-        : toBaseType(resSchema.type)
-      result = refType + '[]'
+      if (resSchema.items.$ref) {
+        const refType = refClassName(resSchema.items.$ref)
+        isRef = true
+        result = refType + '[]'
+      } else {
+        const refType = toBaseType(resSchema.type)
+        result = refType + '[]'
+      }
 
-    } else if (resSchema.items) {
+    } else if (resSchema.$ref) {
       // 如果是引用对象
-      result = refClassName(resSchema.items.$ref) || 'any'
+      result = refClassName(resSchema.$ref) || 'any'
+      isRef = true
 
     } else {
       result = checkType
@@ -38,6 +43,5 @@ export function getResponseType(reqProps: IRequestMethod): { responseType: strin
     }
   }
 
-  console.log('after', result)
   return { responseType: result, isRef }
 }

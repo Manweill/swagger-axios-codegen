@@ -76,6 +76,7 @@ export async function codegen(params: ISwaggerOptions) {
     const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
 
     let allModel = Object.values(models)
+    // console.log(allModel)
     let allEnum = Object.values(enums)
     let allImport: string[] = []
 

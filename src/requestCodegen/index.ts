@@ -54,6 +54,7 @@ export function requestCodegen(paths: IPaths): IRequestClass {
       }
       const { responseType, isRef: refResponseType } = getResponseType(reqProps)
       // 如果返回值也是引用类型，则加入到类的引用里面
+      console.log('refResponseType', responseType, refResponseType)
       if (refResponseType) {
         let imports = parsedParameters.imports || []
         imports.push(responseType)

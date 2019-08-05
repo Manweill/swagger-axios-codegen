@@ -88,14 +88,16 @@ export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[
   let result: string[] = []
   imports.forEach(model => {
     let ref = null
-    ref = allDefinition.find(item => item.name == model)
+
+    ref = allDefinition.find(item => model.startsWith(item.name))
+
     if (ref) {
       result.push(ref.name)
       if (ref.value.imports.length > 0) {
         result = result.concat(findDeepRefs(ref.value.imports, allDefinition, allEnums))
       }
     } else {
-      ref = allEnums.find(item => item.name == model)
+      ref = allEnums.find(item => model.startsWith(item.name))
       if (ref) {
         result.push(ref.name)
       }
