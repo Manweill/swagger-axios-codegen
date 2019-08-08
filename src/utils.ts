@@ -39,11 +39,17 @@ export function toBaseType(s: string) {
   }
   let result = ''
   switch (s) {
+    case 'boolean':
+    case 'bool':
+    case 'Boolean':
+      result = 'boolean'
+      break
     case 'array':
       result = '[]'
       break
     case 'Int64':
     case 'integer':
+    case 'number':
       result = 'number'
       break
     case 'Guid':
@@ -55,7 +61,7 @@ export function toBaseType(s: string) {
       result = 'any'
       break
     default:
-      result = 'any'
+      result = s
       break
   }
   return result

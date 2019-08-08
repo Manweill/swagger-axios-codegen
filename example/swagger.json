@@ -454,6 +454,9 @@
       "properties": {
         "id": {
           "type": "string"
+        },
+        "isLow": {
+          "type": "boolean"
         }
       }
     },
