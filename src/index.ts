@@ -17,7 +17,8 @@ const defaultOptions: ISwaggerOptions = {
   fileName: 'index.ts',
   useStaticMethod: true,
   useCustomerRequestInstance: false,
-  include: []
+  include: [],
+  strictNullChecks: true
 }
 
 
@@ -63,7 +64,7 @@ export async function codegen(params: ISwaggerOptions) {
     })
 
     Object.values(models).forEach(item => {
-      const text = classTemplate(item.value.name, item.value.props, item.value.imports)
+      const text = classTemplate(item.value.name, item.value.props, item.value.imports, params.strictNullChecks)
       const fileDir = path.join(options.outputDir || '', 'definitions')
       writeFile(fileDir, item.name, format(text, options))
     })
@@ -120,7 +121,7 @@ export async function codegen(params: ISwaggerOptions) {
 
     allModel.forEach(item => {
       if (allImport.includes(item.name)) {
-        const text = classTemplate(item.value.name, item.value.props, [])
+        const text = classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
         defSource += text
       }
     })
@@ -156,7 +157,7 @@ export async function codegen(params: ISwaggerOptions) {
       const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
 
       Object.values(models).forEach(item => {
-        const text = classTemplate(item.value.name, item.value.props, [])
+        const text = classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
         apiSource += text
       })
 

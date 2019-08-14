@@ -2,6 +2,7 @@ const { codegen } = require('swagger-axios-codegen')
 
 codegen({
   methodNameMode: 'path',
-  source: require('../swagger.json'),
-  outputDir: './swagger/services'
+  remoteUrl: 'https://orion.beta.utapp.cn/swagger/v1/swagger.json',
+  outputDir: './swagger/services',
+  strictNullChecks: false
 })

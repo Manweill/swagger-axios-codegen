@@ -10,6 +10,8 @@ export interface ISwaggerOptions {
   useCustomerRequestInstance?: boolean | undefined
   include?: Array<string | IInclude>
   format?: (s: string) => string
+  /** match with tsconfig */
+  strictNullChecks?: boolean | undefined
 }
 
 export interface IPropDef {

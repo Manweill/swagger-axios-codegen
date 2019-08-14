@@ -1,3 +1,7 @@
+## 0.6.0
+
+Add `ISwaggerOptions.strictNullChecks`, default is `true`, it's match with tsconfig.json
+Fix [issue 29](https://github.com/Manweill/swagger-axios-codegen/issues/29)
 
 ## 0.5.7
 
