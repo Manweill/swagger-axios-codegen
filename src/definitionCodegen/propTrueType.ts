@@ -19,7 +19,6 @@ export function propTrueType(v: IDefinitionProperty): {
   }
   //是个数组
   else if (v.items) {
-    result.isArray = true
     if (v.items.$ref) {
       // 是个引用类型
       result.ref = refClassName(v.items.$ref)
@@ -35,6 +34,7 @@ export function propTrueType(v: IDefinitionProperty): {
         result.propType = toBaseType(v.items.type) + '[]'
       }
     }
+    result.isArray = true
   }
   // 是枚举 并且是字符串类型
   else if (v.enum && v.type === 'string') {
