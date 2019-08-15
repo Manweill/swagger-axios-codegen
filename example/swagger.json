@@ -241,6 +241,31 @@
           }
         }
       }
+    },
+    "/crawler/v1/mapper/{mapper.id}": {
+      "put": {
+        "operationId": "UpdateMapper",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapper.id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "Mappers"
+        ]
+      }
     }
   },
   "definitions": {

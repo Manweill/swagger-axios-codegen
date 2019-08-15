@@ -46,15 +46,15 @@ export function getRequestParameters(params: IParameter[]) {
     // 如果参数是从formData 提交
     if (p.in === 'formData') {
       requestFormData += `if(params['${paramName}']){
-        data.append('${paramName}',params['${paramName}'] as any)
+        data.append('${p.name}',params['${paramName}'] as any)
       }\n
       `
     } else if (p.in === 'path') {
-      requestPathReplace += `url = url.replace('{${paramName}}',params['${paramName}']+'')\n`
+      requestPathReplace += `url = url.replace('{${p.name}}',params['${paramName}']+'')\n`
     } else if (p.in === 'query') {
-      queryParameters.push(`'${paramName}':params['${paramName}']`)
+      queryParameters.push(`'${p.name}':params['${paramName}']`)
     } else if (p.in === 'body') {
-      var body = p.schema ? `...params['${paramName}']` : `'${paramName}':params['${paramName}']`
+      var body = p.schema ? `...params['${paramName}']` : `'${p.name}':params['${paramName}']`
       bodyParameters.push(body)
     }
   })
