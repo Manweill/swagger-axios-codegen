@@ -4,7 +4,7 @@ import prettier from 'prettier';
 import axios from 'axios';
 import { ISwaggerSource } from './swaggerInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
-import { enumTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate } from './template';
+import { enumTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate, interfaceTemplate } from './template';
 import { requestCodegen } from './requestCodegen';
 import { ISwaggerOptions, IInclude } from './baseInterfaces';
 import { findDeepRefs } from './utils';
@@ -17,6 +17,7 @@ const defaultOptions: ISwaggerOptions = {
   fileName: 'index.ts',
   useStaticMethod: true,
   useCustomerRequestInstance: false,
+  useInterfaceModel: false,
   include: [],
   strictNullChecks: true
 }
@@ -64,7 +65,9 @@ export async function codegen(params: ISwaggerOptions) {
     })
 
     Object.values(models).forEach(item => {
-      const text = classTemplate(item.value.name, item.value.props, item.value.imports, params.strictNullChecks)
+      const text = params.useInterfaceModel
+        ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+        : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
       const fileDir = path.join(options.outputDir || '', 'definitions')
       writeFile(fileDir, item.name, format(text, options))
     })
@@ -121,7 +124,9 @@ export async function codegen(params: ISwaggerOptions) {
 
     allModel.forEach(item => {
       if (allImport.includes(item.name)) {
-        const text = classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+        const text = params.useInterfaceModel
+          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
         defSource += text
       }
     })
@@ -157,7 +162,9 @@ export async function codegen(params: ISwaggerOptions) {
       const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
 
       Object.values(models).forEach(item => {
-        const text = classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+        const text = params.useInterfaceModel
+          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
         apiSource += text
       })
 

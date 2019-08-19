@@ -1,8 +1,21 @@
 import camelcase from 'camelcase'
 import { IPropDef } from "./baseInterfaces";
 
-export function interfaceTemplate(props: IPropDef, strictNullChecks: boolean) {
+/** 类模板 */
+export function interfaceTemplate(name: string, props: IPropDef[], imports: string[], strictNullChecks: boolean = true) {
+  // 所有的引用
+  const importString = imports.map(imp => {
+    return `import { ${imp} } from '../definitions/${imp}'\n`
+  }).join('')
 
+  return `
+  ${importString}
+
+  export interface ${name} {
+
+    ${props.map(p => classPropsTemplate(p.name, p.type, p.desc, !strictNullChecks)).join('')}
+  }
+  `
 }
 
 /** 类模板 */
@@ -25,6 +38,7 @@ export function classTemplate(name: string, props: IPropDef[], imports: string[]
   }
   `
 }
+
 /** 类属性模板 */
 export function classPropsTemplate(filedName: string, type: string, description: string, canNull: boolean) {
   /**
