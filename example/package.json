@@ -11,7 +11,8 @@
   },
   "scripts": {
     "clean": "rm -rf ./swagger/services/**",
-    "build:api": "npm run clean && node ./swagger/codegen.js && tsc -p ./swagger",
-    "build:api-include": "node ./swagger/codegen.include.js && tsc -p ./swagger"
+    "build:api": "npm run clean && node ./swagger/codegen.js && npm run build",
+    "build:api-include": "node ./swagger/codegen.include.js && npm run build",
+    "build": "tsc -p ./swagger"
   }
 }

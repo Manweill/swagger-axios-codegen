@@ -17,7 +17,7 @@ const defaultOptions: ISwaggerOptions = {
   fileName: 'index.ts',
   useStaticMethod: true,
   useCustomerRequestInstance: false,
-  useInterfaceModel: false,
+  modelMode: 'class',
   include: [],
   strictNullChecks: true
 }
@@ -53,25 +53,42 @@ export async function codegen(params: ISwaggerOptions) {
   // TODO: next next next time
   // if (options.multipleFileMode) {
   if (false) {
+
+    Object.entries(requestCodegen(swaggerSource.paths)).forEach(([className, requests]) => {
+      let text = ''
+      requests.forEach(req => {
+
+        const reqName = options.methodNameMode == "operationId"
+          ? req.operationId
+          : req.name
+        text += requestTemplate(reqName, req.requestSchema, options)
+      })
+      text = serviceTemplate(className + options.serviceNameSuffix, text)
+      apiSource += text
+    })
+    writeFile(options.outputDir || '', 'index.service.ts', format(apiSource, options))
+
     const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
-    // enums
+    let defsString = ''
     Object.values(enums).forEach(item => {
       const text = item.value
         ? enumTemplate(item.value.name, item.value.enumProps, 'Enum')
         : item.content || ''
 
-      const fileDir = path.join(options.outputDir || '', 'definitions')
-      writeFile(fileDir, item.name + '.ts', format(text, options))
+      // const fileDir = path.join(options.outputDir || '', 'definitions')
+      // writeFile(fileDir, item.name + '.ts', format(text, options))
+      defsString += text
     })
 
     Object.values(models).forEach(item => {
-      const text = params.useInterfaceModel
+      const text = params.modelMode === 'interface'
         ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
         : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
-      const fileDir = path.join(options.outputDir || '', 'definitions')
-      writeFile(fileDir, item.name, format(text, options))
+      // const fileDir = path.join(options.outputDir || '', 'definitions')
+      // writeFile(fileDir, item.name + '.ts', format(text, options))
+      defsString += text
     })
-
+    writeFile(options.outputDir || '', 'index.defs.ts', format(defsString, options))
   }
   else if (options.include && options.include.length > 0) {
     let reqSource = ''
@@ -124,7 +141,7 @@ export async function codegen(params: ISwaggerOptions) {
 
     allModel.forEach(item => {
       if (allImport.includes(item.name)) {
-        const text = params.useInterfaceModel
+        const text = params.modelMode === 'interface'
           ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
           : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
         defSource += text
@@ -162,7 +179,7 @@ export async function codegen(params: ISwaggerOptions) {
       const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
 
       Object.values(models).forEach(item => {
-        const text = params.useInterfaceModel
+        const text = params.modelMode === 'interface'
           ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
           : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
         apiSource += text

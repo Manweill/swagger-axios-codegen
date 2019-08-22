@@ -101,14 +101,9 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
  */
 ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
   return new Promise((resolve, reject) => {
-    const configs:IRequestConfig = {...options, method: "${method}" };
-    configs.headers = {
-      ...options.headers,
-      'Content-Type':'${contentType}'
-    }
     let url = '${path}'
     ${pathReplace}
-    configs.url = url
+    const configs:IRequestConfig = getConfigs('${method}', '${contentType}', url, options)
     ${parsedParameters && queryParameters.length > 0
       ? 'configs.params = {' + queryParameters.join(',') + '}'
       : ''
@@ -119,11 +114,7 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}optio
     }
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;
-    axios(configs).then(res => {
-      resolve(res.data);
-    }).catch(err => {
-      reject(err);
-    });
+    axios(configs, resolve, reject)
   });
 }`;
 }
@@ -162,8 +153,19 @@ export const serviceOptions: ServiceOptions = {
 };
 
 // Instance selector
-function axios(configs: IRequestConfig): AxiosPromise {
-  return serviceOptions.axios? serviceOptions.axios.request(configs) : axiosStatic(configs);
+function axios(configs: IRequestConfig, resolve: (p: any) => void, reject: (p: any) => void) {
+  const req = serviceOptions.axios ? serviceOptions.axios.request(configs) : axiosStatic(configs);
+
+  return req.then((res) => { resolve(res.data); }).catch(err => { reject(err); });
+}
+
+function getConfigs(method: string, contentType: string, url: string,options: any):IRequestConfig {
+  const configs: IRequestConfig = { ...options, method: 'post',url };
+  configs.headers = {
+    ...options.headers,
+    'Content-Type': 'application/json'
+  };
+  return configs
 }
 `
 

@@ -8,11 +8,12 @@ export interface ISwaggerOptions {
   source?: any
   useStaticMethod?: boolean | undefined
   useCustomerRequestInstance?: boolean | undefined
-  useInterfaceModel?: boolean | undefined
   include?: Array<string | IInclude>
   format?: (s: string) => string
   /** match with tsconfig */
   strictNullChecks?: boolean | undefined
+  /** definition Class mode */
+  modelMode?: 'class' | 'interface'
 }
 
 export interface IPropDef {
