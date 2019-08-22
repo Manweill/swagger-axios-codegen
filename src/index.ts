@@ -17,7 +17,7 @@ const defaultOptions: ISwaggerOptions = {
   fileName: 'index.ts',
   useStaticMethod: true,
   useCustomerRequestInstance: false,
-  modelMode: 'class',
+  modelMode: 'interface',
   include: [],
   strictNullChecks: true
 }

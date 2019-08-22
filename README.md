@@ -42,11 +42,12 @@ export interface ISwaggerOptions {
   source?: any
   useStaticMethod?: boolean | undefined
   useCustomerRequestInstance?: boolean | undefined
-  useInterfaceModel?: boolean | undefined
   include?: Array<string | IInclude>
   format?: (s: string) => string
   /** match with tsconfig */
   strictNullChecks?: boolean | undefined
+  /** definition Class mode */
+  modelMode?: 'class' | 'interface'
 }
 
 const defaultOptions: ISwaggerOptions = {
@@ -57,9 +58,10 @@ const defaultOptions: ISwaggerOptions = {
   fileName: 'index.ts',
   useStaticMethod: true,
   useCustomerRequestInstance: false,
-  useInterfaceModel: false,
   include: [],
-  strictNullChecks: true
+  strictNullChecks: true,
+  /** definition Class mode ,auto use interface mode to streamlined code*/
+  modelMode?: 'interface'
 }
 
 ```

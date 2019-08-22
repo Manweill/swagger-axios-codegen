@@ -1,25 +1,32 @@
+
+## 0.7.0
+
+- Add `ISwaggerOptions.modelMode`, default is `interface`, it can help us streamline the code generate
+- Improve improve code generate
+
 ## 0.6.0
 
-Add `ISwaggerOptions.strictNullChecks`, default is `true`, it's match with tsconfig.json
-Fix [issue 29](https://github.com/Manweill/swagger-axios-codegen/issues/29)
+- Add `ISwaggerOptions.strictNullChecks`, default is `true`, it's match with tsconfig.json
+
+- Fix [issue 29](https://github.com/Manweill/swagger-axios-codegen/issues/29)
 
 ## 0.5.7
 
-Fix Response type [issue 26](https://github.com/Manweill/swagger-axios-codegen/issues/26)
+- Fix Response type [issue 26](https://github.com/Manweill/swagger-axios-codegen/issues/26)
 
 ## 0.5.5
 
-Support typescript strict mode [issue 23](https://github.com/Manweill/swagger-axios-codegen/issues/23)
+- Support typescript strict mode [issue 23](https://github.com/Manweill/swagger-axios-codegen/issues/23)
 
 ## 0.5.3
 
-Fix enum.map is not a function [issue 20](https://github.com/Manweill/swagger-axios-codegen/issues/17)
-Fix class properties was empty [issue 20](https://github.com/Manweill/swagger-axios-codegen/issues/20)
+- Fix enum.map is not a function [issue 20](https://github.com/Manweill/swagger-axios-codegen/issues/17)
+- Fix class properties was empty [issue 20](https://github.com/Manweill/swagger-axios-codegen/issues/20)
 
 ## 0.5.2
 
-Fix [issue 17](https://github.com/Manweill/swagger-axios-codegen/issues/17)
-Fix [issue 13](https://github.com/Manweill/swagger-axios-codegen/issues/13)
+- Fix [issue 17](https://github.com/Manweill/swagger-axios-codegen/issues/17)
+- Fix [issue 13](https://github.com/Manweill/swagger-axios-codegen/issues/13)
 
 ## 0.5.0
 
