@@ -2,7 +2,7 @@
 ## 0.7.0
 
 - Add `ISwaggerOptions.modelMode`, default is `interface`, it can help us streamline the code generate
-- Improve improve code generate
+- Improve code generate size(40%)
 
 ## 0.6.0
 
