@@ -1,4 +1,9 @@
 
+
+## 0.7.2
+
+- Fix 20X status code response types  [issue 33](https://github.com/Manweill/swagger-axios-codegen/issues/33) with [LucaDe](https://github.com/LucaDe)
+
 ## 0.7.0
 
 - Add `ISwaggerOptions.modelMode`, default is `interface`, it can help us streamline the code generate
