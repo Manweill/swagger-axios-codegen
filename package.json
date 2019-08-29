@@ -31,7 +31,7 @@
     "prettier": "^1.15.2"
   },
   "devDependencies": {
-    "@types/node": "^9.6.0",
+    "@types/node": "^12.7.2",
     "@types/prettier": "^1.12.2",
     "tslint": "^5.10.0",
     "typescript": "^3.5.3"
