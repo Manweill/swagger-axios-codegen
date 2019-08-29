@@ -1,4 +1,7 @@
 
+## 0.7.3 
+
+- Extend request options [issue 35](https://github.com/Manweill/swagger-axios-codegen/issues/35) with [LucaDe](https://github.com/LucaDe)
 
 ## 0.7.2
 
