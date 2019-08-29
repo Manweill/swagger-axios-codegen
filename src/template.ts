@@ -133,6 +133,7 @@ export const serviceHeader = `/** Generate by swagger-axios-codegen */
 import axiosStatic, { AxiosPromise, AxiosInstance } from 'axios';
 export interface IRequestOptions {
   headers?: any;
+  baseURL?: string;
 }
 
 interface IRequestConfig {
@@ -159,11 +160,11 @@ function axios(configs: IRequestConfig, resolve: (p: any) => void, reject: (p: a
   return req.then((res) => { resolve(res.data); }).catch(err => { reject(err); });
 }
 
-function getConfigs(method: string, contentType: string, url: string,options: any):IRequestConfig {
-  const configs: IRequestConfig = { ...options, method: 'post',url };
+function getConfigs(method: string = 'post', contentType: string = 'application/json', url: string,options: any):IRequestConfig {
+  const configs: IRequestConfig = { ...options, method, url };
   configs.headers = {
     ...options.headers,
-    'Content-Type': 'application/json'
+    'Content-Type': contentType,
   };
   return configs
 }
