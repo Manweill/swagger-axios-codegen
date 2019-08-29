@@ -160,7 +160,7 @@ function axios(configs: IRequestConfig, resolve: (p: any) => void, reject: (p: a
   return req.then((res) => { resolve(res.data); }).catch(err => { reject(err); });
 }
 
-function getConfigs(method: string = 'post', contentType: string = 'application/json', url: string,options: any):IRequestConfig {
+function getConfigs(method: string, contentType: string, url: string,options: any):IRequestConfig {
   const configs: IRequestConfig = { ...options, method, url };
   configs.headers = {
     ...options.headers,
