@@ -21,6 +21,9 @@ export function getRequestParameters(params: IParameter[]) {
     if (p.schema) {
       if (p.schema.items) {
         propType = refClassName(p.schema.items.$ref)
+        if(p.schema.type && p.schema.type==='array'){
+          propType += '[]'
+        }
       } else if (p.schema.$ref) {
         propType = refClassName(p.schema.$ref)
         // console.log('propType', refClassName(p.schema.$ref))
