@@ -30,6 +30,7 @@ export interface IRequestMethod {
         '$ref': string,
         'type'?: string,
         'items'?: IParameterItems,
+        'format'?: string,
       }
     }
   }

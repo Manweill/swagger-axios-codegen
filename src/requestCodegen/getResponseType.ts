@@ -22,6 +22,7 @@ export function getResponseType(reqProps: IRequestMethod): { responseType: strin
   }
 
   let checkType = resSchema.type
+  let format = resSchema.format;
   // 如果是数组
   if (checkType === 'array' || resSchema.items) {
     if (resSchema.items.$ref) {
@@ -29,7 +30,7 @@ export function getResponseType(reqProps: IRequestMethod): { responseType: strin
       isRef = true
       result = refType + '[]'
     } else {
-      const refType = toBaseType(resSchema.type)
+      const refType = toBaseType(resSchema.type, resSchema.format)
       result = refType + '[]'
     }
   } else if (resSchema.$ref) {
@@ -37,8 +38,9 @@ export function getResponseType(reqProps: IRequestMethod): { responseType: strin
     result = refClassName(resSchema.$ref) || 'any'
     isRef = true
   } else {
+    console.log(checkType + " " + format);
     result = checkType
-    result = toBaseType(result)
+    result = toBaseType(result, format)
   }
 
   if (result == 'object') {

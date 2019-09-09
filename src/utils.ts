@@ -33,7 +33,7 @@ export function refClassName(s: string) {
   }
 }
 
-export function toBaseType(s: string) {
+export function toBaseType(s: string, format?: string) {
   if (s === undefined || s === null || s.length === 0) {
     return 'any | null'
   }
@@ -55,7 +55,14 @@ export function toBaseType(s: string) {
     case 'Guid':
     case 'String':
     case 'string':
-      result = 'string'
+      switch (format) {
+        case 'date':
+        case 'date-time':
+          result = 'Date';
+          break
+        default:
+          result = 'string';
+      }
       break
     case 'file':
       result = 'any'
