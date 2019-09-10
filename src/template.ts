@@ -134,6 +134,7 @@ import axiosStatic, { AxiosPromise, AxiosInstance } from 'axios';
 export interface IRequestOptions {
   headers?: any;
   baseURL?: string;
+  responseType?: string;
 }
 
 interface IRequestConfig {
