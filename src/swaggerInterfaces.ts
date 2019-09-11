@@ -61,6 +61,7 @@ export interface IParameterSchema {
 
 export interface IParameterItems {
   type?: string
+  format?: string
   $ref: string
   items?: IParameterItems
 }
