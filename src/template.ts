@@ -159,18 +159,13 @@ export const serviceHeader = (options: ISwaggerOptions) => {
 
   return `/** Generate by swagger-axios-codegen */
   import axiosStatic, { AxiosPromise, AxiosInstance } from 'axios';
-  export interface IRequestOptions {
-    headers?: any;
-    baseURL?: string;
-    responseType?: string;
-  }
 
-  import axiosStatic, { AxiosPromise, AxiosInstance } from 'axios';
   ${classTransformerImport}
 
   export interface IRequestOptions {
     headers?: any;
     baseURL?: string;
+    responseType?: string;
   }
 
   interface IRequestConfig {
