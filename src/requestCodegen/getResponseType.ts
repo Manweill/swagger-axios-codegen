@@ -38,7 +38,6 @@ export function getResponseType(reqProps: IRequestMethod): { responseType: strin
     result = refClassName(resSchema.$ref) || 'any'
     isRef = true
   } else {
-    console.log(checkType + " " + format);
     result = checkType
     result = toBaseType(result, format)
   }
