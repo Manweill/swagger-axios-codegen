@@ -54,9 +54,8 @@ export function classPropsTemplate(filedName: string, type: string, format: stri
    *   //description 
    *   fieldName: type
    */
-  const decorators = useClassTransformer ? classTransformTemplate(type, format, isType) : '';
-
   type = toBaseType(type, format);
+  const decorators = useClassTransformer ? classTransformTemplate(type, format, isType) : '';
 
   return `
   /** ${description || ''} */
@@ -114,7 +113,6 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
     parsedParameters = <any>{},
     formData = ''
   } = requestSchema
-
   const { useClassTransformer } = options;
   const { queryParameters = [], bodyParameters = [] } = parsedParameters
   const nonArrayType = responseType.replace('[', '').replace(']', '');
