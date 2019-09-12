@@ -133,7 +133,7 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}optio
       : ''
     }
     let data = ${parsedParameters && bodyParameters.length > 0
-      ? '{' + bodyParameters.join(',') + '}'
+      ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
       : 'null'
     }
     ${contentType === 'multipart/form-data' ? formData : ''}
