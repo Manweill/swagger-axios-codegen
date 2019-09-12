@@ -19,7 +19,8 @@ const defaultOptions: ISwaggerOptions = {
   useCustomerRequestInstance: false,
   modelMode: 'interface',
   include: [],
-  strictNullChecks: true
+  strictNullChecks: true,
+  useClassTransformer: false,
 }
 
 
@@ -48,8 +49,8 @@ export async function codegen(params: ISwaggerOptions) {
     ...params
   }
   let apiSource = options.useCustomerRequestInstance
-    ? customerServiceHeader
-    : serviceHeader
+    ? customerServiceHeader(options)
+    : serviceHeader(options)
   // TODO: next next next time
   // if (options.multipleFileMode) {
   if (false) {
@@ -83,7 +84,7 @@ export async function codegen(params: ISwaggerOptions) {
     Object.values(models).forEach(item => {
       const text = params.modelMode === 'interface'
         ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
-        : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+        : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks, options.useClassTransformer)
       // const fileDir = path.join(options.outputDir || '', 'definitions')
       // writeFile(fileDir, item.name + '.ts', format(text, options))
       defsString += text
@@ -143,7 +144,7 @@ export async function codegen(params: ISwaggerOptions) {
       if (allImport.includes(item.name)) {
         const text = params.modelMode === 'interface'
           ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
-          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks, options.useClassTransformer)
         defSource += text
       }
     })
@@ -181,7 +182,7 @@ export async function codegen(params: ISwaggerOptions) {
       Object.values(models).forEach(item => {
         const text = params.modelMode === 'interface'
           ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
-          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks, options.useClassTransformer)
         apiSource += text
       })
 

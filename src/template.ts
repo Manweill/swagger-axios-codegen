@@ -1,5 +1,8 @@
 import camelcase from 'camelcase'
-import { IPropDef } from "./baseInterfaces";
+import { IPropDef, ISwaggerOptions } from "./baseInterfaces";
+import { toBaseType } from './utils';
+
+const baseTypes = ['string', 'number', 'object', 'boolean', 'any'];
 
 /** 类模板 */
 export function interfaceTemplate(name: string, props: IPropDef[], imports: string[], strictNullChecks: boolean = true) {
@@ -13,24 +16,29 @@ export function interfaceTemplate(name: string, props: IPropDef[], imports: stri
 
   export interface ${name} {
 
-    ${props.map(p => classPropsTemplate(p.name, p.type, p.desc, !strictNullChecks)).join('')}
+    ${props.map(p => classPropsTemplate(p.name, p.type, null, p.desc, !strictNullChecks, false, false)).join('')}
   }
   `
 }
 
 /** 类模板 */
-export function classTemplate(name: string, props: IPropDef[], imports: string[], strictNullChecks: boolean = true) {
+export function classTemplate(name: string, props: IPropDef[], imports: string[], strictNullChecks: boolean = true, useClassTransformer: boolean) {
   // 所有的引用
-  const importString = imports.map(imp => {
+  const mappedImports = imports.map(imp => {
     return `import { ${imp} } from '../definitions/${imp}'\n`
-  }).join('')
+  })
+
+  if (useClassTransformer && imports.length > 0) {
+    mappedImports.push(`import { Type, Transform, Expose } from 'class-transformer'\n`)
+  }
+  const importString = mappedImports.join('');
 
   return `
   ${importString}
 
   export class ${name} {
 
-    ${props.map(p => classPropsTemplate(p.name, p.type, p.desc, !strictNullChecks)).join('')}
+    ${props.map(p => classPropsTemplate(p.name, p.type, p.format, p.desc, !strictNullChecks, useClassTransformer, p.isEnum || p.isType)).join('')}
 
     constructor(data: (undefined | any) = {}){
         ${props.map(p => classConstructorTemplate(p.name)).join('')}
@@ -40,17 +48,30 @@ export function classTemplate(name: string, props: IPropDef[], imports: string[]
 }
 
 /** 类属性模板 */
-export function classPropsTemplate(filedName: string, type: string, description: string, canNull: boolean) {
+export function classPropsTemplate(filedName: string, type: string, format: string, description: string, canNull: boolean, useClassTransformer: boolean, isType: boolean) {
   /**
    * eg: 
    *   //description 
    *   fieldName: type
    */
+  type = toBaseType(type, format);
+  const decorators = useClassTransformer ? classTransformTemplate(type, format, isType) : '';
 
   return `
   /** ${description || ''} */
+  ${decorators}
   ${filedName}${canNull ? '?' : ''}:${type};
   `
+}
+
+export function classTransformTemplate(type: string, format: string, isType: boolean) {
+  const decorators: string[] = [`@Expose()`];
+  const nonArrayType = type.replace('[', '').replace(']', '');
+  /* ignore interfaces */
+  if (baseTypes.indexOf(nonArrayType) < 0 && !isType) {
+    decorators.push(`@Type(() => ${nonArrayType})`);
+  }
+  return decorators.join('\n');
 }
 
 /** 类属性模板 */
@@ -92,9 +113,12 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
     parsedParameters = <any>{},
     formData = ''
   } = requestSchema
-
+  const { useClassTransformer } = options;
   const { queryParameters = [], bodyParameters = [] } = parsedParameters
-
+  const nonArrayType = responseType.replace('[', '').replace(']', '');
+  const isArrayType = responseType.indexOf('[') > 0;
+  const transform = useClassTransformer && baseTypes.indexOf(nonArrayType) < 0;
+  const resolveString = transform ? `(response: any${isArrayType ? '[]' : ''}) => resolve(plainToClass(${nonArrayType}, response, {strategy: 'excludeAll'}))` : 'resolve';
   return `
 /**
  * ${summary || ''}
@@ -114,7 +138,7 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}optio
     }
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;
-    axios(configs, resolve, reject)
+    axios(configs, ${resolveString}, reject);
   });
 }`;
 }
@@ -128,91 +152,102 @@ export function serviceTemplate(name: string, body: string) {
   `
 }
 
-export const serviceHeader = `/** Generate by swagger-axios-codegen */
+export const serviceHeader = (options: ISwaggerOptions) => {
+  const classTransformerImport = options.useClassTransformer
+    ? `import { Expose, Transform, Type, plainToClass } from 'class-transformer';
+  ` : '';
 
-import axiosStatic, { AxiosPromise, AxiosInstance } from 'axios';
-export interface IRequestOptions {
-  headers?: any;
-  baseURL?: string;
-  responseType?: string;
-}
+  return `/** Generate by swagger-axios-codegen */
+  import axiosStatic, { AxiosPromise, AxiosInstance } from 'axios';
 
-interface IRequestConfig {
-  method?: any;
-  headers?: any;
-  url?: any;
-  data?: any;
-  params?: any;
-}
+  ${classTransformerImport}
 
-// Add options interface
-export interface ServiceOptions {
-  axios?: AxiosInstance,
-}
+  export interface IRequestOptions {
+    headers?: any;
+    baseURL?: string;
+    responseType?: string;
+  }
 
-// Add default options
-export const serviceOptions: ServiceOptions = {
-};
+  interface IRequestConfig {
+    method?: any;
+    headers?: any;
+    url?: any;
+    data?: any;
+    params?: any;
+  }
 
-// Instance selector
-function axios(configs: IRequestConfig, resolve: (p: any) => void, reject: (p: any) => void) {
-  const req = serviceOptions.axios ? serviceOptions.axios.request(configs) : axiosStatic(configs);
+  // Add options interface
+  export interface ServiceOptions {
+    axios?: AxiosInstance,
+  }
 
-  return req.then((res) => { resolve(res.data); }).catch(err => { reject(err); });
-}
-
-function getConfigs(method: string, contentType: string, url: string,options: any):IRequestConfig {
-  const configs: IRequestConfig = { ...options, method, url };
-  configs.headers = {
-    ...options.headers,
-    'Content-Type': contentType,
+  // Add default options
+  export const serviceOptions: ServiceOptions = {
   };
-  return configs
-}
-`
 
-export const customerServiceHeader = `/** Generate by swagger-axios-codegen */
+  // Instance selector
+  function axios(configs: IRequestConfig, resolve: (p: any) => void, reject: (p: any) => void) {
+    const req = serviceOptions.axios ? serviceOptions.axios.request(configs) : axiosStatic(configs);
 
-export interface IRequestOptions {
-  headers?: any;
-}
+    return req.then((res) => { resolve(res.data); }).catch(err => { reject(err); });
+  }
 
-interface IRequestPromise<T=any> extends Promise<IRequestResponse<T>> {}
-
-interface IRequestResponse<T=any> {
-  data: T;
-  status: number;
-  statusText: string;
-  headers: any;
-  config: any;
-  request?: any;
+  function getConfigs(method: string, contentType: string, url: string,options: any):IRequestConfig {
+    const configs: IRequestConfig = { ...options, method, url };
+    configs.headers = {
+      ...options.headers,
+      'Content-Type': contentType,
+    };
+    return configs
+  }
+  `
 }
 
-interface IRequestInstance {
-  (config: any): IRequestPromise;
-  (url: string, config?: any): IRequestPromise;
-  request<T = any>(config: any): IRequestPromise<T>;
-}
+export const customerServiceHeader = (options: ISwaggerOptions) => {
 
-interface IRequestConfig {
-  method?: any;
-  headers?: any;
-  url?: any;
-  data?: any;
-  params?: any;
-}
+  return `/** Generate by swagger-axios-codegen */
 
-// Add options interface
-export interface ServiceOptions {
-  axios?: IRequestInstance,
-}
+  export interface IRequestOptions {
+    headers?: any;
+  }
 
-// Add default options
-export const serviceOptions: ServiceOptions = {
-};
+  interface IRequestPromise<T=any> extends Promise<IRequestResponse<T>> {}
 
-// Instance selector
-function axios(configs: IRequestConfig): IRequestPromise {
-  return serviceOptions.axios && serviceOptions.axios.request(configs);
+  interface IRequestResponse<T=any> {
+    data: T;
+    status: number;
+    statusText: string;
+    headers: any;
+    config: any;
+    request?: any;
+  }
+
+  interface IRequestInstance {
+    (config: any): IRequestPromise;
+    (url: string, config?: any): IRequestPromise;
+    request<T = any>(config: any): IRequestPromise<T>;
+  }
+
+  interface IRequestConfig {
+    method?: any;
+    headers?: any;
+    url?: any;
+    data?: any;
+    params?: any;
+  }
+
+  // Add options interface
+  export interface ServiceOptions {
+    axios?: IRequestInstance,
+  }
+
+  // Add default options
+  export const serviceOptions: ServiceOptions = {
+  };
+
+  // Instance selector
+  function axios(configs: IRequestConfig): IRequestPromise {
+    return serviceOptions.axios && serviceOptions.axios.request(configs);
+  }
+  `
 }
-`

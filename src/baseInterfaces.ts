@@ -14,12 +14,17 @@ export interface ISwaggerOptions {
   strictNullChecks?: boolean | undefined
   /** definition Class mode */
   modelMode?: 'class' | 'interface'
+  /** use class-transformer to transform the results */
+  useClassTransformer?: boolean
 }
 
 export interface IPropDef {
   name: string
   type: string
+  format?: string
   desc: string
+  isType: boolean
+  isEnum: boolean
 }
 
 export interface IInclude {
