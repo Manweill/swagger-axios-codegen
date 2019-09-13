@@ -158,7 +158,7 @@ export const serviceHeader = (options: ISwaggerOptions) => {
   ` : '';
 
   return `/** Generate by swagger-axios-codegen */
-  import axiosStatic, { AxiosPromise, AxiosInstance } from 'axios';
+  import axiosStatic, { AxiosInstance } from 'axios';
 
   ${classTransformerImport}
 
