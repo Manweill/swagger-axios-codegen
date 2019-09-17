@@ -3,7 +3,7 @@ import { IDefinitionClass, IDefinitionEnum } from "./baseInterfaces";
 export const GENERIC_SPLIT_KEY = '['
 
 // 是否是接口类型
-export const isGenerics = (s: string) => /^.+\[.+\]$/.test(s)
+export const isGenerics = (s: string) => (/^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s))
 
 /**
  * 分解泛型接口
@@ -27,7 +27,8 @@ export function refClassName(s: string) {
   if (isGenerics(propType)) {
     const { interfaceClassName, TClassName } = getGenericsClassNames(propType)
     // return `${interfaceClassName}<${toBaseType(TClassName)}>`
-    return trimString(propType.replace(/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/g, '_'), '_', 'right')
+    const str = trimString(propType.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_'), '_', 'right')
+    return str
   } else {
     return propType
   }
