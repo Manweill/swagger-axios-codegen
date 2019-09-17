@@ -114,7 +114,7 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
     formData = ''
   } = requestSchema
   const { useClassTransformer } = options;
-  const { queryParameters = [], bodyParameters = [] } = parsedParameters
+  const { queryParameters = [], bodyParameter } = parsedParameters
   const nonArrayType = responseType.replace('[', '').replace(']', '');
   const isArrayType = responseType.indexOf('[') > 0;
   const transform = useClassTransformer && baseTypes.indexOf(nonArrayType) < 0;
@@ -132,8 +132,9 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}optio
       ? 'configs.params = {' + queryParameters.join(',') + '}'
       : ''
     }
-    let data = ${parsedParameters && bodyParameters.length > 0
-      ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
+    let data = ${parsedParameters && bodyParameter.length > 0
+      // ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
+      ? bodyParameter
       : 'null'
     }
     ${contentType === 'multipart/form-data' ? formData : ''}
@@ -158,6 +159,8 @@ export const serviceHeader = (options: ISwaggerOptions) => {
   ` : '';
 
   return `/** Generate by swagger-axios-codegen */
+  // tslint:disable
+  /* eslint-disable */
   import axiosStatic, { AxiosInstance } from 'axios';
 
   ${classTransformerImport}
@@ -206,7 +209,8 @@ export const serviceHeader = (options: ISwaggerOptions) => {
 export const customerServiceHeader = (options: ISwaggerOptions) => {
 
   return `/** Generate by swagger-axios-codegen */
-
+  // tslint:disable
+  /* eslint-disable */
   export interface IRequestOptions {
     headers?: any;
   }
