@@ -34,6 +34,10 @@ export function refClassName(s: string) {
   }
 }
 
+export function isBaseType(s: string) {
+  return ['boolean', 'number', 'string', 'string', 'Date'].includes(s)
+}
+
 export function toBaseType(s: string, format?: string) {
   if (s === undefined || s === null || s.length === 0) {
     return 'any | null'
