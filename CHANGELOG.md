@@ -1,4 +1,14 @@
 
+## 0.8.1
+
+- Improve request params
+
+- Ignore generated file with tslint and eslint
+
+- Improve generic key [issue45](https://github.com/Manweill/swagger-axios-codegen/issues/45)
+
+- Remove unused import [PR44](https://github.com/Manweill/swagger-axios-codegen/pull/44)
+
 ## 0.8.0
 
 - Add class-transformer to transform results and support dates [issue 37](https://github.com/Manweill/swagger-axios-codegen/issues/40) by [arkraft](https://github.com/arkraft)
