@@ -1,4 +1,24 @@
 
+## 0.8.1
+
+- Improve request params
+
+- Ignore generated file with tslint and eslint
+
+- Improve generic key [issue45](https://github.com/Manweill/swagger-axios-codegen/issues/45)
+
+- Remove unused import [PR44](https://github.com/Manweill/swagger-axios-codegen/pull/44)
+
+## 0.8.0
+
+- Add class-transformer to transform results and support dates [issue 37](https://github.com/Manweill/swagger-axios-codegen/issues/40) by [arkraft](https://github.com/arkraft)
+
+- Fix array in response bodys [issue 32](https://github.com/Manweill/swagger-axios-codegen/issues/32) with [LucaDe](https://github.com/LucaDe)
+
+## 0.7.4
+
+- Make responseType、baseURL configurable [issue 41](https://github.com/Manweill/swagger-axios-codegen/issues/40) with [LucaDe](https://github.com/LucaDe)
+
 ## 0.7.3 
 
 - Extend request options [issue 35](https://github.com/Manweill/swagger-axios-codegen/issues/35) with [LucaDe](https://github.com/LucaDe)

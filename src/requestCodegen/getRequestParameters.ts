@@ -15,12 +15,16 @@ export function getRequestParameters(params: IParameter[]) {
   let queryParameters: string[] = []
   let bodyParameters: string[] = []
   let imports: string[] = []
+  let moreBodyParams = params.filter(item => item.in === 'body').length > 1
   params.forEach(p => {
     let propType = ''
     // 引用类型定义
     if (p.schema) {
       if (p.schema.items) {
         propType = refClassName(p.schema.items.$ref)
+        if (p.schema.type && p.schema.type === 'array') {
+          propType += '[]'
+        }
       } else if (p.schema.$ref) {
         propType = refClassName(p.schema.$ref)
         // console.log('propType', refClassName(p.schema.$ref))
@@ -54,9 +58,16 @@ export function getRequestParameters(params: IParameter[]) {
     } else if (p.in === 'query') {
       queryParameters.push(`'${p.name}':params['${paramName}']`)
     } else if (p.in === 'body') {
-      var body = p.schema ? `...params['${paramName}']` : `'${p.name}':params['${paramName}']`
+      const body = moreBodyParams ? `'${p.name}':params['${paramName}']` : `params['${paramName}']`
+
+      // var body = p.schema
+      //   ? p.schema.type === 'array'
+      //     ? `[...params['${paramName}']]`
+      //     : `...params['${paramName}']`
+      //   : `'${p.name}':params['${paramName}']`
       bodyParameters.push(body)
     }
   })
-  return { requestParameters, requestFormData, requestPathReplace, queryParameters, bodyParameters, imports }
+  const bodyParameter = moreBodyParams ? `{${bodyParameters.join(',')}}` : bodyParameters.join(',')
+  return { requestParameters, requestFormData, requestPathReplace, queryParameters, bodyParameter, imports }
 }
