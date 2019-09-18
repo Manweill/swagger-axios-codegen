@@ -5,10 +5,26 @@ import { refClassName, toBaseType } from '../utils'
 import camelcase from 'camelcase'
 
 /**
+ * 参数去重
+ * 后台书写不规范,存在参数重名的情况
+ * @param params 
+ */
+function getUniqParams(params: IParameter[]): IParameter[] {
+  const uniqParams: Record<string, IParameter> = {}
+  params.forEach(v => {
+    // _${v.in}
+    // TODO:同名但是v.in= query |path |body 的情况同时出现如何处理？分出不同的request参数？
+    uniqParams[`${v.name}`] = v;
+  })
+  return Object.values(uniqParams)
+}
+
+/**
  * 生成参数
  * @param params
  */
 export function getRequestParameters(params: IParameter[]) {
+  params = getUniqParams(params)
   let requestParameters = ''
   let requestFormData = ''
   let requestPathReplace = ''
