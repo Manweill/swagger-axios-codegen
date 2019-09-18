@@ -132,7 +132,7 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}optio
       ? 'configs.params = {' + queryParameters.join(',') + '}'
       : ''
     }
-    let data = ${parsedParameters && bodyParameter.length > 0
+    let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
       // ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
       ? bodyParameter
       : 'null'

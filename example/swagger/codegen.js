@@ -1,4 +1,5 @@
-const { codegen } = require('swagger-axios-codegen')
+// const { codegen } = require('swagger-axios-codegen')
+const { codegen } = require('../../dist/index.js')
 
 codegen({
   methodNameMode: 'path',
