@@ -2,8 +2,9 @@
 const { codegen } = require('../../dist/index.js')
 
 let include = [
-  'Products', // tagName
-  'Estimates',//tagName
+  "products-test",
+  // 'Products', // tagName
+  // 'Estimates',//tagName
   { 'User': ['history'] }
 ]
 codegen({

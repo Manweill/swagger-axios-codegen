@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import prettier from 'prettier';
 import axios from 'axios';
+import pascalcase from 'pascalcase'
 import { ISwaggerSource } from './swaggerInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
 import { enumTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate, interfaceTemplate } from './template';
@@ -115,7 +116,7 @@ export async function codegen(params: ISwaggerOptions) {
 
       }
       for (let [className, requests] of requestClasses) {
-        if (includeClassName !== className) continue
+        if (pascalcase(includeClassName) !== className) continue
         let text = ''
         for (let req of requests) {
           const reqName = options.methodNameMode == "operationId"
