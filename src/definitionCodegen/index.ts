@@ -16,7 +16,7 @@ export function definitionsCodeGen(definitions: IDefinitions) {
       const enumDef = createDefinitionEnum(className, v.enum, v.type)
       definitionEnums[`#/definitions/${k}`] = {
         name: enumDef.name,
-        value: enumDef
+        value: enumDef,
       }
     }
     else if (v.type === 'array') {

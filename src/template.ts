@@ -88,6 +88,12 @@ export function enumTemplate(name: string, enumString: string, prefix?: string) 
   `
 }
 
+export function typeTemplate(name: string, typeString: string, prefix?: string) {
+  return `
+  export type ${name} = ${typeString};
+  `
+}
+
 interface IRequestSchema {
   summary: string
   parameters: string
@@ -119,6 +125,8 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
   const isArrayType = responseType.indexOf('[') > 0;
   const transform = useClassTransformer && baseTypes.indexOf(nonArrayType) < 0;
   const resolveString = transform ? `(response: any${isArrayType ? '[]' : ''}) => resolve(plainToClass(${nonArrayType}, response, {strategy: 'excludeAll'}))` : 'resolve';
+  
+  
   return `
 /**
  * ${summary || ''}
