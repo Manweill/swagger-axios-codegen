@@ -17,5 +17,5 @@ export function createDefinitionEnum(className: string, enumArray: any[], type: 
       enumArray.join('|')
   }
 
-  return { name: className, enumProps: result }
+  return { name: className, enumProps: result, type: type }
 }
