@@ -1,9 +1,11 @@
 export interface ISwaggerSource {
-  swagger: string
+  swagger?: string | undefined,
+  openapi?: string | undefined,
   info: string
   paths: IPaths
   securityDefinitions: string
   definitions: IDefinitions
+  components: IComponents
   externalDocs: string
 }
 
@@ -89,4 +91,15 @@ export interface IDefinitionProperty {
   $ref: string
   items: IDefinitionProperty
   description: string
+}
+
+export interface IComponents {
+  schemas: {
+    [key: string]: IDefinition
+  }
+}
+
+// 字典类型，对应java map或者.NET Dictionary
+export interface IDictionary<T> {
+  [key: string]: T
 }

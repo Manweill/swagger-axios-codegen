@@ -35,7 +35,7 @@ export function refClassName(s: string) {
 }
 
 export function isBaseType(s: string) {
-  return ['boolean', 'number', 'string', 'string', 'Date'].includes(s)
+  return ['boolean', 'number', 'string', 'string', 'Date', 'any'].includes(s)
 }
 
 export function toBaseType(s: string, format?: string) {
@@ -60,6 +60,7 @@ export function toBaseType(s: string, format?: string) {
     case 'Guid':
     case 'String':
     case 'string':
+    case 'uuid':
       switch (format) {
         case 'date':
         case 'date-time':
@@ -75,6 +76,9 @@ export function toBaseType(s: string, format?: string) {
     default:
       result = s
       break
+  }
+  if (s === "integer") {
+    console.log(s, result)
   }
   return result
 }
@@ -122,4 +126,9 @@ export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[
     }
   })
   return result;
+}
+
+export function isOpenApi3(version: string) {
+  console.log('openApi version：', version)
+  return version.startsWith("3.", 0);
 }

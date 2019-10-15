@@ -62,7 +62,7 @@ export function requestCodegen(paths: IPaths): IRequestClass {
       }
 
       requestClasses[className].push({
-        name: methodName,
+        name: method + camelcase(methodName, { pascalCase: true }),
         operationId: reqProps.operationId,
         requestSchema: {
           summary: reqProps.summary,

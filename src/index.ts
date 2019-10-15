@@ -8,7 +8,8 @@ import { definitionsCodeGen } from './definitionCodegen'
 import { enumTemplate, typeTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate, interfaceTemplate } from './template';
 import { requestCodegen } from './requestCodegen';
 import { ISwaggerOptions, IInclude } from './baseInterfaces';
-import { findDeepRefs } from './utils';
+import { findDeepRefs, isOpenApi3 } from './utils';
+import { componentsCodegen } from './componentsCodegen';
 
 const defaultOptions: ISwaggerOptions = {
   serviceNameSuffix: 'Service',
@@ -21,14 +22,14 @@ const defaultOptions: ISwaggerOptions = {
   modelMode: 'interface',
   include: [],
   strictNullChecks: true,
-  useClassTransformer: false,
+  useClassTransformer: false
 }
 
 
 export async function codegen(params: ISwaggerOptions) {
   console.time('finish')
   let err
-  let swaggerSource
+  let swaggerSource: ISwaggerSource
 
   if (params.remoteUrl) {
     const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
@@ -52,6 +53,13 @@ export async function codegen(params: ISwaggerOptions) {
   let apiSource = options.useCustomerRequestInstance
     ? customerServiceHeader(options)
     : serviceHeader(options)
+
+  const isV3 = isOpenApi3(params.openApi || swaggerSource.openapi || swaggerSource.openapi)
+  console.log('isV3', isV3)
+  let requestClasses = Object.entries(requestCodegen(swaggerSource.paths))
+
+  const { models, enums } = isV3 ? componentsCodegen(swaggerSource.components) : definitionsCodeGen(swaggerSource.definitions)
+
   // TODO: next next next time
   // if (options.multipleFileMode) {
   if (false) {
@@ -95,13 +103,13 @@ export async function codegen(params: ISwaggerOptions) {
   else if (options.include && options.include.length > 0) {
     let reqSource = ''
     let defSource = ''
-    let requestClasses = Object.entries(requestCodegen(swaggerSource.paths))
-    const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
 
     let allModel = Object.values(models)
     // console.log(allModel)
     let allEnum = Object.values(enums)
     let allImport: string[] = []
+
+    // 处理接口
 
     options.include.forEach(item => {
       let includeClassName = ''
@@ -141,6 +149,8 @@ export async function codegen(params: ISwaggerOptions) {
       }
     })
 
+    // 处理类和枚举
+
     allModel.forEach(item => {
       if (allImport.includes(item.name)) {
         const text = params.modelMode === 'interface'
@@ -152,14 +162,14 @@ export async function codegen(params: ISwaggerOptions) {
 
     allEnum.forEach(item => {
       if (allImport.includes(item.name)) {
-        let text = ''; 
-        if(item.value){
-          if(item.value.type == 'string'){
+        let text = '';
+        if (item.value) {
+          if (item.value.type == 'string') {
             text = enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix);
-          }else{
+          } else {
             text = typeTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
           }
-        }else{
+        } else {
           text = item.content || '';
         }
 
@@ -173,7 +183,8 @@ export async function codegen(params: ISwaggerOptions) {
   else {
     try {
 
-      Object.entries(requestCodegen(swaggerSource.paths)).forEach(([className, requests]) => {
+      // 处理接口
+      requestClasses.forEach(([className, requests]) => {
         let text = ''
         requests.forEach(req => {
 
@@ -186,7 +197,7 @@ export async function codegen(params: ISwaggerOptions) {
         apiSource += text
       })
 
-      const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
+      // 处理类和枚举
 
       Object.values(models).forEach(item => {
         const text = params.modelMode === 'interface'
@@ -196,14 +207,14 @@ export async function codegen(params: ISwaggerOptions) {
       })
 
       Object.values(enums).forEach(item => {
-        let text = ''; 
-        if(item.value){
-          if(item.value.type == 'string'){
+        let text = '';
+        if (item.value) {
+          if (item.value.type == 'string') {
             text = enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix);
-          }else{
+          } else {
             text = typeTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
           }
-        }else{
+        } else {
           text = item.content || '';
         }
         apiSource += text

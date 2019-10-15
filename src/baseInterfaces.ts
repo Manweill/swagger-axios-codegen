@@ -15,7 +15,11 @@ export interface ISwaggerOptions {
   /** definition Class mode */
   modelMode?: 'class' | 'interface'
   /** use class-transformer to transform the results */
-  useClassTransformer?: boolean
+  useClassTransformer?: boolean,
+  // force the specified swagger or openAPI version,
+  openApi?: string | undefined,
+  // extend file url. it can defined generic type
+  extendFile?: string | undefined,
 }
 
 export interface IPropDef {
