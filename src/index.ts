@@ -5,7 +5,7 @@ import axios from 'axios';
 import pascalcase from 'pascalcase'
 import { ISwaggerSource } from './swaggerInterfaces'
 import { definitionsCodeGen } from './definitionCodegen'
-import { enumTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate, interfaceTemplate } from './template';
+import { enumTemplate, typeTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate, interfaceTemplate } from './template';
 import { requestCodegen } from './requestCodegen';
 import { ISwaggerOptions, IInclude } from './baseInterfaces';
 import { findDeepRefs } from './utils';
@@ -152,9 +152,17 @@ export async function codegen(params: ISwaggerOptions) {
 
     allEnum.forEach(item => {
       if (allImport.includes(item.name)) {
-        const text = item.value
-          ? enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
-          : item.content || ''
+        let text = ''; 
+        if(item.value){
+          if(item.value.type == 'string'){
+            text = enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix);
+          }else{
+            text = typeTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
+          }
+        }else{
+          text = item.content || '';
+        }
+
         defSource += text
       }
     })
@@ -188,9 +196,16 @@ export async function codegen(params: ISwaggerOptions) {
       })
 
       Object.values(enums).forEach(item => {
-        const text = item.value
-          ? enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
-          : item.content || ''
+        let text = ''; 
+        if(item.value){
+          if(item.value.type == 'string'){
+            text = enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix);
+          }else{
+            text = typeTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
+          }
+        }else{
+          text = item.content || '';
+        }
         apiSource += text
       })
 

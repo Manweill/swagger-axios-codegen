@@ -48,7 +48,8 @@ export interface IDefinitionClasses {
 
 export interface IEnumDef {
   name: string
-  enumProps: string
+  enumProps: string,
+  type: string
 }
 
 export interface IDefinitionEnum {
