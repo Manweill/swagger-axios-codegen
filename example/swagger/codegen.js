@@ -7,5 +7,6 @@ codegen({
   // remoteUrl: 'http://localhost:22742/swagger/v1/swagger.json',
   outputDir: './swagger/services',
   strictNullChecks: false,
+  // useCustomerRequestInstance: true,
   modelMode: 'interface'
 })
