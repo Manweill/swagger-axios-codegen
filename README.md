@@ -48,6 +48,8 @@ export interface ISwaggerOptions {
   strictNullChecks?: boolean | undefined
   /** definition Class mode */
   modelMode?: 'class' | 'interface'
+  /** use class-transformer to transform the results */
+  useClassTransformer?: boolean
 }
 
 const defaultOptions: ISwaggerOptions = {
@@ -62,6 +64,7 @@ const defaultOptions: ISwaggerOptions = {
   strictNullChecks: true,
   /** definition Class mode ,auto use interface mode to streamlined code*/
   modelMode?: 'interface'
+  useClassTransformer: false
 }
 
 ```
@@ -73,7 +76,7 @@ const defaultOptions: ISwaggerOptions = {
 const { codegen } = require('swagger-axios-codegen')
 codegen({
   methodNameMode: 'operationId',
-  source:require('./swagger.json')
+  source: require('./swagger.json')
 })
 
 
@@ -98,7 +101,7 @@ codegen({
     methodNameMode: 'operationId',
     remoteUrl: 'http://localhost:22742/swagger/v1/swagger.json',
     outputDir: '.',
-    useStaticMethod:true
+    useStaticMethod: true
 });
 
 ```
@@ -167,3 +170,48 @@ codegen({
 })
 
 ```
+
+### use class transformer to transform results
+
+This is helpful if you want to transform dates to real date 
+objects. Swagger can define string formats for different types. Two if these formats are `date` and `date-time`
+
+If a `class-transformer` is enabled and a format is set on a string, the result string will be transformed to a `Date` instance
+
+
+// swagger.json
+```json
+{
+  "ObjectWithDate": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "type": "string",
+        "format": "date-time"
+      }
+    }
+  }
+}
+```
+
+```js
+
+const { codegen } = require('swagger-axios-codegen')
+codegen({
+  methodNameMode: 'operationId',
+  source:require('./swagger.json'),
+  useClassTransformer: true,
+})
+```
+
+Resulting class:
+```ts
+export class ObjectWithDate {
+  @Expose()
+  @Type(() => Date)
+  public date: Date;
+}
+```
+
+The service method will transform the json response and return an instance of this class
+
