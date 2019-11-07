@@ -77,9 +77,6 @@ export function toBaseType(s: string, format?: string) {
       result = s
       break
   }
-  if (s === "integer") {
-    console.log(s, result)
-  }
   return result
 }
 
