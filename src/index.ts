@@ -31,6 +31,7 @@ export async function codegen(params: ISwaggerOptions) {
   let err
   let swaggerSource: ISwaggerSource
 
+  // 获取接口定义文件
   if (params.remoteUrl) {
     const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
     if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
@@ -54,6 +55,7 @@ export async function codegen(params: ISwaggerOptions) {
     ? customerServiceHeader(options)
     : serviceHeader(options)
 
+  // 判断是否是openApi3.0或者swagger3.0
   const isV3 = isOpenApi3(params.openApi || swaggerSource.openapi || swaggerSource.openapi)
   console.log('isV3', isV3)
   let requestClasses = Object.entries(requestCodegen(swaggerSource.paths))
@@ -101,6 +103,7 @@ export async function codegen(params: ISwaggerOptions) {
     writeFile(options.outputDir || '', 'index.defs.ts', format(defsString, options))
   }
   else if (options.include && options.include.length > 0) {
+    // 接口过滤入口
     let reqSource = ''
     let defSource = ''
 
@@ -181,6 +184,7 @@ export async function codegen(params: ISwaggerOptions) {
     writeFile(options.outputDir || '', options.fileName || '', format(apiSource, options))
   }
   else {
+    // 常规入口
     try {
 
       // 处理接口

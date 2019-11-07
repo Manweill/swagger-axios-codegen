@@ -4,6 +4,7 @@ import { createDefinitionClass } from './createDefinitionClass';
 import { createDefinitionEnum } from './createDefinitionEnum';
 import { IDefinitionClasses, IDefinitionEnums } from '../baseInterfaces';
 
+
 export function componentsCodegen(definitions: IComponents) {
   let definitionModels: IDefinitionClasses = {}
   let definitionEnums: IDefinitionEnums = {}
@@ -14,7 +15,7 @@ export function componentsCodegen(definitions: IComponents) {
     // is an enum definition,just in swagger openAPI v2 
     if (v.enum) {
       const enumDef = createDefinitionEnum(className, v.enum, v.type)
-      definitionEnums[`#/definitions/${k}`] = {
+      definitionEnums[`#/components/schemas/${k}`] = {
         name: enumDef.name,
         value: enumDef,
       }
@@ -30,13 +31,13 @@ export function componentsCodegen(definitions: IComponents) {
         // definitionModels[item.name] = {
         //   value: item.text
         // }
-        definitionEnums[`#/definitions/${item.name}`] = {
+        definitionEnums[`#/components/schemas/${item.name}`] = {
           name: item.name,
           content: item.text
         }
       })
 
-      definitionModels[`#/definitions/${k}`] = {
+      definitionModels[`#/components/schemas/${k}`] = {
         value: model,
         name: className
       }
