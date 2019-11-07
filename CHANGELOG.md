@@ -1,4 +1,17 @@
 
+## 0.9.0
+
+- Support OpenApi3.0
+
+## 0.8.3
+
+- add docs for the `useClassTransformer` option by arkraft
+
+- fix: useCustomerRequestInstance template by xxbld
+
+- fix #48 by nbytes
+
+
 ## 0.8.1
 
 - Improve request params

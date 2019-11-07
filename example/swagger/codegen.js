@@ -3,8 +3,8 @@ const { codegen } = require('../../dist/index.js')
 
 codegen({
   methodNameMode: 'path',
-  // source: require('../swagger.json'),
-  remoteUrl: 'http://localhost:44307/swagger/v1/swagger.json',
+  source: require('../swagger.json'),
+  // remoteUrl: 'http://localhost:44307/swagger/v1/swagger.json',
   outputDir: './swagger/services',
   strictNullChecks: false,
   // useCustomerRequestInstance: true,
