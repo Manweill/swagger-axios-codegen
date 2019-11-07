@@ -45,7 +45,7 @@ export function getRequestParameters(params: IParameter[]) {
         propType = refClassName(p.schema.$ref)
         // console.log('propType', refClassName(p.schema.$ref))
       } else if (p.schema.type) {
-        propType = p.schema.type
+        propType = toBaseType(p.schema.type)
       } else {
         throw new Error('Could not find property type on schema')
       }

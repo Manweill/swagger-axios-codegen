@@ -60,9 +60,17 @@ export function requestCodegen(paths: IPaths): IRequestClass {
         imports.push(responseType)
         parsedParameters.imports = imports
       }
+      // TODO 待优化，目前简单处理同名方法
+      let uniqueMethodName = method + camelcase(methodName, { pascalCase: true })
+      const methodCount = requestClasses[className].filter(item => item.name === uniqueMethodName).length
 
+      if (methodCount >= 1) {
+        console.log(uniqueMethodName, methodCount)
+        uniqueMethodName = uniqueMethodName + (methodCount + 1)
+        console.log(uniqueMethodName)
+      }
       requestClasses[className].push({
-        name: methodName,
+        name: uniqueMethodName,
         operationId: reqProps.operationId,
         requestSchema: {
           summary: reqProps.summary,
