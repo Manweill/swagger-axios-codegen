@@ -130,3 +130,5 @@ typings/
 node_modules/
 test/
 example/
+.vscode
+.github
