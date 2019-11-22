@@ -25,6 +25,7 @@ export interface IRequestMethod {
   consumes: string[]
   produces: string[]
   parameters: IParameter[]
+  requestBody: IRequestBody,
   responses: {
     [key: string]: {
       description: string
@@ -34,6 +35,14 @@ export interface IRequestMethod {
         'items'?: IParameterItems,
         'format'?: string,
       }
+    }
+  }
+}
+
+export interface IRequestBody {
+  content: {
+    [key: string]: {
+      schema: ISchema
     }
   }
 }
@@ -102,4 +111,11 @@ export interface IComponents {
 // 字典类型，对应java map或者.NET Dictionary
 export interface IDictionary<T> {
   [key: string]: T
+}
+
+export interface ISchema {
+  '$ref': string
+  'type'?: string
+  'items'?: IParameterItems
+  'format'?: string
 }

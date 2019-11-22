@@ -3,6 +3,8 @@ import { IPaths } from '../swaggerInterfaces'
 import { getRequestParameters } from './getRequestParameters'
 import { getResponseType } from './getResponseType'
 import camelcase from 'camelcase'
+import { isNullOrUndefined } from 'util'
+import { getRequestBody } from './getRequestBody'
 
 export interface IRequestClass {
   [key: string]: IRequestMethods[];
@@ -37,29 +39,54 @@ export function requestCodegen(paths: IPaths): IRequestClass {
       }
       let parameters = ''
       let handleNullParameters = ''
-      let parsedParameters: any = {}
+      let parsedParameters: any = {
+        requestParameters: ''
+      }
       if (reqProps.parameters) {
         // 获取到接口的参数
         parsedParameters = getRequestParameters(reqProps.parameters)
 
-        parameters =
-          parsedParameters.requestParameters.length > 0
-            ? `params: {
-              ${parsedParameters.requestParameters}
-          } = {} as any,`
-            : ''
+
 
         formData = parsedParameters.requestFormData ? 'data = new FormData();\n' + parsedParameters.requestFormData : ''
         pathReplace = parsedParameters.requestPathReplace
       }
+
+      let imports = parsedParameters.imports || []
+
+      let parsedRequestBody: any = {}
+      if (reqProps.requestBody) {
+        parsedRequestBody = getRequestBody(reqProps.requestBody)
+
+        // 合并imports
+        if (parsedParameters.imports) {
+          imports.push(parsedRequestBody.imports)
+        }
+
+        parsedParameters.requestParameters = parsedParameters.requestParameters
+          ? parsedParameters.requestParameters + parsedRequestBody.bodyType
+          : parsedRequestBody.bodyType
+      }
+
+
+      parameters =
+        parsedParameters.requestParameters.length > 0
+          ? `params: {
+              ${parsedParameters.requestParameters}
+          } = {} as any,`
+          : ''
+
+
       const { responseType, isRef: refResponseType } = getResponseType(reqProps)
       // 如果返回值也是引用类型，则加入到类的引用里面
       // console.log('refResponseType', responseType, refResponseType)
+
       if (refResponseType) {
-        let imports = parsedParameters.imports || []
         imports.push(responseType)
-        parsedParameters.imports = imports
       }
+
+      parsedParameters.imports = imports
+
       // TODO 待优化，目前简单处理同名方法
       let uniqueMethodName = camelcase(methodName)
       var uniqueMethodNameReg = new RegExp(`${uniqueMethodName}\\d`)
@@ -85,7 +112,8 @@ export function requestCodegen(paths: IPaths): IRequestClass {
           method,
           contentType,
           responseType,
-          formData
+          formData,
+          requestBody: parsedRequestBody.bodyType
         }
       })
     }

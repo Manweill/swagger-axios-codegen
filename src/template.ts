@@ -104,6 +104,7 @@ interface IRequestSchema {
   pathReplace: string
   parsedParameters: any
   formData: string
+  requestBody: any
 }
 
 /** requestTemplate */
@@ -117,7 +118,8 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
     path = '',
     pathReplace = '',
     parsedParameters = <any>{},
-    formData = ''
+    formData = '',
+    requestBody = null,
   } = requestSchema
   const { useClassTransformer } = options;
   const { queryParameters = [], bodyParameter = [] } = parsedParameters
@@ -143,7 +145,9 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}optio
     let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
       // ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
       ? bodyParameter
-      : 'null'
+      : !!requestBody
+        ? 'params.body'
+        : 'null'
     }
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;
