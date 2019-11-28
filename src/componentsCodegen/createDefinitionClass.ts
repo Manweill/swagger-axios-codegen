@@ -45,7 +45,7 @@ export function createDefinitionClass(
       model.imports.push(ref)
     }
     // propsStr += classPropsTemplate(k, propType, v.description)
-    model.props.push({ name: k, type: propType, format: v.format, desc: v.description, isType, isEnum })
+    model.props.push({ name: k, type: propType, format: v.format, desc: v.description?.replace(/\//g, '\\/'), isType, isEnum })
   }
   // : classTemplate(className, propsStr, constructorStr)
   return { enums, model }

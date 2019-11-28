@@ -1,4 +1,4 @@
-import { getMethodName } from '../utils'
+import { getMethodName, RemoveSpecialCharacters } from '../utils'
 import { IPaths } from '../swaggerInterfaces'
 import { getRequestParameters } from './getRequestParameters'
 import { getResponseType } from './getResponseType'
@@ -31,7 +31,7 @@ export function requestCodegen(paths: IPaths): IRequestClass {
       let pathReplace = ''
       // 获取类名
       if (!reqProps.tags) continue
-      const className = camelcase(reqProps.tags[0], { pascalCase: true })
+      const className = camelcase(RemoveSpecialCharacters(reqProps.tags[0]), { pascalCase: true })
       if (className === '') continue
       // 是否存在
       if (!requestClasses[className]) {
@@ -68,9 +68,8 @@ export function requestCodegen(paths: IPaths): IRequestClass {
           : parsedRequestBody.bodyType
       }
 
-
       parameters =
-        parsedParameters.requestParameters.length > 0
+        parsedParameters.requestParameters?.length > 0
           ? `params: {
               ${parsedParameters.requestParameters}
           } = {} as any,`

@@ -60,7 +60,7 @@ export function classPropsTemplate(filedName: string, type: string, format: stri
   return `
   /** ${description || ''} */
   ${decorators}
-  ${filedName}${canNull ? '?' : ''}:${type};
+  '${filedName}'${canNull ? '?' : ''}:${type};
   `
 }
 

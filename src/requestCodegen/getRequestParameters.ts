@@ -1,6 +1,6 @@
 import { IParameter } from '../swaggerInterfaces'
 
-import { refClassName, toBaseType } from '../utils'
+import { refClassName, toBaseType, RemoveSpecialCharacters } from '../utils'
 
 import camelcase from 'camelcase'
 
@@ -58,6 +58,7 @@ export function getRequestParameters(params: IParameter[]) {
     else {
       propType = toBaseType(p.type)
     }
+
     const paramName = camelcase(p.name)
     requestParameters += `
     /** ${p.description || ''} */

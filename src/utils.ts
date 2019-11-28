@@ -23,15 +23,20 @@ export function getGenericsClassNames(definitionClassName: string) {
  * @param s
  */
 export function refClassName(s: string) {
-  let propType = s.slice(s.lastIndexOf('/') + 1)
+  let propType = s?.slice(s.lastIndexOf('/') + 1)
   if (isGenerics(propType)) {
     const { interfaceClassName, TClassName } = getGenericsClassNames(propType)
     // return `${interfaceClassName}<${toBaseType(TClassName)}>`
-    const str = trimString(propType.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_'), '_', 'right')
+    const str = trimString(RemoveSpecialCharacters(propType), '_', 'right')
     return str
   } else {
     return propType
   }
+}
+
+/** 移除特殊字符 */
+export function RemoveSpecialCharacters(str: string) {
+  return str?.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_')
 }
 
 export function isBaseType(s: string) {

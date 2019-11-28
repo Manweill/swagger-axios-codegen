@@ -264,4 +264,5 @@ function format(text: string, options: ISwaggerOptions) {
     "semi": true,
     "singleQuote": true
   })
+  // return text
 }
