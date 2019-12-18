@@ -1,8 +1,7 @@
 export function universalGenericTypeDefinition() {
   return `
-    export class List<T> extends Array<T>{}
-
     export class IList<T> extends Array<T>{}
+    export class List<T> extends Array<T>{}
   `;
 }
 

@@ -1,7 +1,5 @@
 import { IDefinitionClass, IDefinitionEnum } from './baseInterfaces'
 
-export const GENERIC_SPLIT_KEY = '['
-
 // 是否是接口类型
 export const isOpenApiGenerics = (s: string) => (/^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s) || /^.+\<.+\>$/.test(s))
 export const isGenerics = (s: string) => /^.+\<.+\>$/.test(s)
@@ -13,7 +11,15 @@ export const isAbpGenericTypes = (x: string) => ['IListResult', 'ListResultDto',
  * @param definitionClassName
  */
 export function getGenericsClassNames(definitionClassName: string) {
-  const splitIndex = definitionClassName.indexOf(GENERIC_SPLIT_KEY)
+  let split_key = ''
+  if (/^.+\[.+\]$/.test(definitionClassName)) {
+    split_key = '['
+  } else if (/^.+\«.+\»$/.test(definitionClassName)) {
+    split_key = '«'
+  } else {
+    split_key = '<'
+  }
+  const splitIndex = definitionClassName.indexOf(split_key)
   // 泛型基类 PagedResultDto
   const interfaceClassName = definitionClassName.slice(0, splitIndex)
   // 泛型类型 T 的类型名称
@@ -27,7 +33,7 @@ export function getGenericsClassNames(definitionClassName: string) {
  */
 export function refClassName(s: string, ) {
   let propType = s?.slice(s.lastIndexOf('/') + 1)
-  // console.log('refClassName', propType, isGenerics(propType))
+  // console.log('refClassName', propType, isOpenApiGenerics(propType))
   if (isOpenApiGenerics(propType)) {
     let str = ''
     const { interfaceClassName, TClassName } = getGenericsClassNames(propType)
