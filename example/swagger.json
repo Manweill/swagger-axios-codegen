@@ -679,39 +679,39 @@
           "type": "integer"
         }
       }
-    }
-  },
-  "ApiResultOutput[Guid]": {
-    "description": "接口返回结果",
-    "type": "object",
-    "properties": {
-      "result": {
-        "description": "结果",
-        "type": "boolean"
-      },
-      "code": {
-        "description": "代码",
-        "enum": [
-          "Success",
-          "Timeout",
-          "Fail",
-          "Expired",
-          "Error",
-          "InternalServerError",
-          "InvalidAnonymousAccess",
-          "UserSessionExpired",
-          "UserIsBinded"
-        ],
-        "type": "string"
-      },
-      "data": {
-        "format": "uuid",
-        "description": "数据",
-        "type": "string"
-      },
-      "message": {
-        "description": "消息",
-        "type": "string"
+    },
+    "ApiResultOutput[Guid]": {
+      "description": "接口返回结果",
+      "type": "object",
+      "properties": {
+        "result": {
+          "description": "结果",
+          "type": "boolean"
+        },
+        "code": {
+          "description": "代码",
+          "enum": [
+            "Success",
+            "Timeout",
+            "Fail",
+            "Expired",
+            "Error",
+            "InternalServerError",
+            "InvalidAnonymousAccess",
+            "UserSessionExpired",
+            "UserIsBinded"
+          ],
+          "type": "string"
+        },
+        "data": {
+          "format": "uuid",
+          "description": "数据",
+          "type": "string"
+        },
+        "message": {
+          "description": "消息",
+          "type": "string"
+        }
       }
     }
   }
