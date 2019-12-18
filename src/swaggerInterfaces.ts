@@ -108,14 +108,27 @@ export interface IComponents {
   }
 }
 
-// 字典类型，对应java map或者.NET Dictionary
-export interface IDictionary<T> {
-  [key: string]: T
-}
-
 export interface ISchema {
   '$ref': string
   'type'?: string
   'items'?: IParameterItems
   'format'?: string
+}
+
+// 字典类型，对应java map或者.NET Dictionary
+
+export interface IDictionary<TKey, TValue = any> {
+  [key: string]: TValue;
+}
+
+export interface IDictionary<TKey, TValue = any> {
+  [key: number]: TValue;
+}
+
+export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue> {
+  [key: string]: TValue;
+}
+
+export class Map<TKey, TValue> implements IDictionary<TKey, TValue> {
+  [key: string]: TValue;
 }

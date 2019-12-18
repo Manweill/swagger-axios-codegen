@@ -1,5 +1,5 @@
 import { IDefinitions } from '../swaggerInterfaces'
-import { refClassName } from '../utils'
+import { refClassName, isGenerics } from '../utils'
 import { createDefinitionClass } from './createDefinitionClass';
 import { createDefinitionEnum } from './createDefinitionEnum';
 import { IDefinitionClasses, IDefinitionEnums } from '../baseInterfaces';
@@ -10,6 +10,11 @@ export function definitionsCodeGen(definitions: IDefinitions) {
   for (const [k, v] of Object.entries(definitions)) {
 
     let className = refClassName(k)
+    // 如果已经转为泛型类型，则不需要重新定义
+    if (isGenerics(className)) {
+      continue
+    }
+
     let result = null
     // is an enum definition,just in swagger openAPI v2 
     if (v.enum) {

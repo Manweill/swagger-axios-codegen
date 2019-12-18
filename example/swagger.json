@@ -318,6 +318,66 @@
           "Mappers"
         ]
       }
+    },
+    "/api/services/app/AuditLog/GetAuditLogs": {
+      "get": {
+        "tags": [
+          "AuditLog"
+        ],
+        "operationId": "GetAuditLogs",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "StartDate",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/IPagedResult[AuditLogListDto]"
+            }
+          }
+        }
+      }
+    },
+    "/api/services/app/YmTicketTypical/AddOrUpdateTicketTypical": {
+      "post": {
+        "tags": [
+          "YmTicketTypical"
+        ],
+        "summary": "新增或编辑标准票, 需走审批流程",
+        "operationId": "AddOrUpdateTicketTypical",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ApiResultOutput[Guid]"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -589,6 +649,69 @@
         "fields": {
           "type": "string"
         }
+      }
+    },
+    "PagedResultDto[AuditLogListDto]": {
+      "type": "object",
+      "properties": {
+        "totalCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "items": {
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AuditLogListDto"
+          }
+        }
+      }
+    },
+    "AuditLogListDto": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "id": {
+          "format": "int64",
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "ApiResultOutput[Guid]": {
+    "description": "接口返回结果",
+    "type": "object",
+    "properties": {
+      "result": {
+        "description": "结果",
+        "type": "boolean"
+      },
+      "code": {
+        "description": "代码",
+        "enum": [
+          "Success",
+          "Timeout",
+          "Fail",
+          "Expired",
+          "Error",
+          "InternalServerError",
+          "InvalidAnonymousAccess",
+          "UserSessionExpired",
+          "UserIsBinded"
+        ],
+        "type": "string"
+      },
+      "data": {
+        "format": "uuid",
+        "description": "数据",
+        "type": "string"
+      },
+      "message": {
+        "description": "消息",
+        "type": "string"
       }
     }
   }

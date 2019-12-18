@@ -3,13 +3,14 @@ import * as path from 'path'
 import prettier from 'prettier';
 import axios from 'axios';
 import pascalcase from 'pascalcase'
-import { ISwaggerSource } from './swaggerInterfaces'
-import { definitionsCodeGen } from './definitionCodegen'
-import { enumTemplate, typeTemplate, classTemplate, serviceHeader, customerServiceHeader, serviceTemplate, requestTemplate, interfaceTemplate } from './template';
-import { requestCodegen } from './requestCodegen';
 import { ISwaggerOptions, IInclude } from './baseInterfaces';
-import { findDeepRefs, isOpenApi3 } from './utils';
+import { ISwaggerSource } from './swaggerInterfaces';
+import { requestTemplate, serviceTemplate, enumTemplate, interfaceTemplate, classTemplate, typeTemplate } from './templates/template';
+import { customerServiceHeader, serviceHeader } from "./templates/serviceHeader";
+import { isOpenApi3, findDeepRefs } from './utils';
+import { requestCodegen } from './requestCodegen';
 import { componentsCodegen } from './componentsCodegen';
+import { definitionsCodeGen } from './definitionCodegen';
 
 const defaultOptions: ISwaggerOptions = {
   serviceNameSuffix: 'Service',

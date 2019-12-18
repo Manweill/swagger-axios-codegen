@@ -1,10 +1,13 @@
-import { IDefinitionClass, IDefinitionEnum } from "./baseInterfaces";
+import { IDefinitionClass, IDefinitionEnum } from './baseInterfaces'
 
 export const GENERIC_SPLIT_KEY = '['
 
 // 是否是接口类型
-export const isGenerics = (s: string) => (/^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s))
+export const isOpenApiGenerics = (s: string) => (/^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s) || /^.+\<.+\>$/.test(s))
+export const isGenerics = (s: string) => /^.+\<.+\>$/.test(s)
 
+export const isUniversalGenericTypeDefinition = (x: string) => ['IList', 'List'].some(i => i === x)
+export const isAbpGenericTypes = (x: string) => ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto'].some(i => i === x)
 /**
  * 分解泛型接口
  * @param definitionClassName
@@ -22,12 +25,19 @@ export function getGenericsClassNames(definitionClassName: string) {
  * 获取引用类型
  * @param s
  */
-export function refClassName(s: string) {
+export function refClassName(s: string, ) {
   let propType = s?.slice(s.lastIndexOf('/') + 1)
-  if (isGenerics(propType)) {
+  // console.log('refClassName', propType, isGenerics(propType))
+  if (isOpenApiGenerics(propType)) {
+    let str = ''
     const { interfaceClassName, TClassName } = getGenericsClassNames(propType)
-    // return `${interfaceClassName}<${toBaseType(TClassName)}>`
-    const str = trimString(RemoveSpecialCharacters(propType), '_', 'right')
+    if (isUniversalGenericTypeDefinition(interfaceClassName) || isAbpGenericTypes(interfaceClassName)) {
+      // console.log('isOpenApiGenerics', propType)
+      str = `${interfaceClassName}<${refClassName(TClassName)}>`
+    } else {
+      str = trimString(RemoveSpecialCharacters(propType), '_', 'right')
+    }
+    // str = trimString(RemoveSpecialCharacters(propType), '_', 'right')
     return str
   } else {
     return propType

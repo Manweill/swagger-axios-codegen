@@ -1,5 +1,7 @@
-import { refClassName, toBaseType } from '../utils'
-import { IRequestMethod } from '../swaggerInterfaces'
+import { IRequestMethod } from "../swaggerInterfaces"
+import { refClassName, toBaseType } from "../utils"
+
+
 /**
  * 获取请求的返回类型
  */

@@ -1,4 +1,29 @@
 
+
+## 0.9.8
+
+- add Universal Generic TypeDefinition
+
+## 0.9.7
+
+- fix: enum member cannot have numeric value
+
+## 0.9.6
+
+- fix issue #63. remove special characters of serviceName and fieldName
+
+## 0.9.5
+
+- fix requestBody in openApi3
+
+## 0.9.4
+
+- fix #59 empty components in openApi v3.0
+
+## 0.9.3
+
+- fix request name
+
 ## 0.9.2
 
 - Support OpenApi3.0
