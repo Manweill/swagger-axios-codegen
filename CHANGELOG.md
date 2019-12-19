@@ -6,7 +6,7 @@
 - add 
   `options.extendDefinitionFile`
   `options.extendGenericType`
-  [example](./example/swagger.enumArray.json)
+  [example](./example/swagger/codegen.js)
 
 ## 0.9.7
 
