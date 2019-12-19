@@ -7,7 +7,7 @@ import { ISwaggerOptions, IInclude } from './baseInterfaces';
 import { ISwaggerSource } from './swaggerInterfaces';
 import { requestTemplate, serviceTemplate, enumTemplate, interfaceTemplate, classTemplate, typeTemplate } from './templates/template';
 import { customerServiceHeader, serviceHeader } from "./templates/serviceHeader";
-import { isOpenApi3, findDeepRefs } from './utils';
+import { isOpenApi3, findDeepRefs, setDefinedGenericTypes } from './utils';
 import { requestCodegen } from './requestCodegen';
 import { componentsCodegen } from './componentsCodegen';
 import { definitionsCodeGen } from './definitionCodegen';
@@ -23,7 +23,8 @@ const defaultOptions: ISwaggerOptions = {
   modelMode: 'interface',
   include: [],
   strictNullChecks: true,
-  useClassTransformer: false
+  useClassTransformer: false,
+  extendGenericType: []
 }
 
 
@@ -31,7 +32,7 @@ export async function codegen(params: ISwaggerOptions) {
   console.time('finish')
   let err
   let swaggerSource: ISwaggerSource
-
+  setDefinedGenericTypes(params.extendGenericType)
   // 获取接口定义文件
   if (params.remoteUrl) {
     const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })

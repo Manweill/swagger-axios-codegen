@@ -1,3 +1,5 @@
+import * as fs from 'fs'
+import * as path from 'path'
 import { ISwaggerOptions } from "../baseInterfaces";
 import { abpGenericTypeDefinition, universalGenericTypeDefinition } from './genericTypeDefinitionTemplate';
 
@@ -31,28 +33,8 @@ export function serviceHeader(options: ISwaggerOptions) {
     axios?: AxiosInstance,
   }
 
-  // Add default options
-  export const serviceOptions: ServiceOptions = {
-  };
-
-  // Instance selector
-  function axios(configs: IRequestConfig, resolve: (p: any) => void, reject: (p: any) => void) {
-    const req = serviceOptions.axios ? serviceOptions.axios.request(configs) : axiosStatic(configs);
-
-    return req.then((res) => { resolve(res.data); }).catch(err => { reject(err); });
-  }
-
-  function getConfigs(method: string, contentType: string, url: string,options: any):IRequestConfig {
-    const configs: IRequestConfig = { ...options, method, url };
-    configs.headers = {
-      ...options.headers,
-      'Content-Type': contentType,
-    };
-    return configs
-  }
-
-  ${universalGenericTypeDefinition()}
-  ${abpGenericTypeDefinition()}
+  ${requestHeader()}
+  ${definitionHeader(options.extendDefinitionFile)}
   `;
 }
 
@@ -97,6 +79,14 @@ export function customerServiceHeader(options: ISwaggerOptions) {
     axios?: IRequestInstance,
   }
 
+  ${requestHeader()}
+  ${definitionHeader(options.extendDefinitionFile)}
+  `
+}
+
+function requestHeader() {
+  return `
+
   // Add default options
   export const serviceOptions: ServiceOptions = {
   };
@@ -123,5 +113,25 @@ export function customerServiceHeader(options: ISwaggerOptions) {
     };
     return configs
   }
+  `
+}
+
+function definitionHeader(fileDir: string | undefined) {
+  let fileStr = '// empty '
+  console.log('extendDefinitionFile url : ', path.resolve(fileDir))
+  if (!!fileDir) {
+
+    if (fs.existsSync(path.resolve(fileDir))) {
+      const buffs = fs.readFileSync(path.resolve(fileDir))
+      fileStr = buffs.toString('utf8')
+    }
+  }
+
+
+  return `
+  ${universalGenericTypeDefinition()}
+  ${abpGenericTypeDefinition()}
+  // customer definition
+  ${fileStr}
   `
 }

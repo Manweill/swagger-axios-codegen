@@ -373,7 +373,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/ApiResultOutput[Guid]"
+              "$ref": "#/definitions/JsonResult[Guid]"
             }
           }
         }
@@ -736,7 +736,7 @@
         }
       }
     },
-    "ApiResultOutput[Guid]": {
+    "JsonResult[Guid]": {
       "description": "接口返回结果",
       "type": "object",
       "properties": {

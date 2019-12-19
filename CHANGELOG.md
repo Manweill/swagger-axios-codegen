@@ -3,6 +3,10 @@
 ## 0.9.8
 
 - add Universal Generic TypeDefinition
+- add 
+  `options.extendDefinitionFile`
+  `options.extendGenericType`
+  [example](./example/swagger.enumArray.json)
 
 ## 0.9.7
 

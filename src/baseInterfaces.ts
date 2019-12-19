@@ -18,8 +18,10 @@ export interface ISwaggerOptions {
   useClassTransformer?: boolean,
   // force the specified swagger or openAPI version,
   openApi?: string | undefined,
-  // extend file url. it can defined generic type
-  extendFile?: string | undefined,
+  // extend file url. It will be inserted in front of the service method
+  extendDefinitionFile?: string | undefined
+  // mark generic type
+  extendGenericType?: string[] | undefined
 }
 
 export interface IPropDef {

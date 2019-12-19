@@ -1,58 +1,62 @@
 import { IDefinitionClass, IDefinitionEnum } from './baseInterfaces'
 
+let definedGenericTypes: string[] = []
+const UniversalGenericTypes = ['IList', 'List']
+const AbpGenericTypes = ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto']
+
 // 是否是接口类型
 export const isOpenApiGenerics = (s: string) => (/^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s) || /^.+\<.+\>$/.test(s))
 export const isGenerics = (s: string) => /^.+\<.+\>$/.test(s)
+export const isDefinedGenericTypes = (x: string) => definedGenericTypes.some(i => i === x)
 
-export const isUniversalGenericTypeDefinition = (x: string) => ['IList', 'List'].some(i => i === x)
-export const isAbpGenericTypes = (x: string) => ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto'].some(i => i === x)
+export function setDefinedGenericTypes(types: string[]) {
+  definedGenericTypes.push(...UniversalGenericTypes, ...AbpGenericTypes, ...types)
+}
 /**
  * 分解泛型接口
  * @param definitionClassName
  */
-export function getGenericsClassNames(definitionClassName: string) {
+export function getGenericsClassNames(definitionClassName: string): string {
+  let str = ''
   let split_key = ''
   if (/^.+\[.+\]$/.test(definitionClassName)) {
     split_key = '['
   } else if (/^.+\«.+\»$/.test(definitionClassName)) {
     split_key = '«'
-  } else {
+  } else if (/^.+\<.+\>$/.test(definitionClassName)) {
     split_key = '<'
   }
-  const splitIndex = definitionClassName.indexOf(split_key)
-  // 泛型基类 PagedResultDto
-  const interfaceClassName = definitionClassName.slice(0, splitIndex)
-  // 泛型类型 T 的类型名称
-  const TClassName = definitionClassName.slice(splitIndex + 1, -1)
-  return { interfaceClassName, TClassName }
+  if (split_key !== '') {
+    const splitIndex = definitionClassName.indexOf(split_key)
+    // 泛型基类 PagedResultDto
+    const interfaceClassName = definitionClassName.slice(0, splitIndex)
+    // 泛型类型 T 的类型名称
+    const TClassName = definitionClassName.slice(splitIndex + 1, -1)
+    str = isDefinedGenericTypes(interfaceClassName)
+      ? `${interfaceClassName}<${refClassName(TClassName)}>`
+      : trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right');
+  } else {
+    console.log('str', definitionClassName)
+    str = trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right')
+  }
+  return str
+
 }
 
 /**
  * 获取引用类型
  * @param s
  */
-export function refClassName(s: string, ) {
+export function refClassName(s: string): string {
   let propType = s?.slice(s.lastIndexOf('/') + 1)
-  // console.log('refClassName', propType, isOpenApiGenerics(propType))
-  if (isOpenApiGenerics(propType)) {
-    let str = ''
-    const { interfaceClassName, TClassName } = getGenericsClassNames(propType)
-    if (isUniversalGenericTypeDefinition(interfaceClassName) || isAbpGenericTypes(interfaceClassName)) {
-      // console.log('isOpenApiGenerics', propType)
-      str = `${interfaceClassName}<${refClassName(TClassName)}>`
-    } else {
-      str = trimString(RemoveSpecialCharacters(propType), '_', 'right')
-    }
-    // str = trimString(RemoveSpecialCharacters(propType), '_', 'right')
-    return str
-  } else {
-    return propType
-  }
+  return isOpenApiGenerics(propType)
+    ? getGenericsClassNames(propType)
+    : trimString(toBaseType(RemoveSpecialCharacters(propType)), '_', 'right')
 }
 
 /** 移除特殊字符 */
 export function RemoveSpecialCharacters(str: string) {
-  return str?.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_')
+  return str?.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_');
 }
 
 export function isBaseType(s: string) {
@@ -121,7 +125,7 @@ export function trimString(str: string, char: string, type: string) {
     }
     return str.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '')
   }
-  return str.replace(/^\s+|\s+$/g, '')
+  return str.replace(/^\s+|\s+$/g, '');
 }
 
 export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[], allEnums: IDefinitionEnum[]) {

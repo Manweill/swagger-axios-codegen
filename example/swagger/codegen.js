@@ -8,5 +8,7 @@ codegen({
   outputDir: './swagger/services',
   strictNullChecks: false,
   // useCustomerRequestInstance: true,
-  modelMode: 'interface'
+  modelMode: 'interface',
+  extendDefinitionFile: './swagger/customerDefinition.ts',
+  extendGenericType: ['JsonResult']
 })

@@ -48,7 +48,13 @@ export interface ISwaggerOptions {
   /** definition Class mode */
   modelMode?: 'class' | 'interface'
   /** use class-transformer to transform the results */
-  useClassTransformer?: boolean
+  useClassTransformer?: boolean,
+  // force the specified swagger or openAPI version,
+  openApi?: string | undefined,
+  // extend file url. It will be inserted in front of the service method
+  extendDefinitionFile?: string | undefined
+  // mark generic type
+  extendGenericType?: string[] | undefined
 }
 
 const defaultOptions: ISwaggerOptions = {
