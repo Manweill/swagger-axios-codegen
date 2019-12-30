@@ -36,8 +36,8 @@ export function getGenericsClassNames(definitionClassName: string): string {
       ? `${interfaceClassName}<${refClassName(TClassName)}>`
       : trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right');
   } else {
-    console.log('str', definitionClassName)
-    str = trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right')
+    // console.log('getGenericsClassNames', definitionClassName)
+    str = toBaseType(trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right'))
   }
   return str
 
@@ -51,7 +51,7 @@ export function refClassName(s: string): string {
   let propType = s?.slice(s.lastIndexOf('/') + 1)
   return isOpenApiGenerics(propType)
     ? getGenericsClassNames(propType)
-    : trimString(toBaseType(RemoveSpecialCharacters(propType)), '_', 'right')
+    : toBaseType(trimString(RemoveSpecialCharacters(propType), '_', 'right'))
 }
 
 /** 移除特殊字符 */
@@ -78,6 +78,7 @@ export function toBaseType(s: string, format?: string) {
       result = '[]'
       break
     case 'Int64':
+    case 'int':
     case 'integer':
     case 'number':
       result = 'number'
