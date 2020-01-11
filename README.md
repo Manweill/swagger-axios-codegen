@@ -56,6 +56,8 @@ export interface ISwaggerOptions {
   extendDefinitionFile?: string | undefined
   // mark generic type
   extendGenericType?: string[] | undefined
+  // generate validation model (class model mode only)
+  generateValidationModel?: boolean
 }
 
 const defaultOptions: ISwaggerOptions = {
