@@ -16,7 +16,7 @@ export function definitionsCodeGen(definitions: IDefinitions) {
     }
 
     let result = null
-    // is an enum definition,just in swagger openAPI v2 
+    // is an enum definition,just in swagger openAPI v2
     if (v.enum) {
       const enumDef = createDefinitionEnum(className, v.enum, v.type)
       definitionEnums[`#/definitions/${k}`] = {
@@ -29,7 +29,7 @@ export function definitionsCodeGen(definitions: IDefinitions) {
     }
     else {
       // default definition generate
-      const { enums, model } = createDefinitionClass(className, v.properties)
+      const { enums, model } = createDefinitionClass(className, v.properties, v.required)
       // console.log('createDefinitionClass', enums)
       enums.forEach(item => {
         // definitionModels[item.name] = {

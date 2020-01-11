@@ -22,6 +22,8 @@ export interface ISwaggerOptions {
   extendDefinitionFile?: string | undefined
   // mark generic type
   extendGenericType?: string[] | undefined
+  // generate validation model (class model mode only)
+  generateValidationModel?: boolean,
 }
 
 export interface IPropDef {
@@ -31,6 +33,7 @@ export interface IPropDef {
   desc: string
   isType: boolean
   isEnum: boolean
+  validationModel: object
 }
 
 export interface IInclude {

@@ -8,7 +8,7 @@ const baseTypes = ['string', 'number', 'object', 'boolean', 'any'];
 export function interfaceTemplate(name: string, props: IPropDef[], imports: string[], strictNullChecks: boolean = true) {
   // 所有的引用
   const importString = imports.map(imp => {
-    return `import { ${imp} } from '../definitions/${imp}'\n`
+      return `import { ${imp} } from '../definitions/${imp}'\n`
   }).join('')
 
   return `
@@ -22,7 +22,7 @@ export function interfaceTemplate(name: string, props: IPropDef[], imports: stri
 }
 
 /** 类模板 */
-export function classTemplate(name: string, props: IPropDef[], imports: string[], strictNullChecks: boolean = true, useClassTransformer: boolean) {
+export function classTemplate(name: string, props: IPropDef[], imports: string[], strictNullChecks: boolean = true, useClassTransformer: boolean, generateValidationModel: boolean) {
   // 所有的引用
   const mappedImports = imports.map(imp => {
     return `import { ${imp} } from '../definitions/${imp}'\n`
@@ -43,6 +43,7 @@ export function classTemplate(name: string, props: IPropDef[], imports: string[]
     constructor(data: (undefined | any) = {}){
         ${props.map(p => classConstructorTemplate(p.name)).join('')}
     }
+    ${generateValidationModel ? classValidationModelTemplate(props) : ''}
   }
   `
 }
@@ -50,8 +51,8 @@ export function classTemplate(name: string, props: IPropDef[], imports: string[]
 /** 类属性模板 */
 export function classPropsTemplate(filedName: string, type: string, format: string, description: string, canNull: boolean, useClassTransformer: boolean, isType: boolean) {
   /**
-   * eg: 
-   *   //description 
+   * eg:
+   *   //description
    *   fieldName: type
    */
   type = toBaseType(type, format);
@@ -71,6 +72,27 @@ export function classPropsTemplate(filedName: string, type: string, format: stri
   `
   }
 
+}
+
+export function propValidationModelTemplate(filedName: string, validationModel: object) {
+  /**
+   * eg:
+   *   fieldName: { required: true, maxLength: 50 }
+   */
+  return `'${filedName}':${JSON.stringify(validationModel)}`;
+}
+
+export function classValidationModelTemplate(props: IPropDef[]) {
+  /**
+   * eg:
+   *   public static validationModel = { .. }
+   */
+  return `
+
+    public static validationModel = {
+      ${props.filter(p => p.validationModel !== null).map(p => propValidationModelTemplate(p.name, p.validationModel)).join(',\n')}
+    }
+  `;
 }
 
 export function classTransformTemplate(type: string, format: string, isType: boolean) {
@@ -154,9 +176,9 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(name)}(${parameters}optio
     let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
       // ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
       ? bodyParameter
-      : !!requestBody
-        ? 'params.body'
-        : 'null'
+        : !!requestBody
+          ? 'params.body'
+          : 'null'
     }
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;

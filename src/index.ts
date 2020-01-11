@@ -96,7 +96,7 @@ export async function codegen(params: ISwaggerOptions) {
     Object.values(models).forEach(item => {
       const text = params.modelMode === 'interface'
         ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
-        : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks, options.useClassTransformer)
+        : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks, options.useClassTransformer, options.generateValidationModel)
       // const fileDir = path.join(options.outputDir || '', 'definitions')
       // writeFile(fileDir, item.name + '.ts', format(text, options))
       defsString += text
@@ -159,7 +159,7 @@ export async function codegen(params: ISwaggerOptions) {
       if (allImport.includes(item.name)) {
         const text = params.modelMode === 'interface'
           ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
-          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks, options.useClassTransformer)
+          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks, options.useClassTransformer, options.generateValidationModel)
         defSource += text
       }
     })
@@ -207,7 +207,7 @@ export async function codegen(params: ISwaggerOptions) {
       Object.values(models).forEach(item => {
         const text = params.modelMode === 'interface'
           ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
-          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks, options.useClassTransformer)
+          : classTemplate(item.value.name, item.value.props, [], params.strictNullChecks, options.useClassTransformer, options.generateValidationModel)
         apiSource += text
       })
 
