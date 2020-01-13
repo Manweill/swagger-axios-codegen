@@ -118,9 +118,8 @@ function requestHeader() {
 
 function definitionHeader(fileDir: string | undefined) {
   let fileStr = '// empty '
-  console.log('extendDefinitionFile url : ', path.resolve(fileDir))
   if (!!fileDir) {
-
+    console.log('extendDefinitionFile url : ', path.resolve(fileDir))
     if (fs.existsSync(path.resolve(fileDir))) {
       const buffs = fs.readFileSync(path.resolve(fileDir))
       fileStr = buffs.toString('utf8')
