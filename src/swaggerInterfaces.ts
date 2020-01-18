@@ -29,23 +29,11 @@ export interface IRequestMethod {
   responses: {
     [key: string]: {
       description: string
-      // v2
       schema: {
         '$ref': string,
         'type'?: string,
         'items'?: IParameterItems,
         'format'?: string,
-      },
-      // v3
-      content: {
-        [key: string]: {
-          schema: {
-            '$ref': string,
-            'type'?: string,
-            'items'?: IParameterItems,
-            'format'?: string,
-          }
-        }
       }
     }
   }

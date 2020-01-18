@@ -16,7 +16,7 @@ interface IRequestMethods {
   requestSchema: any;
 }
 
-export function requestCodegen(paths: IPaths, isV3: boolean): IRequestClass {
+export function requestCodegen(paths: IPaths): IRequestClass {
   const requestClasses: IRequestClass = {}
 
   for (const [path, request] of Object.entries(paths)) {
@@ -75,7 +75,8 @@ export function requestCodegen(paths: IPaths, isV3: boolean): IRequestClass {
           } = {} as any,`
           : ''
 
-      const { responseType, isRef: refResponseType } = getResponseType(reqProps, isV3)
+
+      const { responseType, isRef: refResponseType } = getResponseType(reqProps)
       // 如果返回值也是引用类型，则加入到类的引用里面
       // console.log('refResponseType', responseType, refResponseType)
 

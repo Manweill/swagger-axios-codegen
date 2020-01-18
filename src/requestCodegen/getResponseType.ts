@@ -5,7 +5,7 @@ import { refClassName, toBaseType } from "../utils"
 /**
  * 获取请求的返回类型
  */
-export function getResponseType(reqProps: IRequestMethod, isV3: boolean): { responseType: string, isRef: boolean } {
+export function getResponseType(reqProps: IRequestMethod): { responseType: string, isRef: boolean } {
   // It does not allow the schema defined directly, but only the primitive type is allowed.
   let result: string = 'any'
   let isRef = false
@@ -14,19 +14,10 @@ export function getResponseType(reqProps: IRequestMethod, isV3: boolean): { resp
   if (!successStatusCode) {
     return { responseType: result, isRef }
   }
-  let resSchema = null
-  if (reqProps.responses[successStatusCode]) {
-    if (isV3 === true) {
-      if (
-        reqProps.responses[successStatusCode].content &&
-        reqProps.responses[successStatusCode].content['application/json'] &&
-        reqProps.responses[successStatusCode].content['application/json'].schema
-      )
-        resSchema = reqProps.responses[successStatusCode].content['application/json'].schema
-    } else {
-      if (reqProps.responses[successStatusCode].schema) resSchema = reqProps.responses[successStatusCode].schema
-    }
-  }
+  const resSchema =
+    reqProps.responses[successStatusCode] && reqProps.responses[successStatusCode].schema
+      ? reqProps.responses[successStatusCode].schema
+      : null
 
   if (!resSchema) {
     return { responseType: result, isRef }
