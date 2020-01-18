@@ -59,7 +59,7 @@ export async function codegen(params: ISwaggerOptions) {
   // 判断是否是openApi3.0或者swagger3.0
   const isV3 = isOpenApi3(params.openApi || swaggerSource.openapi || swaggerSource.swagger)
   console.log('isV3', isV3)
-  let requestClasses = Object.entries(requestCodegen(swaggerSource.paths, isV3))
+  let requestClasses = Object.entries(requestCodegen(swaggerSource.paths))
 
   const { models, enums } = isV3 ? componentsCodegen(swaggerSource.components) : definitionsCodeGen(swaggerSource.definitions)
 
@@ -67,7 +67,7 @@ export async function codegen(params: ISwaggerOptions) {
   // if (options.multipleFileMode) {
   if (false) {
 
-    Object.entries(requestCodegen(swaggerSource.paths, isV3)).forEach(([className, requests]) => {
+    Object.entries(requestCodegen(swaggerSource.paths)).forEach(([className, requests]) => {
       let text = ''
       requests.forEach(req => {
 
