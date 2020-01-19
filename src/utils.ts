@@ -5,11 +5,11 @@ const UniversalGenericTypes = ['IList', 'List']
 const AbpGenericTypes = ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto']
 
 // 是否是接口类型
-export const isOpenApiGenerics = (s: string) => (/^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s) || /^.+\<.+\>$/.test(s))
+export const isOpenApiGenerics = (s: string) => /^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s) || /^.+\<.+\>$/.test(s)
 export const isGenerics = (s: string) => /^.+\<.+\>$/.test(s)
 export const isDefinedGenericTypes = (x: string) => definedGenericTypes.some(i => i === x)
 
-export function setDefinedGenericTypes(types: string[]) {
+export function setDefinedGenericTypes(types: string[] = []) {
   definedGenericTypes.push(...UniversalGenericTypes, ...AbpGenericTypes, ...types)
 }
 /**
@@ -34,13 +34,12 @@ export function getGenericsClassNames(definitionClassName: string): string {
     const TClassName = definitionClassName.slice(splitIndex + 1, -1)
     str = isDefinedGenericTypes(interfaceClassName)
       ? `${interfaceClassName}<${refClassName(TClassName)}>`
-      : trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right');
+      : trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right')
   } else {
     // console.log('getGenericsClassNames', definitionClassName)
     str = toBaseType(trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right'))
   }
   return str
-
 }
 
 /**
@@ -56,7 +55,7 @@ export function refClassName(s: string): string {
 
 /** 移除特殊字符 */
 export function RemoveSpecialCharacters(str: string) {
-  return str?.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_');
+  return str?.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_')
 }
 
 export function isBaseType(s: string) {
@@ -90,10 +89,10 @@ export function toBaseType(s: string, format?: string) {
       switch (format) {
         case 'date':
         case 'date-time':
-          result = 'Date';
+          result = 'Date'
           break
         default:
-          result = 'string';
+          result = 'string'
       }
       break
     case 'file':
@@ -116,7 +115,6 @@ export function getMethodName(path: string) {
   return ''
 }
 
-
 export function trimString(str: string, char: string, type: string) {
   if (char) {
     if (type == 'left') {
@@ -126,7 +124,7 @@ export function trimString(str: string, char: string, type: string) {
     }
     return str.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '')
   }
-  return str.replace(/^\s+|\s+$/g, '');
+  return str.replace(/^\s+|\s+$/g, '')
 }
 
 export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[], allEnums: IDefinitionEnum[]) {
@@ -148,10 +146,10 @@ export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[
       }
     }
   })
-  return result;
+  return result
 }
 
 export function isOpenApi3(version: string) {
   console.log('openApi version：', version)
-  return version.startsWith("3.", 0);
+  return version.startsWith('3.', 0)
 }
