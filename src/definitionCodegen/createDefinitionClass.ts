@@ -2,6 +2,7 @@ import { IDefinitionProperties } from "../swaggerInterfaces";
 import { propTrueType } from "./propTrueType";
 import pascalcase from "pascalcase";
 import { IClassDef } from "../baseInterfaces";
+import { getValidationModel } from "../utils";
 
 
 /**
@@ -13,7 +14,8 @@ import { IClassDef } from "../baseInterfaces";
 
 export function createDefinitionClass(
   className: string,
-  properties: IDefinitionProperties
+  properties: IDefinitionProperties,
+  required: string[]
 ) {
   /** 枚举值 */
   let enums = []
@@ -44,8 +46,9 @@ export function createDefinitionClass(
     if (!!ref) {
       model.imports.push(ref)
     }
+    let validationModel = getValidationModel(k, v, required);
     // propsStr += classPropsTemplate(k, propType, v.description)
-    model.props.push({ name: k, type: propType, format: v.format, desc: v.description?.replace(/\//g, '\/'), isType, isEnum })
+    model.props.push({ name: k, type: propType, format: v.format, desc: v.description?.replace(/\//g, '\/'), isType, isEnum, validationModel })
   }
   // : classTemplate(className, propsStr, constructorStr)
   return { enums, model }
