@@ -1,4 +1,5 @@
 import { IDefinitionClass, IDefinitionEnum } from './baseInterfaces'
+import { IDefinitionProperty } from './swaggerInterfaces'
 
 let definedGenericTypes: string[] = []
 const UniversalGenericTypes = ['IList', 'List']
@@ -152,4 +153,18 @@ export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[
 export function isOpenApi3(version: string) {
   console.log('openApi version：', version)
   return version.startsWith('3.', 0)
+}
+
+export function getValidationModel(propName: string, prop: IDefinitionProperty, required: string[]) {
+  let validationModel: any = {}
+  let hasValidationRules = false
+  if (required && required.includes(propName)) {
+    validationModel.required = true
+    hasValidationRules = true
+  }
+  if (prop.maxLength) {
+    validationModel.maxLength = prop.maxLength
+    hasValidationRules = true
+  }
+  return hasValidationRules ? validationModel : null
 }
