@@ -1,4 +1,9 @@
 
+### 0.9.11
+
+- fix openApi 3.0 Response Type.
+- add `option.validationModel` description.
+
 ### 0.9.10
 
 - add `options.generateValidationModel` [issue 50](https://github.com/Manweill/swagger-axios-codegen/issues/50) by [denis-pujdak-adm-it](https://github.com/denis-pujdak-adm-it)
