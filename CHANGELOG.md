@@ -1,6 +1,11 @@
 
+### 0.9.10
 
-## 0.9.8
+- add `options.generateValidationModel` [issue 50](https://github.com/Manweill/swagger-axios-codegen/issues/50) by [denis-pujdak-adm-it](https://github.com/denis-pujdak-adm-it)
+- fix [issue 68](https://github.com/Manweill/swagger-axios-codegen/issues/68)
+
+
+## 0.9.9
 
 - add Universal Generic TypeDefinition
 - add 
