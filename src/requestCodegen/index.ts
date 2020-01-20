@@ -16,7 +16,7 @@ interface IRequestMethods {
   requestSchema: any;
 }
 
-export function requestCodegen(paths: IPaths): IRequestClass {
+export function requestCodegen(paths: IPaths, isV3: boolean): IRequestClass {
   const requestClasses: IRequestClass = {}
 
   for (const [path, request] of Object.entries(paths)) {
@@ -46,8 +46,6 @@ export function requestCodegen(paths: IPaths): IRequestClass {
         // 获取到接口的参数
         parsedParameters = getRequestParameters(reqProps.parameters)
 
-
-
         formData = parsedParameters.requestFormData ? 'data = new FormData();\n' + parsedParameters.requestFormData : ''
         pathReplace = parsedParameters.requestPathReplace
       }
@@ -75,8 +73,7 @@ export function requestCodegen(paths: IPaths): IRequestClass {
           } = {} as any,`
           : ''
 
-
-      const { responseType, isRef: refResponseType } = getResponseType(reqProps)
+      const { responseType, isRef: refResponseType } = getResponseType(reqProps, isV3)
       // 如果返回值也是引用类型，则加入到类的引用里面
       // console.log('refResponseType', responseType, refResponseType)
 
@@ -90,13 +87,13 @@ export function requestCodegen(paths: IPaths): IRequestClass {
       let uniqueMethodName = camelcase(methodName)
       var uniqueMethodNameReg = new RegExp(`${uniqueMethodName}\\d`)
 
-      const methodCount = requestClasses[className].filter(item =>
-        uniqueMethodName === item.name || uniqueMethodNameReg.test(item.name)
+      const methodCount = requestClasses[className].filter(
+        item => uniqueMethodName === item.name || uniqueMethodNameReg.test(item.name)
       ).length
 
       // console.log(uniqueMethodName, methodCount)
       if (methodCount >= 1) {
-        uniqueMethodName = uniqueMethodName + (methodCount)
+        uniqueMethodName = uniqueMethodName + methodCount
         // console.log(uniqueMethodName)
       }
       requestClasses[className].push({
