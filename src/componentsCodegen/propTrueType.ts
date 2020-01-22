@@ -12,16 +12,16 @@ export function propTrueType(v: IDefinitionProperty): {
     isType: false,
     ref: ''
   }
-  if (v.$ref) {
+  if (v.$ref || (v.allOf && v.allOf[0])) {
     // 是引用类型
-    result.propType = refClassName(v.$ref)
+    result.propType = refClassName(v.$ref || v.allOf[0].$ref)
     result.ref = result.propType
   }
   //是个数组
   else if (v.items) {
-    if (v.items.$ref) {
+    if (v.items.$ref || (v.items.allOf && v.items.allOf[0])) {
       // 是个引用类型
-      result.ref = refClassName(v.items.$ref)
+      result.ref = refClassName(v.items.$ref || v.items.allOf[0].$ref)
       result.propType = result.ref + '[]'
     } else {
       if (v.items.type === "array") {

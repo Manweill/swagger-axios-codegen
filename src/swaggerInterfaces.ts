@@ -110,6 +110,7 @@ export interface IDefinitionProperty {
   format: string
   maxLength: number
   $ref: string
+  allOf: IDefinitionProperties
   items: IDefinitionProperty
   description: string
 }
