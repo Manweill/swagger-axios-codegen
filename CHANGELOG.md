@@ -1,4 +1,9 @@
 
+### 0.9.12
+
+- fix OpenApi3_Missing_Property_Types [#77](https://github.com/Manweill/swagger-axios-codegen/pulls/77)
+- fix Error: The "path" argument must be of type string. Received type undefined [#76](https://github.com/Manweill/swagger-axios-codegen/pulls/76)
+
 ### 0.9.11
 
 - fix openApi 3.0 Response Type.
