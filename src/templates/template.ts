@@ -122,9 +122,9 @@ export function classValidationModelTemplate(props: IPropDef[]) {
   return `
     public static validationModel = {
       ${props
-        .filter(p => p.validationModel !== null)
-        .map(p => propValidationModelTemplate(p.name, p.validationModel))
-        .join(',\n')}
+      .filter(p => p.validationModel !== null)
+      .map(p => propValidationModelTemplate(p.name, p.validationModel))
+      .join(',\n')}
     }
   `
 }
@@ -193,8 +193,8 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
   const transform = useClassTransformer && baseTypes.indexOf(nonArrayType) < 0
   const resolveString = transform
     ? `(response: any${
-        isArrayType ? '[]' : ''
-      }) => resolve(plainToClass(${nonArrayType}, response, {strategy: 'excludeAll'}))`
+    isArrayType ? '[]' : ''
+    }) => resolve(plainToClass(${nonArrayType}, response, {strategy: 'excludeAll'}))`
     : 'resolve'
 
   return `
@@ -210,12 +210,12 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
     const configs:IRequestConfig = getConfigs('${method}', '${contentType}', url, options)
     ${parsedParameters && queryParameters.length > 0 ? 'configs.params = {' + queryParameters.join(',') + '}' : ''}
     let data = ${
-      parsedParameters && bodyParameter && bodyParameter.length > 0
-        ? // ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
-          bodyParameter
-        : !!requestBody
-          ? 'params.body'
-          : 'null'
+    parsedParameters && bodyParameter && bodyParameter.length > 0
+      ? // ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
+      bodyParameter
+      : !!requestBody
+        ? 'params.body'
+        : 'null'
     }
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;

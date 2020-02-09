@@ -117,6 +117,7 @@ export function getMethodName(path: string) {
 }
 
 export function trimString(str: string, char: string, type: string) {
+  str = str ?? ''
   if (char) {
     if (type == 'left') {
       return str.replace(new RegExp('^\\' + char + '+', 'g'), '')

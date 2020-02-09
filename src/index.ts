@@ -62,7 +62,7 @@ export async function codegen(params: ISwaggerOptions) {
   // 判断是否是openApi3.0或者swagger3.0
   const isV3 = isOpenApi3(params.openApi || swaggerSource.openapi || swaggerSource.swagger)
   console.log('isV3', isV3)
-  let requestClasses = Object.entries(requestCodegen(swaggerSource.paths, isV3))
+  let requestClasses = Object.entries(requestCodegen(swaggerSource.paths, isV3, options))
 
   const { models, enums } = isV3
     ? componentsCodegen(swaggerSource.components)
@@ -71,7 +71,7 @@ export async function codegen(params: ISwaggerOptions) {
   // TODO: next next next time
   // if (options.multipleFileMode) {
   if (false) {
-    Object.entries(requestCodegen(swaggerSource.paths, isV3)).forEach(([className, requests]) => {
+    Object.entries(requestCodegen(swaggerSource.paths, isV3, options)).forEach(([className, requests]) => {
       let text = ''
       requests.forEach(req => {
         const reqName = options.methodNameMode == 'operationId' ? req.operationId : req.name
@@ -97,13 +97,13 @@ export async function codegen(params: ISwaggerOptions) {
         params.modelMode === 'interface'
           ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
           : classTemplate(
-              item.value.name,
-              item.value.props,
-              [],
-              params.strictNullChecks,
-              options.useClassTransformer,
-              options.generateValidationModel
-            )
+            item.value.name,
+            item.value.props,
+            [],
+            params.strictNullChecks,
+            options.useClassTransformer,
+            options.generateValidationModel
+          )
       // const fileDir = path.join(options.outputDir || '', 'definitions')
       // writeFile(fileDir, item.name + '.ts', format(text, options))
       defsString += text
@@ -164,13 +164,13 @@ export async function codegen(params: ISwaggerOptions) {
           params.modelMode === 'interface'
             ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
             : classTemplate(
-                item.value.name,
-                item.value.props,
-                [],
-                params.strictNullChecks,
-                options.useClassTransformer,
-                options.generateValidationModel
-              )
+              item.value.name,
+              item.value.props,
+              [],
+              params.strictNullChecks,
+              options.useClassTransformer,
+              options.generateValidationModel
+            )
         defSource += text
       }
     })
@@ -215,13 +215,13 @@ export async function codegen(params: ISwaggerOptions) {
           params.modelMode === 'interface'
             ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
             : classTemplate(
-                item.value.name,
-                item.value.props,
-                [],
-                params.strictNullChecks,
-                options.useClassTransformer,
-                options.generateValidationModel
-              )
+              item.value.name,
+              item.value.props,
+              [],
+              params.strictNullChecks,
+              options.useClassTransformer,
+              options.generateValidationModel
+            )
         apiSource += text
       })
 
