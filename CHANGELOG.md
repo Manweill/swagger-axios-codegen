@@ -1,4 +1,61 @@
 
+### 0.9.12
+
+- fix OpenApi3_Missing_Property_Types [#77](https://github.com/Manweill/swagger-axios-codegen/pulls/77)
+- fix Error: The "path" argument must be of type string. Received type undefined [#76](https://github.com/Manweill/swagger-axios-codegen/pulls/76)
+
+### 0.9.11
+
+- fix openApi 3.0 Response Type.
+- add `option.validationModel` description.
+
+### 0.9.10
+
+- add `options.generateValidationModel` [issue 50](https://github.com/Manweill/swagger-axios-codegen/issues/50) by [denis-pujdak-adm-it](https://github.com/denis-pujdak-adm-it)
+- fix [issue 68](https://github.com/Manweill/swagger-axios-codegen/issues/68)
+
+
+## 0.9.9
+
+- add Universal Generic TypeDefinition
+- add 
+  `options.extendDefinitionFile`
+  `options.extendGenericType`
+  [example](./example/swagger/codegen.js)
+
+## 0.9.7
+
+- fix: enum member cannot have numeric value
+
+## 0.9.6
+
+- fix issue #63. remove special characters of serviceName and fieldName
+
+## 0.9.5
+
+- fix requestBody in openApi3
+
+## 0.9.4
+
+- fix #59 empty components in openApi v3.0
+
+## 0.9.3
+
+- fix request name
+
+## 0.9.2
+
+- Support OpenApi3.0
+
+## 0.8.3
+
+- add docs for the `useClassTransformer` option by arkraft
+
+- fix: useCustomerRequestInstance template by xxbld
+
+- fix #48 by nbytes
+
+
 ## 0.8.1
 
 - Improve request params

@@ -3,12 +3,10 @@ const { codegen } = require('../../dist/index.js')
 
 codegen({
   methodNameMode: 'path',
-  source: require('../swagger.json'),
+  source: require('../swagger3.json'),
   // remoteUrl: 'http://localhost:44307/swagger/v1/swagger.json',
   outputDir: './swagger/services',
+  fileName: 'indexv3.ts',
   strictNullChecks: false,
-  // useCustomerRequestInstance: true,
-  modelMode: 'interface',
-  extendDefinitionFile: './swagger/customerDefinition.ts',
-  extendGenericType: ['JsonResult']
+  modelMode: 'interface'
 })

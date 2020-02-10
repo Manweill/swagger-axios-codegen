@@ -2,5 +2,6 @@
   "editor.formatOnSave": true,
   "cSpell.words": [
     "codegen"
-  ]
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

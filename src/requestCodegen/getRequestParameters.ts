@@ -1,6 +1,6 @@
 import { IParameter } from '../swaggerInterfaces'
 
-import { refClassName, toBaseType } from '../utils'
+import { refClassName, toBaseType, RemoveSpecialCharacters } from '../utils'
 
 import camelcase from 'camelcase'
 
@@ -45,7 +45,7 @@ export function getRequestParameters(params: IParameter[]) {
         propType = refClassName(p.schema.$ref)
         // console.log('propType', refClassName(p.schema.$ref))
       } else if (p.schema.type) {
-        propType = p.schema.type
+        propType = toBaseType(p.schema.type)
       } else {
         throw new Error('Could not find property type on schema')
       }
@@ -58,6 +58,7 @@ export function getRequestParameters(params: IParameter[]) {
     else {
       propType = toBaseType(p.type)
     }
+
     const paramName = camelcase(p.name)
     requestParameters += `
     /** ${p.description || ''} */

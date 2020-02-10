@@ -318,6 +318,122 @@
           "Mappers"
         ]
       }
+    },
+    "/api/services/app/AuditLog/GetAuditLogs": {
+      "get": {
+        "tags": [
+          "AuditLog"
+        ],
+        "operationId": "GetAuditLogs",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "StartDate",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/IPagedResult[AuditLogListDto]"
+            }
+          }
+        }
+      }
+    },
+    "/api/services/app/YmTicketTypical/AddOrUpdateTicketTypical": {
+      "post": {
+        "tags": [
+          "YmTicketTypical"
+        ],
+        "summary": "新增或编辑标准票, 需走审批流程",
+        "operationId": "AddOrUpdateTicketTypical",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/JsonResult[Guid]"
+            }
+          }
+        }
+      }
+    },
+    "/dev/uploadLngLat": {
+      "post": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "分页上传设备地理坐标信息, 参数list的值为 List<DeviceLngLat>, 返回Result对象",
+        "operationId": "uploadLngLatUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "client-id",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "list",
+            "description": "设备地理坐标信息集合",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/List<AuditLogListDto>"
+            }
+          },
+          {
+            "name": "x-token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "deprecated": false
+      }
     }
   },
   "definitions": {
@@ -587,6 +703,69 @@
           "type": "string"
         },
         "fields": {
+          "type": "string"
+        }
+      }
+    },
+    "PagedResultDto[AuditLogListDto]": {
+      "type": "object",
+      "properties": {
+        "totalCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "items": {
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AuditLogListDto"
+          }
+        }
+      }
+    },
+    "AuditLogListDto": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "id": {
+          "format": "int64",
+          "type": "integer"
+        }
+      }
+    },
+    "JsonResult[Guid]": {
+      "description": "接口返回结果",
+      "type": "object",
+      "properties": {
+        "result": {
+          "description": "结果",
+          "type": "boolean"
+        },
+        "code": {
+          "description": "代码",
+          "enum": [
+            "Success",
+            "Timeout",
+            "Fail",
+            "Expired",
+            "Error",
+            "InternalServerError",
+            "InvalidAnonymousAccess",
+            "UserSessionExpired",
+            "UserIsBinded"
+          ],
+          "type": "string"
+        },
+        "data": {
+          "format": "uuid",
+          "description": "数据",
+          "type": "string"
+        },
+        "message": {
+          "description": "消息",
           "type": "string"
         }
       }

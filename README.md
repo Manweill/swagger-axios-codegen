@@ -1,11 +1,11 @@
 # swagger-axios-codegen
 A swagger client uses axios and typescript
 
-
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/manweill/swagger-axios-codegen/NodeCI)](https://img.shields.io/github/workflow/status/manweill/swagger-axios-codegen/NodeCI)
 ￼[![NpmVersion](https://img.shields.io/npm/v/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
 ￼[![npm](https://img.shields.io/npm/dm/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
-[![Build Status](https://dev.azure.com/manweill/swagger-axios-codegen/_apis/build/status/Manweill.swagger-axios-codegen?branchName=master)](https://dev.azure.com/manweill/swagger-axios-codegen/_build/latest?definitionId=1&branchName=master)
 [![open issues](https://img.shields.io/github/issues-raw/manweill/swagger-axios-codegen.svg)](https://img.shields.io/github/issues-raw/manweill/swagger-axios-codegen.svg)
+
 
 require node > v8.0.0
 
@@ -49,7 +49,13 @@ export interface ISwaggerOptions {
   /** definition Class mode */
   modelMode?: 'class' | 'interface'
   /** use class-transformer to transform the results */
-  useClassTransformer?: boolean
+  useClassTransformer?: boolean,
+  // force the specified swagger or openAPI version,
+  openApi?: string | undefined,
+  // extend file url. It will be inserted in front of the service method
+  extendDefinitionFile?: string | undefined
+  // mark generic type
+  extendGenericType?: string[] | undefined
 }
 
 const defaultOptions: ISwaggerOptions = {
@@ -215,3 +221,47 @@ export class ObjectWithDate {
 
 The service method will transform the json response and return an instance of this class
 
+### use validation model
+
+```js
+codegen({
+    ...
+    modelMode: 'class',
+    generateValidationModel: true
+});
+```
+
+The option above among with class model mode allows to render the model validation rules. The result of this will be as follows:
+
+```js
+export class FooFormVm {
+  'name'?: string;
+  'description'?: string;
+ 
+  constructor(data: undefined | any = {}) {
+    this['name'] = data['name'];
+    this['description'] = data['description'];
+  }
+ 
+  public static validationModel = {
+    name: { required: true, maxLength: 50 },
+    description: { maxLength: 250 },
+  };
+}
+```
+So you can use the validation model in your application:
+
+```js
+function isRequired(vm: any, fieldName: string): boolean {
+  return (vm && vm[fieldName] && vm[fieldName].required === true);
+}
+function maxLength(vm: any, fieldName: string): number {
+  return (vm && vm[fieldName] && vm[fieldName].maxLength ? vm[fieldName].maxLength : 4000);
+}
+```
+Now you can use the functions
+```js
+var required = isRequired(FooFormVm.validationModel, 'name');
+var maxLength = maxLength(FooFormVm.validationModel, 'description');
+```
+At the moment there are only two rules are supported - `required` and `maxLength`.

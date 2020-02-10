@@ -48,7 +48,7 @@ export function createDefinitionClass(
     }
     let validationModel = getValidationModel(k, v, required);
     // propsStr += classPropsTemplate(k, propType, v.description)
-    model.props.push({ name: k, type: propType, format: v.format, desc: v.description?.replace(/\//g, '\/'), isType, isEnum, validationModel })
+    model.props.push({ name: k, type: propType, format: v.format, desc: v.description?.replace(/\//g, '\\/'), isType, isEnum, validationModel })
   }
   // : classTemplate(className, propsStr, constructorStr)
   return { enums, model }

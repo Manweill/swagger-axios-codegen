@@ -1,41 +1,66 @@
-import { IDefinitionClass, IDefinitionEnum } from "./baseInterfaces";
+import { IDefinitionClass, IDefinitionEnum } from './baseInterfaces'
+import { IDefinitionProperty } from './swaggerInterfaces'
 
-export const GENERIC_SPLIT_KEY = '['
+let definedGenericTypes: string[] = []
+const UniversalGenericTypes = ['IList', 'List']
+const AbpGenericTypes = ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto']
 
 // 是否是接口类型
-export const isGenerics = (s: string) => (/^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s))
+export const isOpenApiGenerics = (s: string) => /^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s) || /^.+\<.+\>$/.test(s)
+export const isGenerics = (s: string) => /^.+\<.+\>$/.test(s)
+export const isDefinedGenericTypes = (x: string) => definedGenericTypes.some(i => i === x)
 
+export function setDefinedGenericTypes(types: string[] = []) {
+  definedGenericTypes.push(...UniversalGenericTypes, ...AbpGenericTypes, ...types)
+}
 /**
  * 分解泛型接口
  * @param definitionClassName
  */
-export function getGenericsClassNames(definitionClassName: string) {
-  const splitIndex = definitionClassName.indexOf(GENERIC_SPLIT_KEY)
-  // 泛型基类 PagedResultDto
-  const interfaceClassName = definitionClassName.slice(0, splitIndex)
-  // 泛型类型 T 的类型名称
-  const TClassName = definitionClassName.slice(splitIndex + 1, -1)
-  return { interfaceClassName, TClassName }
+export function getGenericsClassNames(definitionClassName: string): string {
+  let str = ''
+  let split_key = ''
+  if (/^.+\[.+\]$/.test(definitionClassName)) {
+    split_key = '['
+  } else if (/^.+\«.+\»$/.test(definitionClassName)) {
+    split_key = '«'
+  } else if (/^.+\<.+\>$/.test(definitionClassName)) {
+    split_key = '<'
+  }
+  if (split_key !== '') {
+    const splitIndex = definitionClassName.indexOf(split_key)
+    // 泛型基类 PagedResultDto
+    const interfaceClassName = definitionClassName.slice(0, splitIndex)
+    // 泛型类型 T 的类型名称
+    const TClassName = definitionClassName.slice(splitIndex + 1, -1)
+    str = isDefinedGenericTypes(interfaceClassName)
+      ? `${interfaceClassName}<${refClassName(TClassName)}>`
+      : trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right')
+  } else {
+    // console.log('getGenericsClassNames', definitionClassName)
+    str = toBaseType(trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right'))
+  }
+  return str
 }
 
 /**
  * 获取引用类型
  * @param s
  */
-export function refClassName(s: string) {
-  let propType = s.slice(s.lastIndexOf('/') + 1)
-  if (isGenerics(propType)) {
-    const { interfaceClassName, TClassName } = getGenericsClassNames(propType)
-    // return `${interfaceClassName}<${toBaseType(TClassName)}>`
-    const str = trimString(propType.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_'), '_', 'right')
-    return str
-  } else {
-    return propType
-  }
+export function refClassName(s: string): string {
+  let propType = s?.slice(s.lastIndexOf('/') + 1)
+  return isOpenApiGenerics(propType)
+    ? getGenericsClassNames(propType)
+    : toBaseType(trimString(RemoveSpecialCharacters(propType), '_', 'right'))
+}
+
+/** 移除特殊字符 */
+export function RemoveSpecialCharacters(str: string) {
+  return str?.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_')
 }
 
 export function isBaseType(s: string) {
-  return ['boolean', 'number', 'string', 'string', 'Date'].includes(s)
+  return ['boolean', 'number', 'string', 'string', 'Date', 'any'].includes(s)
 }
 
 export function toBaseType(s: string, format?: string) {
@@ -53,6 +78,7 @@ export function toBaseType(s: string, format?: string) {
       result = '[]'
       break
     case 'Int64':
+    case 'int':
     case 'integer':
     case 'number':
       result = 'number'
@@ -60,13 +86,14 @@ export function toBaseType(s: string, format?: string) {
     case 'Guid':
     case 'String':
     case 'string':
+    case 'uuid':
       switch (format) {
         case 'date':
         case 'date-time':
-          result = 'Date';
+          result = 'Date'
           break
         default:
-          result = 'string';
+          result = 'string'
       }
       break
     case 'file':
@@ -89,8 +116,8 @@ export function getMethodName(path: string) {
   return ''
 }
 
-
 export function trimString(str: string, char: string, type: string) {
+  str = str ?? ''
   if (char) {
     if (type == 'left') {
       return str.replace(new RegExp('^\\' + char + '+', 'g'), '')
@@ -121,5 +148,24 @@ export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[
       }
     }
   })
-  return result;
+  return result
+}
+
+export function isOpenApi3(version: string) {
+  console.log('openApi version：', version)
+  return version.startsWith('3.', 0)
+}
+
+export function getValidationModel(propName: string, prop: IDefinitionProperty, required: string[]) {
+  let validationModel: any = {}
+  let hasValidationRules = false
+  if (required && required.includes(propName)) {
+    validationModel.required = true
+    hasValidationRules = true
+  }
+  if (prop.maxLength) {
+    validationModel.maxLength = prop.maxLength
+    hasValidationRules = true
+  }
+  return hasValidationRules ? validationModel : null
 }

@@ -16,6 +16,14 @@ export interface ISwaggerOptions {
   modelMode?: 'class' | 'interface'
   /** use class-transformer to transform the results */
   useClassTransformer?: boolean
+  // force the specified swagger or openAPI version,
+  openApi?: string | undefined
+  // extend file url. It will be inserted in front of the service method
+  extendDefinitionFile?: string | undefined
+  // mark generic type
+  extendGenericType?: string[] | undefined
+  // generate validation model (class model mode only)
+  generateValidationModel?: boolean
 }
 
 export interface IPropDef {
@@ -25,6 +33,7 @@ export interface IPropDef {
   desc: string
   isType: boolean
   isEnum: boolean
+  validationModel: object
 }
 
 export interface IInclude {
@@ -45,10 +54,9 @@ export interface IDefinitionClasses {
   [key: string]: IDefinitionClass
 }
 
-
 export interface IEnumDef {
   name: string
-  enumProps: string,
+  enumProps: string
   type: string
 }
 
