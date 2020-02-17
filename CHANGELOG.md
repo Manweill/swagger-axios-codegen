@@ -1,4 +1,8 @@
 
+### 0.9.13
+
+- fix uniqueMethodName
+
 ### 0.9.12
 
 - fix OpenApi3_Missing_Property_Types [#77](https://github.com/Manweill/swagger-axios-codegen/pulls/77)
