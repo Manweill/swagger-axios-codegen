@@ -23,7 +23,7 @@ export function interfaceTemplate(
 
   export interface ${name} {
 
-    ${props.map(p => classPropsTemplate(p.name, p.type, null, p.desc, !strictNullChecks, false, false)).join('')}
+    ${props.map(p => classPropsTemplate(p.name, p.type, p.format, p.desc, !strictNullChecks, false, false)).join('')}
   }
   `
 }

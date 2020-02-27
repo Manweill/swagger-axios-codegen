@@ -87,7 +87,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
       // TODO 待优化，目前简单处理同名方法
       let uniqueMethodName = camelcase(methodName)
 
-      var uniqueMethodNameReg = new RegExp(`(${uniqueMethodName})[0-9]?`)
+      var uniqueMethodNameReg = new RegExp(`^${uniqueMethodName}[0-9]*$`)
 
       const methodCount = requestClasses[className].filter(
         item => uniqueMethodName === item.name || uniqueMethodNameReg.test(item.name)
