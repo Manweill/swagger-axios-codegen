@@ -1,7 +1,8 @@
 
-### 0.9.13
+### 0.9.14
 
 - fix uniqueMethodName
+- fix: pass format value for modeMode: "interface", which was null #80
 
 ### 0.9.12
 
