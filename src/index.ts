@@ -35,7 +35,100 @@ const defaultOptions: ISwaggerOptions = {
   extendGenericType: []
 }
 
-/** 常规入口 */
+/** main */
+export async function codegen(params: ISwaggerOptions) {
+  console.time('finish')
+  let err
+  let swaggerSource: ISwaggerSource
+  setDefinedGenericTypes(params.extendGenericType)
+  // 获取接口定义文件
+  if (params.remoteUrl) {
+    const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
+    if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
+      fs.writeFileSync('./cache_swagger.json', swaggerJson)
+      swaggerSource = require(path.resolve('./cache_swagger.json'))
+    } else {
+      swaggerSource = <ISwaggerSource>swaggerJson
+    }
+  } else if (params.source) {
+    swaggerSource = <ISwaggerSource>params.source
+  } else {
+    throw new Error('remoteUrl or source must have a value')
+  }
+
+  const options: ISwaggerOptions = {
+    ...defaultOptions,
+    ...params
+  }
+  let apiSource = options.useCustomerRequestInstance ? customerServiceHeader(options) : serviceHeader(options)
+  // 判断是否是openApi3.0或者swagger3.0
+  const isV3 = isOpenApi3(params.openApi || swaggerSource.openapi || swaggerSource.swagger)
+  console.log('isV3', isV3)
+  let requestClass = requestCodegen(swaggerSource.paths, isV3, options)
+  // let requestClasses = Object.entries(requestCodegen(swaggerSource.paths, isV3, options))
+
+  const { models, enums } = isV3
+    ? componentsCodegen(swaggerSource.components)
+    : definitionsCodeGen(swaggerSource.definitions)
+
+  // TODO: next next next time
+  // if (options.multipleFileMode) {
+  if (false) {
+    Object.entries(requestCodegen(swaggerSource.paths, isV3, options)).forEach(([className, requests]) => {
+      let text = ''
+      requests.forEach(req => {
+        const reqName = options.methodNameMode == 'operationId' ? req.operationId : req.name
+        text += requestTemplate(reqName, req.requestSchema, options)
+      })
+      text = serviceTemplate(className + options.serviceNameSuffix, text)
+      apiSource += text
+    })
+    writeFile(options.outputDir || '', 'index.service.ts', format(apiSource, options))
+
+    const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
+    let defsString = ''
+    Object.values(enums).forEach(item => {
+      const text = item.value ? enumTemplate(item.value.name, item.value.enumProps, 'Enum') : item.content || ''
+
+      // const fileDir = path.join(options.outputDir || '', 'definitions')
+      // writeFile(fileDir, item.name + '.ts', format(text, options))
+      defsString += text
+    })
+
+    Object.values(models).forEach(item => {
+      const text =
+        params.modelMode === 'interface'
+          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+          : classTemplate(
+            item.value.name,
+            item.value.props,
+            [],
+            params.strictNullChecks,
+            options.useClassTransformer,
+            options.generateValidationModel
+          )
+      // const fileDir = path.join(options.outputDir || '', 'definitions')
+      // writeFile(fileDir, item.name + '.ts', format(text, options))
+      defsString += text
+    })
+    writeFile(options.outputDir || '', 'index.defs.ts', format(defsString, options))
+  } else if (options.include && options.include.length > 0) {
+    // codegenInclude(apiSource, options, requestClass, models, enums)
+    codegenMultimatchInclude(apiSource, options, requestClass, models, enums)
+  } else {
+    codegenAll(apiSource, options, requestClass, models, enums)
+  }
+  if (fs.existsSync('./cache_swagger.json')) {
+    fs.unlinkSync('./cache_swagger.json')
+  }
+  console.timeEnd('finish')
+  if (err) {
+    throw err
+  }
+}
+
+
+/** codegenAll */
 function codegenAll(
   apiSource: string,
   options: ISwaggerOptions,
@@ -334,96 +427,6 @@ function codegenMultimatchInclude(
   writeFile(options.outputDir || '', options.fileName || '', format(apiSource, options))
 }
 
-export async function codegen(params: ISwaggerOptions) {
-  console.time('finish')
-  let err
-  let swaggerSource: ISwaggerSource
-  setDefinedGenericTypes(params.extendGenericType)
-  // 获取接口定义文件
-  if (params.remoteUrl) {
-    const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
-    if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
-      fs.writeFileSync('./cache_swagger.json', swaggerJson)
-      swaggerSource = require(path.resolve('./cache_swagger.json'))
-    } else {
-      swaggerSource = <ISwaggerSource>swaggerJson
-    }
-  } else if (params.source) {
-    swaggerSource = <ISwaggerSource>params.source
-  } else {
-    throw new Error('remoteUrl or source must have a value')
-  }
-
-  const options: ISwaggerOptions = {
-    ...defaultOptions,
-    ...params
-  }
-  let apiSource = options.useCustomerRequestInstance ? customerServiceHeader(options) : serviceHeader(options)
-  // 判断是否是openApi3.0或者swagger3.0
-  const isV3 = isOpenApi3(params.openApi || swaggerSource.openapi || swaggerSource.swagger)
-  console.log('isV3', isV3)
-  let requestClass = requestCodegen(swaggerSource.paths, isV3, options)
-  // let requestClasses = Object.entries(requestCodegen(swaggerSource.paths, isV3, options))
-
-  const { models, enums } = isV3
-    ? componentsCodegen(swaggerSource.components)
-    : definitionsCodeGen(swaggerSource.definitions)
-
-  // TODO: next next next time
-  // if (options.multipleFileMode) {
-  if (false) {
-    Object.entries(requestCodegen(swaggerSource.paths, isV3, options)).forEach(([className, requests]) => {
-      let text = ''
-      requests.forEach(req => {
-        const reqName = options.methodNameMode == 'operationId' ? req.operationId : req.name
-        text += requestTemplate(reqName, req.requestSchema, options)
-      })
-      text = serviceTemplate(className + options.serviceNameSuffix, text)
-      apiSource += text
-    })
-    writeFile(options.outputDir || '', 'index.service.ts', format(apiSource, options))
-
-    const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
-    let defsString = ''
-    Object.values(enums).forEach(item => {
-      const text = item.value ? enumTemplate(item.value.name, item.value.enumProps, 'Enum') : item.content || ''
-
-      // const fileDir = path.join(options.outputDir || '', 'definitions')
-      // writeFile(fileDir, item.name + '.ts', format(text, options))
-      defsString += text
-    })
-
-    Object.values(models).forEach(item => {
-      const text =
-        params.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
-          : classTemplate(
-            item.value.name,
-            item.value.props,
-            [],
-            params.strictNullChecks,
-            options.useClassTransformer,
-            options.generateValidationModel
-          )
-      // const fileDir = path.join(options.outputDir || '', 'definitions')
-      // writeFile(fileDir, item.name + '.ts', format(text, options))
-      defsString += text
-    })
-    writeFile(options.outputDir || '', 'index.defs.ts', format(defsString, options))
-  } else if (options.include && options.include.length > 0) {
-    // codegenInclude(apiSource, options, requestClass, models, enums)
-    codegenMultimatchInclude(apiSource, options, requestClass, models, enums)
-  } else {
-    codegenAll(apiSource, options, requestClass, models, enums)
-  }
-  if (fs.existsSync('./cache_swagger.json')) {
-    fs.unlinkSync('./cache_swagger.json')
-  }
-  console.timeEnd('finish')
-  if (err) {
-    throw err
-  }
-}
 
 function writeFile(fileDir: string, name: string, data: any) {
   if (!fs.existsSync(fileDir)) {
