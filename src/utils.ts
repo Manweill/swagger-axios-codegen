@@ -129,12 +129,48 @@ export function trimString(str: string, char: string, type: string) {
   return str.replace(/^\s+|\s+$/g, '')
 }
 
+
+/**
+ * 取泛型里的className
+ * 
+ * model是泛型只要泛型里面的内容 
+ * 当前仅支持单层结构的泛型 T<B>
+ * todo: T<B<C>>
+ * 
+ * @param definitionClassName 
+ */
+export function getGenericsClass(definitionClassName: string) {
+  let str = ''
+  let split_key = ''
+  if (/^.+\[.+\]$/.test(definitionClassName)) {
+    split_key = '['
+  } else if (/^.+\«.+\»$/.test(definitionClassName)) {
+    split_key = '«'
+  } else if (/^.+\<.+\>$/.test(definitionClassName)) {
+    split_key = '<'
+  }
+  if (split_key !== '') {
+    const splitIndex = definitionClassName.indexOf(split_key)
+    // 泛型基类 
+    const interfaceClassName = definitionClassName.slice(0, splitIndex)
+    // 泛型类型 T 的类型名称
+    const TClassName = definitionClassName.slice(splitIndex + 1, -1)
+    str = isDefinedGenericTypes(interfaceClassName)
+      ? refClassName(TClassName)
+      : trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right')
+  }
+  return str
+}
 export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[], allEnums: IDefinitionEnum[]) {
   let result: string[] = []
   imports.forEach(model => {
+    let modelName = model
+    if (isOpenApiGenerics(model)) {
+      modelName = getGenericsClass(model)
+    }
     let ref = null
 
-    ref = allDefinition.find(item => model.startsWith(item.name))
+    ref = allDefinition.find(item => modelName.startsWith(item.name))
 
     if (ref) {
       result.push(ref.name)
@@ -142,7 +178,7 @@ export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[
         result = result.concat(findDeepRefs(ref.value.imports, allDefinition, allEnums))
       }
     } else {
-      ref = allEnums.find(item => model.startsWith(item.name))
+      ref = allEnums.find(item => modelName.startsWith(item.name))
       if (ref) {
         result.push(ref.name)
       }
