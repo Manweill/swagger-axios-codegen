@@ -1,6 +1,6 @@
 import camelcase from 'camelcase'
 import { IPropDef, ISwaggerOptions } from '../baseInterfaces'
-import { toBaseType } from '../utils'
+import { toBaseType, isDefinedGenericTypes } from '../utils'
 
 const baseTypes = ['string', 'number', 'object', 'boolean', 'any']
 
@@ -11,6 +11,10 @@ export function interfaceTemplate(
   imports: string[],
   strictNullChecks: boolean = true
 ) {
+  if (isDefinedGenericTypes(name)) {
+    // 已经定义过的interface不再生成
+    return ''
+  }
   // 所有的引用
   const importString = imports
     .map(imp => {

@@ -11,7 +11,7 @@ export interface IRequestClass {
   [key: string]: IRequestMethods[];
 }
 
-interface IRequestMethods {
+export interface IRequestMethods {
   name: string;
   operationId: string;
   requestSchema: any;
@@ -68,7 +68,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
       }
 
       parameters =
-        parsedParameters.requestParameters?.length > 0
+        parsedParameters.requestParameters ?.length > 0
           ? `params: {
               ${parsedParameters.requestParameters}
           } = {} as any,`

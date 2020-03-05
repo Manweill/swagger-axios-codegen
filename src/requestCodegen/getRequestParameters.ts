@@ -14,7 +14,9 @@ function getUniqParams(params: IParameter[]): IParameter[] {
   params.forEach(v => {
     // _${v.in}
     // TODO:同名但是v.in= query |path |body 的情况同时出现如何处理？分出不同的request参数？
-    uniqParams[`${v.name}`] = v;
+    if (!v.name.includes('[0]')) { //DTO class中存在List<T>时会出现这种参数 (list[0].prop)
+      uniqParams[`${v.name}`] = v;
+    }
   })
   return Object.values(uniqParams)
 }

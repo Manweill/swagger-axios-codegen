@@ -161,12 +161,15 @@ serviceOptions.axios = YourLib
 
 ### filter service and method 
 
+fliter by [multimatch](https://github.com/sindresorhus/multimatch)
+
 ```js
 
 let include = [
-  'Products', // tagName
-  'Estimates',//tagName
-  { 'User': ['history'] }
+  '*',
+  // 'Products*',
+  '!Products',
+  { 'User': ['*', '!history'] },
 ]
 codegen({
   methodNameMode: 'path',
