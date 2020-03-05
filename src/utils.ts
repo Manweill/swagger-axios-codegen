@@ -129,56 +129,48 @@ export function trimString(str: string, char: string, type: string) {
   return str.replace(/^\s+|\s+$/g, '')
 }
 
-
-/**
- * 取泛型里的className
- * 
- * model是泛型只要泛型里面的内容 
- * 当前仅支持单层结构的泛型 T<B>
- * todo: T<B<C>>
- * 
- * @param definitionClassName 
- */
-export function getGenericsClass(definitionClassName: string) {
-  let str = ''
-  let split_key = ''
-  if (/^.+\[.+\]$/.test(definitionClassName)) {
-    split_key = '['
-  } else if (/^.+\«.+\»$/.test(definitionClassName)) {
-    split_key = '«'
-  } else if (/^.+\<.+\>$/.test(definitionClassName)) {
-    split_key = '<'
+/** 
+ * 泛型类名提取数组
+ * A<B<C>> => [A,B,C]
+ **/
+export function genericsToClassNames(modelName: string) {
+  if (isGenerics(modelName)) {
+    const names = modelName.split(/[<>]+/)
+    names.pop()
+    return names
+  } else {
+    return [modelName]
   }
-  if (split_key !== '') {
-    const splitIndex = definitionClassName.indexOf(split_key)
-    // 泛型基类 
-    const interfaceClassName = definitionClassName.slice(0, splitIndex)
-    // 泛型类型 T 的类型名称
-    const TClassName = definitionClassName.slice(splitIndex + 1, -1)
-    str = isDefinedGenericTypes(interfaceClassName)
-      ? refClassName(TClassName)
-      : trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right')
-  }
-  return str
 }
+/**
+ *  数组类名转泛型类名
+ *  [A,B,C] => A<B<C>>
+ */
+export function classNamesToGenerics(classNames: string[]) {
+  const len = classNames.length
+  if (len > 1) {
+    const end = new Array(len).join('>')
+    const name = classNames.join('<') + end
+    return name
+  } else if (len === 1) {
+    return classNames[1]
+  }
+}
+
 export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[], allEnums: IDefinitionEnum[]) {
   let result: string[] = []
   imports.forEach(model => {
-    let modelName = model
-    if (isOpenApiGenerics(model)) {
-      modelName = getGenericsClass(model)
-    }
+    const modelNames = genericsToClassNames(model)
+    // console.log('modelNames', modelNames)
     let ref = null
-
-    ref = allDefinition.find(item => modelName.startsWith(item.name))
-
+    ref = allDefinition.find(item => modelNames.some((modelName) => modelName.startsWith(item.name)))
     if (ref) {
       result.push(ref.name)
       if (ref.value.imports.length > 0) {
         result = result.concat(findDeepRefs(ref.value.imports, allDefinition, allEnums))
       }
     } else {
-      ref = allEnums.find(item => modelName.startsWith(item.name))
+      ref = allEnums.find(item => modelNames.some((modelName) => modelName.startsWith(item.name)))
       if (ref) {
         result.push(ref.name)
       }
@@ -186,6 +178,30 @@ export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[
   })
   return result
 }
+// export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[], allEnums: IDefinitionEnum[]) {
+//   let result: string[] = []
+//   imports.forEach(model => {
+//     const modelNames = getClassNamesFromModel(model)
+
+//     let modelName = model
+//     let ref = null
+
+//     ref = allDefinition.find(item => modelName.startsWith(item.name))
+
+//     if (ref) {
+//       result.push(ref.name)
+//       if (ref.value.imports.length > 0) {
+//         result = result.concat(findDeepRefs(ref.value.imports, allDefinition, allEnums))
+//       }
+//     } else {
+//       ref = allEnums.find(item => modelName.startsWith(item.name))
+//       if (ref) {
+//         result.push(ref.name)
+//       }
+//     }
+//   })
+//   return result
+// }
 
 export function isOpenApi3(version: string) {
   console.log('openApi version：', version)
