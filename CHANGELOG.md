@@ -1,4 +1,10 @@
 
+### 0.9.15
+
+- fix: requestParams does not generated isDefinedGenericTypes interfaceTemplate by xxbb #PR86
+- feature: use multimatch filter service and method by xxbb #56
+
+
 ### 0.9.14
 
 - fix uniqueMethodName
