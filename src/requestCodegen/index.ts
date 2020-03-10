@@ -59,7 +59,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
 
         // 合并imports
         if (parsedParameters.imports) {
-          imports.push(parsedRequestBody.imports)
+          imports.push(...parsedRequestBody.imports)
         }
 
         parsedParameters.requestParameters = parsedParameters.requestParameters
