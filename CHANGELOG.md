@@ -1,4 +1,9 @@
 
+### 0.9.16
+
+- fix: mergining imports (#88)
+
+
 ### 0.9.15
 
 - fix: requestParams does not generated isDefinedGenericTypes interfaceTemplate by xxbb #PR86
