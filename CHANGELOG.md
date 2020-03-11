@@ -1,8 +1,8 @@
 
-### 0.9.16
+### 0.9.17
 
 - fix: mergining imports (#88)
-
+- fix: null check of swagger.json nodes
 
 ### 0.9.15
 
