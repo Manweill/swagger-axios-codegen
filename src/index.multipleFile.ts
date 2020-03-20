@@ -15,7 +15,7 @@ import {
   typeTemplate
 } from './templates/template'
 import { customerServiceHeader, serviceHeader } from './templates/serviceHeader'
-import { isOpenApi3, findDeepRefs, setDefinedGenericTypes, getDefinedGenericTypes } from './utils'
+import { isOpenApi3, findDeepRefs, setDefinedGenericTypes } from './utils'
 import { requestCodegen, IRequestClass, IRequestMethods } from './requestCodegen'
 import { componentsCodegen } from './componentsCodegen'
 import { definitionsCodeGen } from './definitionCodegen'
@@ -32,8 +32,7 @@ const defaultOptions: ISwaggerOptions = {
   include: [],
   strictNullChecks: true,
   useClassTransformer: false,
-  extendGenericType: [],
-  multipleFileMode: false
+  extendGenericType: []
 }
 
 /** main */
@@ -75,34 +74,32 @@ export async function codegen(params: ISwaggerOptions) {
   let _allModel = Object.values(models)
   let _allEnum = Object.values(enums)
   // TODO: next next next time
-  if (options.multipleFileMode) {
-    // if (true) {
+  // if (options.multipleFileMode) {
+  if (true) {
 
     Object.entries(requestCodegen(swaggerSource.paths, isV3, options)).forEach(([className, requests]) => {
       let text = ''
       let allImport: string[] = []
       requests.forEach(req => {
         const reqName = options.methodNameMode == 'operationId' ? req.operationId : req.name
-        // if ('getAuthorizedDeviceSet' === reqName) {
-        //   console.log('req.requestSchema.parsedParameters.imports', JSON.stringify(req.requestSchema.parsedParameters.imports));
-
-        // }
         text += requestTemplate(reqName, req.requestSchema, options)
         let imports = findDeepRefs(req.requestSchema.parsedParameters.imports, _allModel, _allEnum)
         allImport = allImport.concat(imports)
       })
 
-      // unique import
+      // unique
       const uniqueImports: string[] = []
-      allImport.push(...getDefinedGenericTypes(), 'IRequestOptions', 'IRequestConfig', 'getConfigs', 'axios')
+
       for (const item of allImport) {
         if (!uniqueImports.includes(item)) uniqueImports.push(item)
       }
 
       text = serviceTemplate(className + options.serviceNameSuffix, text, uniqueImports)
-      writeFile(options.outputDir || '', className + 'Service.ts', format(text, options))
+      writeFile(options.outputDir || '', className + '.service.ts', format(text, options))
     })
 
+
+    const { models, enums } = definitionsCodeGen(swaggerSource.definitions)
     let defsString = ''
     Object.values(enums).forEach(item => {
       const text = item.value ? enumTemplate(item.value.name, item.value.enumProps, 'Enum') : item.content || ''
@@ -452,7 +449,7 @@ function writeFile(fileDir: string, name: string, data: any) {
     fs.mkdirSync(fileDir)
   }
   const filename = path.join(fileDir, name)
-  // console.log('filename', filename)
+  console.log('filename', filename)
   fs.writeFileSync(filename, data)
 }
 

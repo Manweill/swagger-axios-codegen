@@ -3,16 +3,22 @@ import { IDefinitionProperty } from './swaggerInterfaces'
 
 let definedGenericTypes: string[] = []
 const UniversalGenericTypes = ['IList', 'List']
-const AbpGenericTypes = ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto']
+const AbpGenericTypes = ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto', 'Dictionary', 'IDictionary']
 
 // 是否是接口类型
 export const isOpenApiGenerics = (s: string) => /^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s) || /^.+\<.+\>$/.test(s)
-export const isGenerics = (s: string) => /^.+\<.+\>$/.test(s)
+
+export const isGenerics = (s: string) => {
+  return /^.+\<.+\>$/.test(s)
+};
 export const isDefinedGenericTypes = (x: string) => definedGenericTypes.some(i => i === x)
 
 export function setDefinedGenericTypes(types: string[] = []) {
   definedGenericTypes.push(...UniversalGenericTypes, ...AbpGenericTypes, ...types)
 }
+
+export const getDefinedGenericTypes = () => definedGenericTypes;
+
 /**
  * 分解泛型接口
  * @param definitionClassName
@@ -33,9 +39,15 @@ export function getGenericsClassNames(definitionClassName: string): string {
     const interfaceClassName = definitionClassName.slice(0, splitIndex)
     // 泛型类型 T 的类型名称
     const TClassName = definitionClassName.slice(splitIndex + 1, -1)
-    str = isDefinedGenericTypes(interfaceClassName)
-      ? `${interfaceClassName}<${refClassName(TClassName)}>`
-      : trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right')
+    if (isDefinedGenericTypes(interfaceClassName)) {
+      str = interfaceClassName === 'IDictionary' || interfaceClassName === 'Dictionary'
+        ? `${interfaceClassName}<object>`
+        : `${interfaceClassName}<${refClassName(TClassName)}>`
+
+    } else {
+      str = trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right')
+    }
+
   } else {
     // console.log('getGenericsClassNames', definitionClassName)
     str = toBaseType(trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right'))
@@ -78,6 +90,7 @@ export function toBaseType(s: string, format?: string) {
       result = '[]'
       break
     case 'Int64':
+    case 'Int32':
     case 'int':
     case 'integer':
     case 'number':
@@ -138,7 +151,10 @@ export function genericsToClassNames(modelName: string) {
     const names = modelName.split(/[<>]+/)
     names.pop()
     return names
-  } else {
+  }
+  else if (modelName.endsWith('[]'))
+    return [modelName.replace('[]', '')]
+  else {
     return [modelName]
   }
 }
@@ -157,25 +173,70 @@ export function classNamesToGenerics(classNames: string[]) {
   }
 }
 
-export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[], allEnums: IDefinitionEnum[]) {
-  let result: string[] = []
-  imports.forEach(model => {
+export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[], allEnums: IDefinitionEnum[], currentImports: string[] = []) {
+
+  let result: string[] = currentImports ?? []
+  // if (imports.includes('AuthUserStationDto[]')) {
+  //   console.log('result init', imports, currentImports);
+  // }
+
+
+  for (const model of imports) {
     const modelNames = genericsToClassNames(model)
-    // console.log('modelNames', modelNames)
-    let ref = null
-    ref = allDefinition.find(item => modelNames.some((modelName) => modelName.startsWith(item.name)))
-    if (ref) {
-      result.push(ref.name)
-      if (ref.value.imports.length > 0) {
-        result = result.concat(findDeepRefs(ref.value.imports, allDefinition, allEnums))
-      }
-    } else {
-      ref = allEnums.find(item => modelNames.some((modelName) => modelName.startsWith(item.name)))
-      if (ref) {
-        result.push(ref.name)
+    for (const modelName of modelNames) {
+      // if (modelNames.includes('AuthUserStationDto[]')) {
+      //   console.log('modelNames', modelNames);
+      // }
+      let ref = null
+      ref = allDefinition.find(item => modelName === item.name)
+      if (ref == null)
+        ref = allDefinition.find(item => modelName.startsWith(item.name))
+      // if (modelNames.includes('AuthUserStationDto[]')) {
+      //   console.log('ref', JSON.stringify(ref));
+      //   // return []
+      // }
+      if (ref && !result.includes(ref.name)) {
+        // if (ref.value.imports.includes('AuthUserStationDto[]') || ref.value.imports.includes('AuthUserStationDto[]')) {
+        //   console.log('findDeepRefs', result);
+        //   console.log('AuthUserStationDto', ref.value.imports);
+        //   // return []
+        // }
+
+        result.push(ref.name);
+
+
+        if (ref.value.imports.length > 0) {
+          let uniqueImports: string[] = []
+          for (const importItem of ref.value.imports) {
+            if (result.includes(importItem) || uniqueImports.includes(importItem)) continue
+            uniqueImports.push(importItem)
+          }
+
+
+          let deepRefs = findDeepRefs(uniqueImports, allDefinition, allEnums, result)
+          // if (ref.value.imports.includes('MotorMonthlyCurrentItem') || ref.value.imports.includes('MotorMonthlyDto')) {
+          //   console.log('uniqueImports', deepRefs);
+          // }
+          if (!!deepRefs) {
+            result = deepRefs
+          }
+
+        }
+      } else {
+        ref = allEnums.find(item => modelNames.some((modelName) => modelName.startsWith(item.name)))
+        if (ref) {
+          result.push(ref.name)
+        }
       }
     }
-  })
+  }
+
+
+  if (imports.includes('AuthUserStationDto')) {
+    console.log('result', result);
+  }
+
+
   return result
 }
 // export function findDeepRefs(imports: string[], allDefinition: IDefinitionClass[], allEnums: IDefinitionEnum[]) {

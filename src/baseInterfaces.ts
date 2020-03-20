@@ -24,6 +24,8 @@ export interface ISwaggerOptions {
   extendGenericType?: string[] | undefined
   // generate validation model (class model mode only)
   generateValidationModel?: boolean
+  // split request service 
+  multipleFileMode?: boolean | undefined
 }
 
 export interface IPropDef {

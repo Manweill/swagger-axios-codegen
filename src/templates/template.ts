@@ -1,6 +1,6 @@
 import camelcase from 'camelcase'
 import { IPropDef, ISwaggerOptions } from '../baseInterfaces'
-import { toBaseType, isDefinedGenericTypes } from '../utils'
+import { toBaseType, isDefinedGenericTypes, getDefinedGenericTypes } from '../utils'
 
 const baseTypes = ['string', 'number', 'object', 'boolean', 'any']
 
@@ -229,8 +229,16 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
 }
 
 /** serviceTemplate */
-export function serviceTemplate(name: string, body: string) {
+export function serviceTemplate(name: string, body: string, imports: string[] = null) {
+  // add base imports
+  let mappedImports = !imports ? '' : `import { ${imports.join(',')}, } from './index.defs'\n`
+
+  // }
+
+
   return `
+
+  ${mappedImports}
   export class ${name} {
     ${body}
   }

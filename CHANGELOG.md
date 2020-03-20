@@ -1,4 +1,8 @@
 
+### 0.10.0
+
+- feature: Implementing multiple files mode when `options.multipleFileMode=true`
+
 ### 0.9.17
 
 - fix: mergining imports (#88)

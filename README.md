@@ -56,6 +56,8 @@ export interface ISwaggerOptions {
   extendDefinitionFile?: string | undefined
   // mark generic type
   extendGenericType?: string[] | undefined
+  // split request service 
+  multipleFileMode?: boolean | undefined
 }
 
 const defaultOptions: ISwaggerOptions = {
