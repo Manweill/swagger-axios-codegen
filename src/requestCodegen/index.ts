@@ -25,6 +25,10 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
       let methodName = getMethodName(path)
       for (const [method, reqProps] of Object.entries(request)) {
         methodName = options.methodNameMode === 'operationId' ? reqProps.operationId : methodName
+        if (!methodName) {
+          console.warn('method Name is null：', path);
+          continue;
+        }
         const contentType =
           reqProps.consumes && reqProps.consumes.includes('multipart/form-data')
             ? 'multipart/form-data'
