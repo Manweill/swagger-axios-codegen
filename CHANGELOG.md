@@ -1,4 +1,8 @@
 
+### 0.10.1
+
+- fix multiple files mode in openApi v3
+
 ### 0.10.0
 
 - feature: Implementing multiple files mode when `options.multipleFileMode=true`

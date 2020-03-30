@@ -15,6 +15,7 @@ export function getRequestBody(requestBody: IRequestBody) {
   if (reqBody == null) {
     reqBody == requestBody.content[allContent[0]]
   }
+  // console.log("reqBody:", JSON.stringify(reqBody));
 
   if (reqBody == null) {
     return { imports, bodyType }
@@ -38,5 +39,7 @@ export function getRequestBody(requestBody: IRequestBody) {
     }
 
   }
+  // console.log("reqbody imports", imports);
+
   return { imports, bodyType }
 }

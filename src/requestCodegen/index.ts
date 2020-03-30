@@ -26,7 +26,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
       for (const [method, reqProps] of Object.entries(request)) {
         methodName = options.methodNameMode === 'operationId' ? reqProps.operationId : methodName
         if (!methodName) {
-          console.warn('method Name is null：', path);
+          // console.warn('method Name is null：', path);
           continue;
         }
         const contentType =
@@ -63,7 +63,8 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
           parsedRequestBody = getRequestBody(reqProps.requestBody)
 
           // 合并imports
-          if (parsedParameters.imports) {
+          if (parsedRequestBody.imports?.length >= 0) {
+            console.log("requestBody ", parsedRequestBody);
             imports.push(...parsedRequestBody.imports)
           }
 

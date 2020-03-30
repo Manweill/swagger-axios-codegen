@@ -83,10 +83,10 @@ export async function codegen(params: ISwaggerOptions) {
       let allImport: string[] = []
       requests.forEach(req => {
         const reqName = options.methodNameMode == 'operationId' ? req.operationId : req.name
-        // if ('getAuthorizedDeviceSet' === reqName) {
-        //   console.log('req.requestSchema.parsedParameters.imports', JSON.stringify(req.requestSchema.parsedParameters.imports));
+        if ('register' === reqName) {
+          console.log('req.requestSchema.parsedParameters.imports', JSON.stringify(req.requestSchema.parsedParameters.imports));
 
-        // }
+        }
         text += requestTemplate(reqName, req.requestSchema, options)
         let imports = findDeepRefs(req.requestSchema.parsedParameters.imports, _allModel, _allEnum)
         allImport = allImport.concat(imports)
@@ -104,13 +104,8 @@ export async function codegen(params: ISwaggerOptions) {
     })
 
     let defsString = ''
-    Object.values(enums).forEach(item => {
-      const text = item.value ? enumTemplate(item.value.name, item.value.enumProps, 'Enum') : item.content || ''
 
-      // const fileDir = path.join(options.outputDir || '', 'definitions')
-      // writeFile(fileDir, item.name + '.ts', format(text, options))
-      defsString += text
-    })
+
 
     Object.values(models).forEach(item => {
       const text =
@@ -128,6 +123,25 @@ export async function codegen(params: ISwaggerOptions) {
       // writeFile(fileDir, item.name + '.ts', format(text, options))
       defsString += text
     })
+
+    Object.values(enums).forEach(item => {
+      // const text = item.value ? enumTemplate(item.value.name, item.value.enumProps, 'Enum') : item.content || ''
+
+      let text = ''
+      if (item.value) {
+        if (item.value.type == 'string') {
+          text = enumTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
+        } else {
+          text = typeTemplate(item.value.name, item.value.enumProps, options.enumNamePrefix)
+        }
+      } else {
+        text = item.content || ''
+      }
+      defsString += text
+
+    })
+
+
     defsString = apiSource + defsString
     writeFile(options.outputDir || '', 'index.defs.ts', format(defsString, options))
 
