@@ -1,5 +1,5 @@
 
-### 0.10.1
+### 0.10.2
 
 - fix multiple files mode in openApi v3
 

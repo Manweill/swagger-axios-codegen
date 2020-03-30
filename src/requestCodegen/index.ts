@@ -64,7 +64,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
 
           // 合并imports
           if (parsedRequestBody.imports?.length >= 0) {
-            console.log("requestBody ", parsedRequestBody);
+            // console.log("requestBody ", parsedRequestBody);
             imports.push(...parsedRequestBody.imports)
           }
 
