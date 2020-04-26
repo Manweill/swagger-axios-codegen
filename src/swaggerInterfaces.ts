@@ -67,10 +67,7 @@ export interface IParameter {
   description: string
   required: string
   schema: IParameterSchema
-  items: {
-    type: string
-    $ref: string
-  }
+  items: IParameterItems
   type: string
   format: string
 }
@@ -125,7 +122,8 @@ export interface ISchema {
   '$ref': string
   'type'?: string
   'items'?: IParameterItems
-  'format'?: string
+  'format'?: string,
+  'properties'?: {[key:string]: IParameterItems}
 }
 
 // 字典类型，对应java map或者.NET Dictionary
