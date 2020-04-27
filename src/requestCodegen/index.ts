@@ -6,6 +6,8 @@ import camelcase from 'camelcase'
 import { isNullOrUndefined } from 'util'
 import { getRequestBody } from './getRequestBody'
 import { ISwaggerOptions } from '../baseInterfaces'
+import { getContentType } from './getContentType'
+import { mapFormDataToV2 } from './mapFormDataToV2'
 
 export interface IRequestClass {
   [key: string]: IRequestMethods[];
@@ -29,10 +31,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
           // console.warn('method Name is null：', path);
           continue;
         }
-        const contentType =
-          reqProps.consumes && reqProps.consumes.includes('multipart/form-data')
-            ? 'multipart/form-data'
-            : 'application/json'
+        const contentType = getContentType(reqProps, isV3)
         let formData = ''
         let pathReplace = ''
         // 获取类名
@@ -48,11 +47,16 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
         let parsedParameters: any = {
           requestParameters: ''
         }
-        if (reqProps.parameters) {
+        const multipartDataProperties = reqProps?.requestBody?.content['multipart/form-data']
+        if (reqProps.parameters || multipartDataProperties) {
           // 获取到接口的参数
-          parsedParameters = getRequestParameters(reqProps.parameters)
+          parsedParameters = getRequestParameters(
+            reqProps.parameters || mapFormDataToV2(multipartDataProperties.schema)
+          )
 
-          formData = parsedParameters.requestFormData ? 'data = new FormData();\n' + parsedParameters.requestFormData : ''
+          formData = parsedParameters.requestFormData
+            ? 'data = new FormData();\n' + parsedParameters.requestFormData
+            : ''
           pathReplace = parsedParameters.requestPathReplace
         }
 
