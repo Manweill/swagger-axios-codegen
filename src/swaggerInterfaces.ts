@@ -107,7 +107,8 @@ export interface IDefinitionProperty {
   format: string
   maxLength: number
   $ref: string
-  allOf: IDefinitionProperties
+  allOf: IDefinitionProperty[]
+  oneOf: IDefinitionProperty[]
   items: IDefinitionProperty
   description: string
 }
