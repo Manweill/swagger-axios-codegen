@@ -2,7 +2,7 @@ import { refClassName, toBaseType } from "../utils";
 import { IDefinitionProperty } from "../swaggerInterfaces";
 
 export function propTrueType(v: IDefinitionProperty): {
-  propType: string, isEnum: boolean, isArray: boolean, isType: boolean, ref: string
+  propType: string, isEnum: boolean, isArray: boolean, isType: boolean, ref: string, isUnionType: boolean, isCombinedType: boolean
 } {
   let result = {
     propType: '',
@@ -10,29 +10,37 @@ export function propTrueType(v: IDefinitionProperty): {
     isArray: false,
     /**ts type definition */
     isType: false,
+    isUnionType: false,
+    isCombinedType: false,
     ref: ''
   }
-  if (v.$ref || (v.allOf && v.allOf[0])) {
+  if (v.$ref) {
     // 是引用类型
     result.propType = refClassName(v.$ref || v.allOf[0].$ref)
     result.ref = result.propType
   }
   //是个数组
   else if (v.items) {
-    if (v.items.$ref || (v.items.allOf && v.items.allOf[0])) {
-      // 是个引用类型
-      result.ref = refClassName(v.items.$ref || v.items.allOf[0].$ref)
-      result.propType = result.ref + '[]'
+    if (v.type === "array" && v.items.oneOf && v.items.oneOf.length > 0) {
+      result.isUnionType = true;
+      result.propType = v.items.oneOf.map((type) => {
+        return refClassName(type.$ref);
+      }).join(',')
+    }
+    else if (v.type === "array" && v.items.allOf && v.items.allOf.length > 0) {
+      result.isCombinedType = true;
+      result.propType = v.items.allOf.map((type) => {
+        return refClassName(type.$ref);
+      }).join(',')
+    }
+    else if (v.items.type === "array") {
+      const currentResult = propTrueType(v.items)
+      result = { ...result, ...currentResult }
+    } else if (!!v.items.enum) {
+      const currentResult = propTrueType(v.items)
+      result = { ...result, ...currentResult }
     } else {
-      if (v.items.type === "array") {
-        const currentResult = propTrueType(v.items)
-        result = { ...result, ...currentResult }
-      } else if (!!v.items.enum) {
-        const currentResult = propTrueType(v.items)
-        result = { ...result, ...currentResult }
-      } else {
-        result.propType = toBaseType(v.items.type) + '[]'
-      }
+      result.propType = toBaseType(v.items.type) + '[]'
     }
     result.isArray = true
   }
@@ -44,6 +52,18 @@ export function propTrueType(v: IDefinitionProperty): {
   else if (v.enum) {
     result.isType = true
     result.propType = v.type === 'string' ? getEnums(v.enum).map(item => `'${item}'`).join('|') : v.enum.join('|')
+  }
+  else if (v.oneOf && v.oneOf.length > 0) {
+    result.isUnionType = true;
+    result.propType = v.oneOf.map((type) => {
+      return refClassName(type.$ref);
+    }).join(',')
+  }
+  else if (v.allOf && v.allOf) {
+    result.isCombinedType = true;
+    result.propType = v.allOf.map((type) => {
+      return refClassName(type.$ref);
+    }).join(',')
   }
   // 基本类型
   else {

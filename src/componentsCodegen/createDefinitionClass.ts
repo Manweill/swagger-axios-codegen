@@ -24,7 +24,7 @@ export function createDefinitionClass(
   const propertiesEntities = Object.entries(properties || {})
   for (const [k, v] of propertiesEntities) {
     // console.log('props name', k)
-    let { propType, isEnum, isArray, isType, ref } = propTrueType(v);
+    let { propType, isEnum, isArray, isType, ref, isUnionType, isCombinedType } = propTrueType(v);
     if (isEnum) {
       let enumName = `Enum${className}${pascalcase(k)}`
       enums.push({
@@ -41,6 +41,28 @@ export function createDefinitionClass(
       })
       propType = isArray ? typeName + '[]' : typeName
       ref = typeName
+    }
+    if (isUnionType) {
+      let typeName = `All${pascalcase(k)}Types`
+      let types = propType.split(',')
+      enums.push({
+        name: typeName,
+        text: `type ${typeName} = ${types.join(' | ')};`
+      })
+      propType = isArray ? typeName + '[]' : typeName
+      ref = typeName
+      model.imports.push(...types)
+    }
+    if (isCombinedType) {
+      let typeName = `Combined${pascalcase(k)}Types`
+      let types = propType.split(',')
+      enums.push({
+        name: typeName,
+        text: `type ${typeName} = ${types.join(' & ')};`
+      })
+      propType = isArray ? typeName + '[]' : typeName
+      ref = typeName
+      model.imports.push(...types)
     }
     // 转化引用值到引用列表
     if (!!ref) {
