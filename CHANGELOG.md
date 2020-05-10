@@ -1,4 +1,12 @@
 
+### 0.10.4
+
+- feat: anyOf, allOf (#96)
+
+### 0.10.3
+
+- fix multipart/form-data generation V3 
+
 ### 0.10.2
 
 - fix multiple files mode in openApi v3
