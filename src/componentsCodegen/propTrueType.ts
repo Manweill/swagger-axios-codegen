@@ -21,26 +21,32 @@ export function propTrueType(v: IDefinitionProperty): {
   }
   //是个数组
   else if (v.items) {
-    if (v.type === "array" && v.items.oneOf && v.items.oneOf.length > 0) {
-      result.isUnionType = true;
-      result.propType = v.items.oneOf.map((type) => {
-        return refClassName(type.$ref);
-      }).join(',')
-    }
-    else if (v.type === "array" && v.items.allOf && v.items.allOf.length > 0) {
-      result.isCombinedType = true;
-      result.propType = v.items.allOf.map((type) => {
-        return refClassName(type.$ref);
-      }).join(',')
-    }
-    else if (v.items.type === "array") {
-      const currentResult = propTrueType(v.items)
-      result = { ...result, ...currentResult }
-    } else if (!!v.items.enum) {
-      const currentResult = propTrueType(v.items)
-      result = { ...result, ...currentResult }
+    if (v.items.$ref) {
+      // 是个引用类型
+      result.ref = refClassName(v.items.$ref)
+      result.propType = result.ref + '[]'
     } else {
-      result.propType = toBaseType(v.items.type) + '[]'
+      if (v.type === "array" && v.items.oneOf && v.items.oneOf.length > 0) {
+        result.isUnionType = true;
+        result.propType = v.items.oneOf.map((type) => {
+          return refClassName(type.$ref);
+        }).join(',')
+      }
+      else if (v.type === "array" && v.items.allOf && v.items.allOf.length > 0) {
+        result.isCombinedType = true;
+        result.propType = v.items.allOf.map((type) => {
+          return refClassName(type.$ref);
+        }).join(',')
+      }
+      else if (v.items.type === "array") {
+        const currentResult = propTrueType(v.items)
+        result = { ...result, ...currentResult }
+      } else if (!!v.items.enum) {
+        const currentResult = propTrueType(v.items)
+        result = { ...result, ...currentResult }
+      } else {
+        result.propType = toBaseType(v.items.type) + '[]'
+      }
     }
     result.isArray = true
   }
