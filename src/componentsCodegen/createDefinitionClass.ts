@@ -58,7 +58,7 @@ export function createDefinitionClass(
       let types = propType.split(',')
       enums.push({
         name: typeName,
-        text: `type ${typeName} = ${types.join(' & ')};`
+        text: `export type ${typeName} = ${types.join(' & ')};`
       })
       propType = isArray ? typeName + '[]' : typeName
       ref = typeName
