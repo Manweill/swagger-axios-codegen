@@ -1,4 +1,9 @@
 
+### 0.11.0
+
+- feat: add url filter
+- fix openapi v3 formdata (#100)
+
 ### 0.10.5
 
 - feat: anyOf, allOf (#96)
