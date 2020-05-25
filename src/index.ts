@@ -64,8 +64,20 @@ export async function codegen(params: ISwaggerOptions) {
   let apiSource = options.useCustomerRequestInstance ? customerServiceHeader(options) : serviceHeader(options)
   // 判断是否是openApi3.0或者swagger3.0
   const isV3 = isOpenApi3(params.openApi || swaggerSource.openapi || swaggerSource.swagger)
-  console.log('isV3', isV3)
-  let requestClass = requestCodegen(swaggerSource.paths, isV3, options)
+
+  // TODO: use filter plugin
+  // 根据url过滤
+  let paths = swaggerSource.paths
+  if (options.urlFilters?.length > 0) {
+    paths = {}
+    Object.keys(swaggerSource.paths).forEach(path => {
+      if (options.urlFilters.some(urlFilter => urlFilter.indexOf(path) > -1)) {
+        paths[path] = swaggerSource.paths[path]
+      }
+    })
+  }
+
+  let requestClass = requestCodegen(paths, isV3, options)
   // let requestClasses = Object.entries(requestCodegen(swaggerSource.paths, isV3, options))
 
   const { models, enums } = isV3
@@ -77,7 +89,6 @@ export async function codegen(params: ISwaggerOptions) {
   // TODO: next next next time
   if (options.multipleFileMode) {
     // if (true) {
-
     Object.entries(requestCodegen(swaggerSource.paths, isV3, options)).forEach(([className, requests]) => {
       let text = ''
       let allImport: string[] = []
@@ -146,9 +157,11 @@ export async function codegen(params: ISwaggerOptions) {
     writeFile(options.outputDir || '', 'index.defs.ts', format(defsString, options))
 
   } else if (options.include && options.include.length > 0) {
+    // TODO: use filter plugin
     // codegenInclude(apiSource, options, requestClass, models, enums)
     codegenMultimatchInclude(apiSource, options, requestClass, models, enums)
-  } else {
+  }
+  else {
     codegenAll(apiSource, options, requestClass, models, enums)
   }
   if (fs.existsSync('./cache_swagger.json')) {

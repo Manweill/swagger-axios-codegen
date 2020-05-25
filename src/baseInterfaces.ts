@@ -16,16 +16,18 @@ export interface ISwaggerOptions {
   modelMode?: 'class' | 'interface'
   /** use class-transformer to transform the results */
   useClassTransformer?: boolean
-  // force the specified swagger or openAPI version,
+  /** force the specified swagger or openAPI version, */
   openApi?: string | undefined
-  // extend file url. It will be inserted in front of the service method
+  /** extend file url. It will be inserted in front of the service method */
   extendDefinitionFile?: string | undefined
-  // mark generic type
+  /** mark generic type */
   extendGenericType?: string[] | undefined
-  // generate validation model (class model mode only)
+  /** generate validation model (class model mode only) */
   generateValidationModel?: boolean
-  // split request service 
+  /** split request service */
   multipleFileMode?: boolean | undefined
+  /** url prefix filter*/
+  urlFilters?: string[] | null | undefined
 }
 
 export interface IPropDef {
