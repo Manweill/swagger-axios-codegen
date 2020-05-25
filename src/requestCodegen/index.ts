@@ -47,13 +47,19 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
         let parsedParameters: any = {
           requestParameters: ''
         }
+
         const multipartDataProperties = reqProps?.requestBody?.content['multipart/form-data']
+
         if (reqProps.parameters || multipartDataProperties) {
           // 获取到接口的参数
-          parsedParameters = getRequestParameters(
-            reqProps.parameters || mapFormDataToV2(multipartDataProperties.schema)
-          )
+          let tempParameters = reqProps.parameters
 
+          // 合并两个参数类型
+          if (multipartDataProperties) {
+            tempParameters = tempParameters.concat(mapFormDataToV2(multipartDataProperties.schema))
+          }
+
+          parsedParameters = getRequestParameters(tempParameters)
           formData = parsedParameters.requestFormData
             ? 'data = new FormData();\n' + parsedParameters.requestFormData
             : ''
@@ -75,7 +81,9 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
           parsedParameters.requestParameters = parsedParameters.requestParameters
             ? parsedParameters.requestParameters + parsedRequestBody.bodyType
             : parsedRequestBody.bodyType
+
         }
+
 
         parameters =
           parsedParameters.requestParameters?.length > 0
