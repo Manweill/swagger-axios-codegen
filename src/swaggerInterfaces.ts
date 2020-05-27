@@ -7,6 +7,7 @@ export interface ISwaggerSource {
   definitions: IDefinitions
   components: IComponents
   externalDocs: string
+  basePath?: string | undefined
 }
 
 export interface IPaths {
@@ -124,7 +125,7 @@ export interface ISchema {
   'type'?: string
   'items'?: IParameterItems
   'format'?: string,
-  'properties'?: {[key:string]: IParameterItems}
+  'properties'?: { [key: string]: IParameterItems }
 }
 
 // 字典类型，对应java map或者.NET Dictionary

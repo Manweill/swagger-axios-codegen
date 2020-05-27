@@ -61,7 +61,7 @@ export async function codegen(params: ISwaggerOptions) {
     ...defaultOptions,
     ...params
   }
-  let apiSource = options.useCustomerRequestInstance ? customerServiceHeader(options) : serviceHeader(options)
+  let apiSource = options.useCustomerRequestInstance ? customerServiceHeader(options, swaggerSource.basePath) : serviceHeader(options, swaggerSource.basePath)
   // 判断是否是openApi3.0或者swagger3.0
   const isV3 = isOpenApi3(params.openApi || swaggerSource.openapi || swaggerSource.swagger)
 
