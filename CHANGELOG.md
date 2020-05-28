@@ -1,4 +1,8 @@
 
+### 0.11.1
+
+- feat: make the basePath of swagger2.0 take effect 
+
 ### 0.11.0
 
 - feat: add url filter
