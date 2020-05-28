@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { ISwaggerOptions } from "../baseInterfaces";
 import { abpGenericTypeDefinition, universalGenericTypeDefinition } from './genericTypeDefinitionTemplate';
+import { trimString } from '../utils';
 
 export function serviceHeader(options: ISwaggerOptions, basePath: string) {
   const classTransformerImport = options.useClassTransformer
@@ -12,7 +13,7 @@ export function serviceHeader(options: ISwaggerOptions, basePath: string) {
   /* eslint-disable */
   import axiosStatic, { AxiosInstance } from 'axios';
 
-  const basePath = '${basePath}'
+  const basePath = '${trimString(basePath, '/', 'right')}'
   ${classTransformerImport}
 
   export interface IRequestOptions {

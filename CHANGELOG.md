@@ -1,5 +1,5 @@
 
-### 0.11.1
+### 0.11.2
 
 - feat: make the basePath of swagger2.0 take effect 
 
