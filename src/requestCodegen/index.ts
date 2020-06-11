@@ -52,7 +52,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
 
         if (reqProps.parameters || multipartDataProperties) {
           // 获取到接口的参数
-          let tempParameters = reqProps.parameters
+          let tempParameters = reqProps.parameters || []
 
           // 合并两个参数类型
           if (multipartDataProperties) {
