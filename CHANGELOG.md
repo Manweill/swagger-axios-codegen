@@ -1,4 +1,8 @@
 
+### 0.11.3
+
+- fix multipart request when no query params (#103)
+
 ### 0.11.2
 
 - feat: make the basePath of swagger2.0 take effect 
