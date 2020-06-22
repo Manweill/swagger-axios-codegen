@@ -1,4 +1,8 @@
 
+### 0.11.4
+
+- feat; `options.sharedServiceOptions`
+
 ### 0.11.3
 
 - fix multipart request when no query params (#103)

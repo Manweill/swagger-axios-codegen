@@ -12,6 +12,9 @@
     "sourceMap": true, /* Generates corresponding '.map' file. */
     "outDir": "../src", /* Redirect output structure to the directory. */
     "rootDir": "./", /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+  },
+  "exclude": [
+    "./customerDefinition.ts"
+  ]
 }

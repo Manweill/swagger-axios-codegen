@@ -28,6 +28,8 @@ export interface ISwaggerOptions {
   multipleFileMode?: boolean | undefined
   /** url prefix filter*/
   urlFilters?: string[] | null | undefined
+  /** shared service options to multiple service*/
+  sharedServiceOptions?: boolean | undefined
 }
 
 export interface IPropDef {

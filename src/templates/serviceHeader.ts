@@ -36,7 +36,6 @@ export function serviceHeader(options: ISwaggerOptions, basePath: string) {
   }
 
   ${requestHeader()}
-  ${definitionHeader(options.extendDefinitionFile)}
   `;
 }
 
@@ -84,7 +83,7 @@ export function customerServiceHeader(options: ISwaggerOptions, basePath: string
   }
 
   ${requestHeader()}
-  ${definitionHeader(options.extendDefinitionFile)}
+  
   `
 }
 
@@ -121,7 +120,7 @@ function requestHeader() {
   `
 }
 
-function definitionHeader(fileDir: string | undefined) {
+export function definitionHeader(fileDir: string | undefined) {
   let fileStr = '// empty '
   if (!!fileDir) {
     console.log('extendDefinitionFile url : ', path.resolve(fileDir))

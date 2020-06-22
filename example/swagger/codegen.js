@@ -10,5 +10,6 @@ codegen({
   // useCustomerRequestInstance: true,
   modelMode: 'interface',
   extendDefinitionFile: './swagger/customerDefinition.ts',
-  extendGenericType: ['JsonResult']
+  extendGenericType: ['JsonResult'],
+  sharedServiceOptions: true
 })
