@@ -33,7 +33,8 @@ const defaultOptions: ISwaggerOptions = {
   strictNullChecks: true,
   useClassTransformer: false,
   extendGenericType: [],
-  multipleFileMode: false
+  multipleFileMode: false,
+  sharedServiceOptions: false
 }
 
 /** main */
@@ -64,7 +65,7 @@ export async function codegen(params: ISwaggerOptions) {
   let apiSource = ''
 
   let serviceHeaderSource = options.useCustomerRequestInstance ? customerServiceHeader(options, swaggerSource.basePath) : serviceHeader(options, swaggerSource.basePath)
-  if (options.serviceOptions) {
+  if (options.sharedServiceOptions) {
     writeFile(options.outputDir || '', 'serviceOptions.ts' || '', format(serviceHeaderSource, options))
     apiSource += `import { IRequestOptions, IRequestConfig, getConfigs, axios } from "./serviceOptions";`
   }
