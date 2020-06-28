@@ -40,11 +40,11 @@ export function propTrueType(v: IDefinitionProperty): {
   else if (v.enum && v.type === 'string') {
     result.isEnum = true
     result.propType = getEnums(v.enum).map(item => {
-      if (isNaN(item)){
+      if (isNaN(item)) {
         return `'${item}'='${item}'`;
       }
-      return  `'KEY_${item}'='${item}'`;
-      }).join(',')
+      return `'KEY_${item}'='${item}'`;
+    }).join(',')
   }
   else if (v.enum) {
     result.isType = true
