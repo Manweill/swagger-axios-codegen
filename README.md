@@ -24,6 +24,8 @@ By the way. you can support this repo via Star star sta st s... ⭐️ ⭐️ �
 
 ## [ChangeLog](./CHANGELOG.md)
 
+## [Contributing](./CONTRIBUTING.md)
+
 ## Get Started
 
 ```
