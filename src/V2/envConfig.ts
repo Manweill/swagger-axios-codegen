@@ -6,8 +6,8 @@ export interface ICodegenOptions {
   fileName?: string
   remoteUrl?: string
   source?: any
-  useStaticMethod?: boolean | undefined
   useCustomerRequestInstance?: boolean | undefined
+  serviceOptionsMode?: 'inFile' | 'shared'
   /** match with tsconfig */
   strictNullChecks?: boolean | undefined
   /** definition Class mode */
@@ -33,13 +33,13 @@ export const defaultOptions: ICodegenOptions = {
   methodNameMode: 'operationId',
   outputDir: './service',
   fileName: 'index.ts',
-  useStaticMethod: true,
   useCustomerRequestInstance: false,
   modelMode: 'interface',
   strictNullChecks: true,
   useClassTransformer: false,
   extendGenericType: [],
   multipleFileMode: false,
+  serviceOptionsMode: 'inFile'
 }
 
 type IEnvConfig = {
@@ -47,7 +47,7 @@ type IEnvConfig = {
   definedGenericTypes: string[]
 }
 
-export const config: IEnvConfig = {
+export const envConfig: IEnvConfig = {
   options: {},
   definedGenericTypes: []
 }
