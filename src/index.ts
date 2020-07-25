@@ -70,7 +70,7 @@ export async function codegen(params: ISwaggerOptions) {
     apiSource += `import { IRequestOptions, IRequestConfig, getConfigs, axios } from "./serviceOptions";`
   }
   else {
-    apiSource += serviceHeader
+    apiSource += serviceHeaderSource
   }
 
   apiSource += definitionHeader(options.extendDefinitionFile)
