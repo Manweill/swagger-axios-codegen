@@ -13,6 +13,7 @@
     "clean": "rm -rf ./swagger/services/**",
     "build:gen": "node ./swagger/codegen.js",
     "build:api": "npm run clean && node ./swagger/codegen.js && npm run build",
+    "build:api-shortOperationId": "npm run clean && node ./swagger/codegen-shortOperationId.js && npm run build",
     "build:api-include": "node ./swagger/codegen.include.js && npm run build",
     "build:api3": "node ./swagger/codegen.v3.js && npm run build",
     "build": "tsc -p ./swagger"
