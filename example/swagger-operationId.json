@@ -1,0 +1,71 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Move your app forward with the Uber API",
+    "version": "1.0.0",
+    "title": "Uber API"
+  },
+  "host": "api.uber.com",
+  "basePath": "/v1",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/crawler/v1/mapper/{mapper.id}": {
+      "put": {
+        "operationId": "UpdateMapper",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "mapper.id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "Mapper"
+        ]
+      }
+    },
+    "/api/services/app/AuditLog/GetAuditLogs": {
+      "get": {
+        "tags": [
+          "AuditLog"
+        ],
+        "operationId": "GetAuditLogs",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "StartDate",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  }
+}
