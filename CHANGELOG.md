@@ -1,4 +1,8 @@
 
+### 0.11.6
+
+- feat: support for "shortOperationId", with tag suffix removed (#108)
+
 ### 0.11.4
 
 - feat; `options.sharedServiceOptions`
