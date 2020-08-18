@@ -191,7 +191,7 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
     requestBody = null
   } = requestSchema
   const { useClassTransformer } = options
-  const { queryParameters = [], bodyParameter = [] } = parsedParameters
+  const { queryParameters = [], bodyParameter = [], headerParameters } = parsedParameters
   const nonArrayType = responseType.replace('[', '').replace(']', '')
   const isArrayType = responseType.indexOf('[') > 0
   const transform = useClassTransformer && baseTypes.indexOf(nonArrayType) < 0
@@ -211,6 +211,9 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
   return new Promise((resolve, reject) => {
     let url = '${path}'
     ${pathReplace}
+    ${parsedParameters && headerParameters && headerParameters.length > 0
+      ? `options.headers = {${headerParameters}, ...options.headers }`
+      : ''}
     const configs:IRequestConfig = getConfigs('${method}', '${contentType}', url, options)
     ${parsedParameters && queryParameters.length > 0 ? 'configs.params = {' + queryParameters.join(',') + '}' : ''}
     let data = ${
