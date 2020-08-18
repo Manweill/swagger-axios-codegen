@@ -26,7 +26,7 @@ function getUniqParams(params: IParameter[]): IParameter[] {
  * 生成参数
  * @param params
  */
-export function getRequestParameters(params: IParameter[]) {
+export function getRequestParameters(params: IParameter[], useHeaderParameters: boolean) {
   params = getUniqParams(params)
   let requestParameters = ''
   let requestFormData = ''
@@ -37,6 +37,8 @@ export function getRequestParameters(params: IParameter[]) {
   let imports: string[] = []
   let moreBodyParams = params.filter(item => item.in === 'body').length > 1
   params.forEach(p => {
+    // 根据设置跳过请求头中的参数
+    if (!useHeaderParameters && p.in === 'header') return
     let propType = ''
     // 引用类型定义
     if (p.schema) {
