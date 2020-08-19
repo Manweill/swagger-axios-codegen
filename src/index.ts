@@ -34,7 +34,8 @@ const defaultOptions: ISwaggerOptions = {
   useClassTransformer: false,
   extendGenericType: [],
   multipleFileMode: false,
-  sharedServiceOptions: false
+  sharedServiceOptions: false,
+  useHeaderParameters: false
 }
 
 /** main */

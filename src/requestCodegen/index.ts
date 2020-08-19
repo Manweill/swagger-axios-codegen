@@ -26,11 +26,15 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
     for (const [path, request] of Object.entries(paths)) {
       let methodName = getMethodName(path)
       for (const [method, reqProps] of Object.entries(request)) {
-        methodName = options.methodNameMode === 'operationId' ? reqProps.operationId : 			
-          options.methodNameMode === 'shortOperationId' ? trimSuffix(reqProps.operationId, reqProps.tags?.[0]) : methodName
+        methodName =
+          options.methodNameMode === 'operationId'
+            ? reqProps.operationId
+            : options.methodNameMode === 'shortOperationId'
+            ? trimSuffix(reqProps.operationId, reqProps.tags?.[0])
+            : methodName
         if (!methodName) {
           // console.warn('method Name is null：', path);
-          continue;
+          continue
         }
         const contentType = getContentType(reqProps, isV3)
         let formData = ''
@@ -60,7 +64,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
             tempParameters = tempParameters.concat(mapFormDataToV2(multipartDataProperties.schema))
           }
 
-          parsedParameters = getRequestParameters(tempParameters)
+          parsedParameters = getRequestParameters(tempParameters, options.useHeaderParameters)
           formData = parsedParameters.requestFormData
             ? 'data = new FormData();\n' + parsedParameters.requestFormData
             : ''
@@ -82,9 +86,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
           parsedParameters.requestParameters = parsedParameters.requestParameters
             ? parsedParameters.requestParameters + parsedRequestBody.bodyType
             : parsedRequestBody.bodyType
-
         }
-
 
         parameters =
           parsedParameters.requestParameters?.length > 0
