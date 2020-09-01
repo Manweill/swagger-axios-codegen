@@ -1,4 +1,8 @@
 
+## 0.11.8
+
+- fix basePath
+
 ### 0.11.7
 
 - feat: support header parameter in request (#111)

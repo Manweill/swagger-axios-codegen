@@ -15,7 +15,7 @@ import {
   typeTemplate
 } from './templates/template'
 import { customerServiceHeader, serviceHeader, definitionHeader } from './templates/serviceHeader'
-import { isOpenApi3, findDeepRefs, setDefinedGenericTypes, getDefinedGenericTypes } from './utils'
+import { isOpenApi3, findDeepRefs, setDefinedGenericTypes, getDefinedGenericTypes, trimString } from './utils'
 import { requestCodegen, IRequestClass, IRequestMethods } from './requestCodegen'
 import { componentsCodegen } from './componentsCodegen'
 import { definitionsCodeGen } from './definitionCodegen'
@@ -65,7 +65,7 @@ export async function codegen(params: ISwaggerOptions) {
   }
   let apiSource = ''
 
-  let serviceHeaderSource = options.useCustomerRequestInstance ? customerServiceHeader(options, swaggerSource.basePath) : serviceHeader(options, swaggerSource.basePath)
+  let serviceHeaderSource = options.useCustomerRequestInstance ? customerServiceHeader(options) : serviceHeader(options)
   if (options.sharedServiceOptions) {
     writeFile(options.outputDir || '', 'serviceOptions.ts' || '', format(serviceHeaderSource, options))
     apiSource += `import { IRequestOptions, IRequestConfig, getConfigs, axios } from "./serviceOptions";`
@@ -73,7 +73,7 @@ export async function codegen(params: ISwaggerOptions) {
   else {
     apiSource += serviceHeaderSource
   }
-
+  apiSource += `const basePath = '${trimString(swaggerSource.basePath, '/', 'right')}'`;
   apiSource += definitionHeader(options.extendDefinitionFile)
 
   // 判断是否是openApi3.0或者swagger3.0

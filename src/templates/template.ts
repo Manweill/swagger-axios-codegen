@@ -209,7 +209,7 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
     name
   )}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
   return new Promise((resolve, reject) => {
-    let url = '${path}'
+    let url = basePath+'${path}'
     ${pathReplace}
     ${parsedParameters && headerParameters && headerParameters.length > 0
       ? `options.headers = {${headerParameters}, ...options.headers }`
