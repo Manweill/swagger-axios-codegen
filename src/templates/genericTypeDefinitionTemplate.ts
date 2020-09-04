@@ -22,11 +22,13 @@ export class ListResultDto<T> implements IListResult<T> {
 }
 
 export interface IPagedResult<T> extends IListResult<T> {
-  totalCount: number
+  totalCount?: number;
+  items?: T[];
 }
 
 export class PagedResultDto<T> implements IPagedResult<T> {
-  totalCount!: number
+  totalCount?: number;
+  items?: T[];
 }
   `
 }

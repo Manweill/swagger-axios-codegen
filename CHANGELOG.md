@@ -1,4 +1,12 @@
 
+## 0.11.8
+
+- fix basePath
+
+### 0.11.7
+
+- feat: support header parameter in request (#111)
+
 ### 0.11.6
 
 - feat: support for "shortOperationId", with tag suffix removed (#108)
