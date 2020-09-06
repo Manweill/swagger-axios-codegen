@@ -27,7 +27,15 @@ export function interfaceTemplate(
 
   export interface ${name} {
 
-    ${props.map(p => classPropsTemplate(p.name, p.type, p.format, p.desc, !strictNullChecks, false, false)).join('')}
+    ${props.map(p => classPropsTemplate(
+      p.name,
+      p.type,
+      p.format,
+      p.desc,
+      !strictNullChecks || !(p.validationModel as any)?.required,
+      false,
+      false
+    )).join('')}
   }
   `
 }
@@ -57,13 +65,13 @@ export function classTemplate(
   export class ${name} {
 
     ${props
-      .map(p =>
-        classPropsTemplate(
+    .map(p =>
+      classPropsTemplate(
           p.name,
           p.type,
           p.format,
           p.desc,
-          !strictNullChecks,
+          !strictNullChecks || !(p.validationModel as any)?.required,
           useClassTransformer,
           p.isEnum || p.isType
         )
