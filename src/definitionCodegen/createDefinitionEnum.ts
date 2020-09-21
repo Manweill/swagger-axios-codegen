@@ -7,15 +7,12 @@ import { IEnumDef } from "../baseInterfaces";
  * @param type 枚举的类型
  */
 export function createDefinitionEnum(className: string, enumArray: any[], type: string): IEnumDef {
-  let result = ''
-  if (type === 'string') {
-    result = enumArray.map(item => `'${item}'='${item}'`).join(',')
-  }
-  else {
-    result = type === 'string' ?
-      enumArray.map(item => `'${item}'`).join('|') :
-      enumArray.join('|')
-  }
-
+  const result = type === 'string'
+    ? enumArray
+      .map(item => Number.isNaN(item)
+        ? `'${item}'='${item}'`
+        : `'KEY_${item}'='${item}'`)
+      .join(',')
+    : enumArray.join('|')
   return { name: className, enumProps: result, type: type }
 }
