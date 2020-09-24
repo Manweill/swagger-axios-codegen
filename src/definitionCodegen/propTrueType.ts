@@ -39,12 +39,12 @@ export function propTrueType(v: IDefinitionProperty): {
   // 是枚举 并且是字符串类型
   else if (v.enum && v.type === 'string') {
     result.isEnum = true
-    result.propType = getEnums(v.enum).map(item => {
-      if (isNaN(item)){
-        return `'${item}'='${item}'`;
-      }
-      return  `'KEY_${item}'='${item}'`;
-      }).join(',')
+    result.propType = getEnums(v.enum)
+      .map(item =>
+        isNaN(item)
+          ? `'${item}'='${item}'`
+          : `'KEY_${item}'='${item}'`)
+      .join(',')
   }
   else if (v.enum) {
     result.isType = true
