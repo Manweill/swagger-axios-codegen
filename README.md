@@ -35,16 +35,26 @@ By the way. you can support this repo via Star star sta st s... ⭐️ ⭐️ �
 ```js
 
 export interface ISwaggerOptions {
+  /** service name suffix eg. 'Service' **/
   serviceNameSuffix?: string
+  /** enum prefix eg. 'Enum' **/
   enumNamePrefix?: string
   methodNameMode?: 'operationId' | 'path'
+  /** path of the generated file eg. './src/service' **/
   outputDir?: string
+  /** generated file name eg. 'index.ts' **/
   fileName?: string
+  /** path to remote source file eg. 'https://localhost:8080/api/v1/swagger.json' **/
   remoteUrl?: string
+  /** path to local source file eg. './swagger.json' **/
   source?: any
   useStaticMethod?: boolean | undefined
+  /** client can pass custom headers to the service methods **/
   useCustomerRequestInstance?: boolean | undefined
+  /** filter by service name (first tag) or method name using multimatch (https://github.com/sindresorhus/multimatch) **/
   include?: Array<string | IInclude>
+  /** filter urls by following clauses **/
+  urlFilters?: Array<string>
   format?: (s: string) => string
   /** match with tsconfig */
   strictNullChecks?: boolean | undefined
@@ -168,7 +178,6 @@ serviceOptions.axios = YourLib
 fliter by [multimatch](https://github.com/sindresorhus/multimatch)
 
 ```js
-
 let include = [
   '*',
   // 'Products*',
@@ -181,7 +190,31 @@ codegen({
   outputDir: './swagger/services',
   include
 })
+```
 
+If you are using special characters in your service name (which is the first tag) you must assume they have been escaped.
+
+Eg. The service names are `MyApp.FirstModule.Products`, `MyApp.FirstModule.Customers`, `MyApp.SecondModule.Orders`:
+
+```json
+// API
+"paths": {
+  "/Products/Get": {
+    "post": {
+      "tags": [
+        "MyApp.MyModule.Products"
+      ],
+      "operationId": "Get",
+```
+
+```js
+// Codegen config
+codegen({
+  methodNameMode: 'path',
+  source: require('../swagger.json'),
+  outputDir: './swagger/services',
+  include: ['MyAppMyModule*'] // Only Products and Customers will be included
+})
 ```
 
 ### use class transformer to transform results
