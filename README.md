@@ -55,6 +55,7 @@ export interface ISwaggerOptions {
   include?: Array<string | IInclude>
   /** filter urls by following clauses **/
   urlFilters?: Array<string>
+  /** custom function to format the output file (default: prettier.format()) **/
   format?: (s: string) => string
   /** match with tsconfig */
   strictNullChecks?: boolean | undefined
@@ -216,6 +217,7 @@ codegen({
   include: ['MyAppMyModule*'] // Only Products and Customers will be included
 })
 ```
+
 
 ### use class transformer to transform results
 
