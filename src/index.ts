@@ -30,6 +30,7 @@ const defaultOptions: ISwaggerOptions = {
   useCustomerRequestInstance: false,
   modelMode: 'interface',
   include: [],
+  includeTypes: [],
   strictNullChecks: true,
   useClassTransformer: false,
   extendGenericType: [],
@@ -247,6 +248,7 @@ function codegenAll(
     throw error
   }
 }
+
 // last include codegen
 function codegenInclude(
   apiSource: string,
@@ -302,9 +304,8 @@ function codegenInclude(
   })
 
   // 处理类和枚举
-
   allModel.forEach(item => {
-    if (allImport.includes(item.name)) {
+    if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
           ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
@@ -321,7 +322,7 @@ function codegenInclude(
   })
 
   allEnum.forEach(item => {
-    if (allImport.includes(item.name)) {
+    if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       let text = ''
       if (item.value) {
         if (item.value.type == 'string') {
@@ -450,7 +451,7 @@ function codegenMultimatchInclude(
   // 处理类和枚举
 
   allModel.forEach(item => {
-    if (allImport.includes(item.name)) {
+    if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
           ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
@@ -467,7 +468,7 @@ function codegenMultimatchInclude(
   })
 
   allEnum.forEach(item => {
-    if (allImport.includes(item.name)) {
+    if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       let text = ''
       if (item.value) {
         if (item.value.type == 'string') {

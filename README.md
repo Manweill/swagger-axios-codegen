@@ -53,6 +53,8 @@ export interface ISwaggerOptions {
   useCustomerRequestInstance?: boolean | undefined
   /** filter by service name (first tag) or method name using multimatch (https://github.com/sindresorhus/multimatch) **/
   include?: Array<string | IInclude>
+  /** include extra types which are not included during the filtering Eg. ["Foo", "Bar"] **/
+  includeTypes?: Array<string>
   /** filter urls by following clauses **/
   urlFilters?: Array<string>
   /** custom function to format the output file (default: prettier.format()) **/
