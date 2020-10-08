@@ -9,7 +9,7 @@ import { IEnumDef } from "../baseInterfaces";
 export function createDefinitionEnum(className: string, enumArray: any[], type: string): IEnumDef {
   const result = type === 'string'
     ? enumArray
-      .map(item => Number.isNaN(item)
+      .map(item => isNaN(item)
         ? `'${item}'='${item}'`
         : `'KEY_${item}'='${item}'`)
       .join(',')
