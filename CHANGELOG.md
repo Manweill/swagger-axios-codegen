@@ -1,6 +1,11 @@
 
 ## 0.11.9
 
+- feat: Include extra types (#118)
+- fix: String Enums have prefix KEY (#120)
+
+## 0.11.9
+
 - fix: numeric enum keys are always prefixed with `KEY_`; relates to https://github.com/Manweill/swagger-axios-codegen/pull/65 (#114)
 
 ## 0.11.8
