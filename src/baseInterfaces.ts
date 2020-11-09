@@ -1,7 +1,9 @@
+import { IRequestMethod } from './swaggerInterfaces'
+
 export interface ISwaggerOptions {
   serviceNameSuffix?: string
   enumNamePrefix?: string
-  methodNameMode?: 'operationId' | 'path' | 'shortOperationId'
+  methodNameMode?: 'operationId' | 'path' | 'shortOperationId' | ((reqProps: IRequestMethod) => string)
   outputDir?: string
   fileName?: string
   remoteUrl?: string
