@@ -1,4 +1,8 @@
 
+## 0.11.11
+
+- feat: add support for custom method name mode (#122)
+
 ## 0.11.9
 
 - feat: Include extra types (#118)
