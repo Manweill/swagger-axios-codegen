@@ -1,4 +1,8 @@
 
+## 0.11.12
+
+- fix: formdata upload multi-files
+
 ## 0.11.11
 
 - feat: add support for custom method name mode (#122)
