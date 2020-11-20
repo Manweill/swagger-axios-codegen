@@ -73,7 +73,13 @@ export function getRequestParameters(params: IParameter[], useHeaderParameters: 
     // 如果参数是从formData 提交
     if (p.in === 'formData') {
       requestFormData += `if(params['${paramName}']){
-        data.append('${p.name}',params['${paramName}'] as any)
+        if(Object.prototype.toString.call(params['${paramName}']) === '[object Array]'){
+          for (const item of params[${paramName}]) {
+            data.append('${p.name}',item as any)
+          }
+        } else {
+          data.append('${p.name}',params['${paramName}'] as any)
+        }
       }\n
       `
     } else if (p.in === 'path') {
