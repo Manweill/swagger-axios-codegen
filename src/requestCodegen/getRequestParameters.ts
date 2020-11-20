@@ -74,7 +74,7 @@ export function getRequestParameters(params: IParameter[], useHeaderParameters: 
     if (p.in === 'formData') {
       requestFormData += `if(params['${paramName}']){
         if(Object.prototype.toString.call(params['${paramName}']) === '[object Array]'){
-          for (const item of params[${paramName}]) {
+          for (const item of params['${paramName}']) {
             data.append('${p.name}',item as any)
           }
         } else {
