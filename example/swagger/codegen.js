@@ -11,5 +11,5 @@ codegen({
   modelMode: 'interface',
   extendDefinitionFile: './swagger/customerDefinition.ts',
   extendGenericType: ['JsonResult'],
-  serviceOptionsMode: 'shared'
+  serviceOptionsMode: 'inFile'
 })

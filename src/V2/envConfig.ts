@@ -25,6 +25,12 @@ export interface ICodegenOptions {
   /** split request service */
   multipleFileMode?: boolean | undefined
   format?: (s: string) => string
+  include?: Array<string | IInclude>
+}
+
+
+export interface IInclude {
+  [key: string]: string[]
 }
 
 export const defaultOptions: ICodegenOptions = {

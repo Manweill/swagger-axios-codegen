@@ -15,20 +15,22 @@ export function universalGenericTypeDefinition() {
 // abp 项目的泛型定义
 export function abpGenericTypeDefinition() {
   return `
-export interface IListResult<T> {
-  items?: T[]
-}
-
-export class ListResultDto<T> implements IListResult<T> {
-  items?: T[]
-}
-
-export interface IPagedResult<T> extends IListResult<T> {
-  totalCount: number
-}
-
-export class PagedResultDto<T> implements IPagedResult<T> {
-  totalCount!: number
-}
-  `
+  export interface IListResult<T> {
+    items?: T[]
+  }
+  
+  export class ListResultDto<T> implements IListResult<T> {
+    items?: T[]
+  }
+  
+  export interface IPagedResult<T> extends IListResult<T> {
+    totalCount?: number;
+    items?: T[];
+  }
+  
+  export class PagedResultDto<T> implements IPagedResult<T> {
+    totalCount?: number;
+    items?: T[];
+  }
+    `
 }
