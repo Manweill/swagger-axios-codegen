@@ -1,4 +1,8 @@
 
+## 0.11.14
+
+- Bump axios from 0.19.0 to 0.21.1 (#125)
+
 ## 0.11.13
 
 - fix: formdata upload multi-files
