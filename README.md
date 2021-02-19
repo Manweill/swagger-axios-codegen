@@ -178,26 +178,25 @@ serviceOptions.axios = YourLib
 
 ### filter service and method 
 
-fliter by [multimatch](https://github.com/sindresorhus/multimatch)
+fliter by [multimatch](https://github.com/sindresorhus/multimatch) using 'include' setting
 
 ```js
-let include = [
-  '*',
-  // 'Products*',
-  '!Products',
-  { 'User': ['*', '!history'] },
-]
 codegen({
   methodNameMode: 'path',
   source: require('../swagger.json'),
   outputDir: './swagger/services',
-  include
+  include: [
+    '*',
+    // 'Products*',
+    '!Products',
+    { 'User': ['*', '!history'] },
+  ]
 })
 ```
 
 If you are using special characters in your service name (which is the first tag) you must assume they have been escaped.
 
-Eg. The service names are `MyApp.FirstModule.Products`, `MyApp.FirstModule.Customers`, `MyApp.SecondModule.Orders`:
+For example the service names are `MyApp.FirstModule.Products`, `MyApp.FirstModule.Customers`, `MyApp.SecondModule.Orders`:
 
 ```json
 // API
@@ -205,7 +204,7 @@ Eg. The service names are `MyApp.FirstModule.Products`, `MyApp.FirstModule.Custo
   "/Products/Get": {
     "post": {
       "tags": [
-        "MyApp.MyModule.Products"
+        "MyApp.FirstModule.Products"
       ],
       "operationId": "Get",
 ```
@@ -216,7 +215,7 @@ codegen({
   methodNameMode: 'path',
   source: require('../swagger.json'),
   outputDir: './swagger/services',
-  include: ['MyAppMyModule*'] // Only Products and Customers will be included
+  include: ['MyAppFirstModule*'] // Only Products and Customers will be included. As you can see dots are escaped being contract names.
 })
 ```
 
