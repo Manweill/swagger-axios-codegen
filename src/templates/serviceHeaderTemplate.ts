@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { trimString } from '../utils/stringUtils'
-import { envConfig } from '../envConfig'
+import { trimString } from '@/utils/stringUtils'
+import { envConfig } from '@/envConfig'
 import { universalGenericTypeDefinition } from './genericTypeDefinitionTemplate'
 
 export function defaultServiceHeader(basePath: string) {

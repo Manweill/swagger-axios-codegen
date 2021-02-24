@@ -21,7 +21,7 @@
     "prestart": "npm run build",
     "precommit": "prettier --write --config .prettierrc ./src/*.ts",
     "start": "node ./dist/index",
-    "dev": "tsc --watch -p ./src/index ",
+    "dev": "tsc --watch",
     "prepublish": "npm run build",
     "lint": "eslint src --fix --quiet"
   },

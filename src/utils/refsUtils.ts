@@ -1,4 +1,4 @@
-import { IDefinitionClass, IDefinitionEnum } from '../types/CodegenInterfaces'
+import { IDefinitionClass, IDefinitionEnum } from '@/types/CodegenInterfaces'
 import { genericsToClassNames } from './genericTypesUtils'
 
 /**

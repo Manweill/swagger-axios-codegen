@@ -1,4 +1,4 @@
-import { IDictionary, IEnumDefSpec } from '../types/CodegenInterfaces'
+import { IDictionary, IEnumDefSpec } from '@/types/CodegenInterfaces'
 
 type IEnumArray = 'int' | 'string' | 'any'
 

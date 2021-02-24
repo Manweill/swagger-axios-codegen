@@ -1,8 +1,9 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import prettier from 'prettier'
-import { ICodegenOptions } from '../envConfig'
+import { ICodegenOptions } from '@/envConfig'
 
+/** 把内容写到文件 */
 export function writeFile(fileDir: string, name: string, data: any) {
   if (!fs.existsSync(fileDir)) {
     fs.mkdirSync(fileDir)

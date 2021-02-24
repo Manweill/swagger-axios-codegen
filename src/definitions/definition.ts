@@ -1,5 +1,5 @@
-import { IDefinitionEnumSpecs } from '../types/CodegenInterfaces'
-import { IDefinitions } from '../types/SwaggerInterfaces.v2'
+import { IDefinitionEnumSpecs } from '@/types/CodegenInterfaces'
+import { IDefinitions } from '@/types/SwaggerInterfaces.v2'
 
 export function getDefinitionSpec(definitions: IDefinitions) {
   // let definitionModels: IDefinitionClasses = {}

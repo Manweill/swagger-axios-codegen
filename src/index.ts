@@ -42,8 +42,8 @@ export async function codegen(params: ICodegenOptions) {
   }
   console.timeEnd(message.success('request and format spec'))
 
-  // API文件字符串
-  let apiSource = ''
+  /**API文件字符串 */
+  let apiSourceString = ''
 
   //生成服务文件头
   const serviceHeaderSource = envConfig.options.useCustomerRequestInstance
@@ -55,9 +55,9 @@ export async function codegen(params: ICodegenOptions) {
       'serviceOptions.ts' || '',
       FileFormat(serviceHeaderSource, envConfig.options)
     )
-    apiSource += `import { IRequestOptions, IRequestConfig, getConfigs, axios } from "./serviceOptions";`
+    apiSourceString += `import { IRequestOptions, IRequestConfig, getConfigs, axios } from "./serviceOptions";`
   } else {
-    apiSource += serviceHeaderSource
+    apiSourceString += serviceHeaderSource
   }
 
   // 获取所有的class定义
@@ -75,7 +75,7 @@ export async function codegen(params: ICodegenOptions) {
   } else {
     codegenAll()
   }
-
+  writeFile(envConfig.options.outputDir, 'index.ts', apiSourceString)
   if (fs.existsSync('./__cache_swagger.json')) {
     fs.unlinkSync('./__cache_swagger.json')
   }

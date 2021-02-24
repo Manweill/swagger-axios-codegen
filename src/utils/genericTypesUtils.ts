@@ -1,4 +1,4 @@
-import { envConfig } from '../envConfig'
+import { envConfig } from '@/envConfig'
 
 const UniversalGenericTypes = ['IList', 'List']
 const AbpGenericTypes = ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto', 'Dictionary', 'IDictionary']
