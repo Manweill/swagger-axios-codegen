@@ -1,4 +1,3 @@
-
 export function trimString(str: string, char: string, type: string) {
   str = str ?? ''
   if (char) {

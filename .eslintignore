@@ -1,0 +1,11 @@
+node_modules/*
+*.d.ts
+*.js.map
+*.js
+jsconfig.json
+tsconfig.json
+**/services/**
+*.html
+*.js
+**/html/**
+dist/*

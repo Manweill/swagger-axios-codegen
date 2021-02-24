@@ -1,14 +1,15 @@
-import Axios from "axios";
+require('module-alias/register')
+import Axios from 'axios'
 import * as fs from 'fs'
 import * as path from 'path'
-import { ISwaggerSource } from "./types/CodegenInterfaces";
-import { defaultOptions, envConfig, ICodegenOptions } from "./envConfig";
-import message from "./utils/logTipsUtils";
-import { customerReqClientServiceHeader, defaultServiceHeader } from "./templates/serviceHeaderTemplate";
-import { FileFormat, writeFile } from "./utils/fileUtils";
-import { codegenMultipleFile } from "./codegen/codegen.multiple";
-import { codegenAll } from "./codegen/codegen.default";
-import { codegenFilter } from "./codegen/codegen.filter";
+import { ISwaggerSource } from '@/types/CodegenInterfaces'
+import { defaultOptions, envConfig, ICodegenOptions } from './envConfig'
+import message from '@/utils/logTipsUtils'
+import { customerReqClientServiceHeader, defaultServiceHeader } from '@/templates/serviceHeaderTemplate'
+import { FileFormat, writeFile } from '@/utils/fileUtils'
+import { codegenMultipleFile } from '@/codegen/codegen.multiple'
+import { codegenAll } from '@/codegen/codegen.default'
+import { codegenFilter } from '@/codegen/codegen.filter'
 
 /**
  * main
@@ -23,7 +24,6 @@ export async function codegen(params: ICodegenOptions) {
     ...defaultOptions,
     ...params
   }
-
   // 获取接口定义文件
   console.time(message.success('request and format spec'))
   if (params.remoteUrl) {
@@ -46,12 +46,17 @@ export async function codegen(params: ICodegenOptions) {
   let apiSource = ''
 
   //生成服务文件头
-  let serviceHeaderSource = envConfig.options.useCustomerRequestInstance ? customerReqClientServiceHeader(swaggerSource.basePath) : defaultServiceHeader(swaggerSource.basePath)
+  const serviceHeaderSource = envConfig.options.useCustomerRequestInstance
+    ? customerReqClientServiceHeader(swaggerSource.basePath)
+    : defaultServiceHeader(swaggerSource.basePath)
   if (envConfig.options.serviceOptionsMode === 'shared') {
-    writeFile(envConfig.options.outputDir || '', 'serviceOptions.ts' || '', FileFormat(serviceHeaderSource, envConfig.options))
+    writeFile(
+      envConfig.options.outputDir || '',
+      'serviceOptions.ts' || '',
+      FileFormat(serviceHeaderSource, envConfig.options)
+    )
     apiSource += `import { IRequestOptions, IRequestConfig, getConfigs, axios } from "./serviceOptions";`
-  }
-  else {
+  } else {
     apiSource += serviceHeaderSource
   }
 

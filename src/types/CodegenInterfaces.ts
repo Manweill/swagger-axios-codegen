@@ -1,6 +1,6 @@
 export interface ISwaggerSource {
-  swagger?: string | undefined,
-  openapi?: string | undefined,
+  swagger?: string | undefined
+  openapi?: string | undefined
   info: string
   securityDefinitions: string
   externalDocs: string
@@ -73,21 +73,20 @@ export interface IDefinitionClasses {
   [key: string]: IDefinitionClass
 }
 
-
 // 字典类型，对应java map或者.NET Dictionary
 
 export interface IDictionary<TKey, TValue = any> {
-  [key: string]: TValue;
+  [key: string]: TValue
 }
 
 export interface IDictionary<TKey, TValue = any> {
-  [key: number]: TValue;
+  [key: number]: TValue
 }
 
 export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue> {
-  [key: string]: TValue;
+  [key: string]: TValue
 }
 
 export class Map<TKey, TValue> implements IDictionary<TKey, TValue> {
-  [key: string]: TValue;
+  [key: string]: TValue
 }

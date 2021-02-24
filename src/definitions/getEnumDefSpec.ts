@@ -1,4 +1,4 @@
-import { IDictionary, IEnumDefSpec } from "../types/CodegenInterfaces"
+import { IDictionary, IEnumDefSpec } from '../types/CodegenInterfaces'
 
 type IEnumArray = 'int' | 'string' | 'any'
 
@@ -11,11 +11,10 @@ type IEnumArray = 'int' | 'string' | 'any'
 export function getEnumDefSpec(className: string, enumArray: IEnumArray[], type: string): IEnumDefSpec {
   let enumProps: IDictionary<string, any>[] = []
   if (type === 'string') {
-    enumProps = enumArray.map(item => ({ [item]: item }))
-  }
-  else {
-    enumProps = enumArray.map(item => {
-      const obj = isNaN((item as any)) ? { [item]: item } : { ['key' + item]: item }
+    enumProps = enumArray.map((item) => ({ [item]: item }))
+  } else {
+    enumProps = enumArray.map((item) => {
+      const obj = isNaN(item as any) ? { [item]: item } : { ['key' + item]: item }
       return obj
     })
   }

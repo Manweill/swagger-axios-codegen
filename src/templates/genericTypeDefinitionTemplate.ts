@@ -9,7 +9,7 @@ export function universalGenericTypeDefinition() {
     export interface Dictionary<TValue> extends IDictionary<TValue>{
     
     }
-  `;
+  `
 }
 
 // abp 项目的泛型定义

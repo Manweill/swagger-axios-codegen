@@ -1,15 +1,15 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { trimString } from '../utils/stringUtils';
-import { envConfig } from '../envConfig';
-import { universalGenericTypeDefinition } from './genericTypeDefinitionTemplate';
-
+import { trimString } from '../utils/stringUtils'
+import { envConfig } from '../envConfig'
+import { universalGenericTypeDefinition } from './genericTypeDefinitionTemplate'
 
 export function defaultServiceHeader(basePath: string) {
   // TODO: move to class template
   const classTransformerImport = envConfig.options.useClassTransformer
     ? `import { Expose, Transform, Type, plainToClass } from 'class-transformer';
-  ` : '';
+  `
+    : ''
   return `/* eslint-disable */
   /** Generate by swagger-axios-codegen */
   import axiosStatic, { AxiosInstance } from 'axios';
@@ -38,13 +38,10 @@ export function defaultServiceHeader(basePath: string) {
   }
 
   ${requestHeader()}
-  `;
+  `
 }
 
-
-
 export function customerReqClientServiceHeader(basePath: string) {
-
   return `/* eslint-disable */
   /** Generate by swagger-axios-codegen */
   export interface IRequestOptions {
@@ -129,7 +126,7 @@ function requestHeader() {
 
 export function definitionHeader(fileDir: string | undefined) {
   let fileStr = '// empty '
-  if (!!fileDir) {
+  if (fileDir) {
     console.log('extendDefinitionFile url : ', path.resolve(fileDir))
     if (fs.existsSync(path.resolve(fileDir))) {
       const buffs = fs.readFileSync(path.resolve(fileDir))

@@ -1,5 +1,7 @@
 {
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": {
+    "eslint.autoFixOnSave": true
+  },
   "cSpell.words": [
     "codegen"
   ],

@@ -1,6 +1,6 @@
 {
   "name": "swagger-axios-codegen",
-  "version": "0.11.4",
+  "version": "2.0.0",
   "main": "./dist/index",
   "typings": "./dist/",
   "author": "Manwei Leung <mic.liangwenwei@foxmail.com>",
@@ -17,25 +17,36 @@
     "codegen"
   ],
   "scripts": {
-    "build": "tsc -p ./src",
+    "build": "tsc",
     "prestart": "npm run build",
     "precommit": "prettier --write --config .prettierrc ./src/*.ts",
     "start": "node ./dist/index",
-    "dev": "tsc --watch -p ./src/V2 ",
-    "prepublish": "npm run build"
+    "dev": "tsc --watch -p ./src/index ",
+    "prepublish": "npm run build",
+    "lint": "eslint src --fix --quiet"
   },
   "dependencies": {
     "axios": "^0.21.0",
     "camelcase": "^5.0.0",
+    "module-alias": "^2.2.2",
     "multimatch": "^4.0.0",
     "pascalcase": "^0.1.1",
-    "prettier": "^1.15.2",
+    "prettier": "^2.2.1",
     "structured-log": "^0.2.0"
   },
+  "_moduleAliases": {
+    "@root": ".",
+    "@": "./dist"
+  },
   "devDependencies": {
+    "@types/module-alias": "^2.0.0",
     "@types/node": "^12.7.2",
     "@types/prettier": "^1.12.2",
-    "tslint": "^5.10.0",
-    "typescript": "^4.1.2"
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "typescript": "4.2.2"
   }
 }

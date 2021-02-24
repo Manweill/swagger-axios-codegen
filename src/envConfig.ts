@@ -1,3 +1,4 @@
+/** 生成器参数 */
 export interface ICodegenOptions {
   serviceNameSuffix?: string
   enumNamePrefix?: string
@@ -5,7 +6,7 @@ export interface ICodegenOptions {
   outputDir?: string
   fileName?: string
   remoteUrl?: string
-  source?: any
+  source?: unknown
   useCustomerRequestInstance?: boolean | undefined
   serviceOptionsMode?: 'inFile' | 'shared'
   /** match with tsconfig */
@@ -27,7 +28,6 @@ export interface ICodegenOptions {
   format?: (s: string) => string
   include?: Array<string | IInclude>
 }
-
 
 export interface IInclude {
   [key: string]: string[]

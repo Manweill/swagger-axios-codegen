@@ -1,6 +1,6 @@
 export interface ISwaggerSource {
-  swagger?: string | undefined,
-  openapi?: string | undefined,
+  swagger?: string | undefined
+  openapi?: string | undefined
   info: string
   paths: IPaths
   securityDefinitions: string
@@ -26,25 +26,25 @@ export interface IRequestMethod {
   consumes: string[]
   produces: string[]
   parameters: IParameter[]
-  requestBody: IRequestBody,
+  requestBody: IRequestBody
   responses: {
     [key: string]: {
       description: string
       // v2
       schema: {
-        '$ref': string,
-        'type'?: string,
-        'items'?: IParameterItems,
-        'format'?: string,
-      },
+        $ref: string
+        type?: string
+        items?: IParameterItems
+        format?: string
+      }
       // v3
       content: {
         [key: string]: {
           schema: {
-            '$ref': string,
-            'type'?: string,
-            'items'?: IParameterItems,
-            'format'?: string,
+            $ref: string
+            type?: string
+            items?: IParameterItems
+            format?: string
           }
         }
       }
@@ -79,7 +79,6 @@ export interface IParameterSchema {
   type: string
 }
 
-
 export interface IParameterItems {
   type?: string
   format?: string
@@ -95,7 +94,7 @@ export interface IDefinition {
   required: string[]
   type: 'object' | 'array'
   properties: IDefinitionProperties
-  enum: any[],
+  enum: any[]
   items: IDefinitionProperty
 }
 
@@ -121,9 +120,9 @@ export interface IComponents {
 }
 
 export interface ISchema {
-  '$ref': string
-  'type'?: string
-  'items'?: IParameterItems
-  'format'?: string,
-  'properties'?: { [key: string]: IParameterItems }
+  $ref: string
+  type?: string
+  items?: IParameterItems
+  format?: string
+  properties?: { [key: string]: IParameterItems }
 }
