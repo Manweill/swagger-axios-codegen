@@ -55,7 +55,7 @@ export interface IRequestMethod {
 export interface IRequestBody {
   content: {
     [key: string]: {
-      schema: ISchema
+      schema: IRequestBodySchema
     }
   }
 }
@@ -119,9 +119,7 @@ export interface IDefinitionProperty {
 }
 
 export interface IComponents {
-  schemas: {
-    [key: string]: IDefinition
-  }
+  schemas: IComponentsSchemas
   requestBodies: {
     [key: string]: IDefinition
   }
@@ -131,7 +129,11 @@ export interface IComponents {
   parameters: IParameter[]
 }
 
-export interface ISchema {
+export interface IComponentsSchemas {
+  [key: string]: IDefinition
+}
+
+export interface IRequestBodySchema {
   $ref: string
   type?: string
   items?: IParameterItems

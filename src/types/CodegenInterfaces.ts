@@ -31,7 +31,7 @@ export interface IEnumDefSpec {
   /**枚举的名字，不包括前缀 */
   name: string
   /**枚举的枚举项 */
-  props: IDictionary<string, any>[]
+  props: INameValue[]
   /**枚举的类型，int或者字符串等 */
   type: string
 }
@@ -55,6 +55,7 @@ export interface IPropDef {
   desc: string
   isType: boolean
   isEnum: boolean
+  // eslint-disable-next-line @typescript-eslint/ban-types
   validationModel: object
 }
 
@@ -89,4 +90,9 @@ export class Dictionary<TKey, TValue> implements IDictionary<TKey, TValue> {
 
 export class Map<TKey, TValue> implements IDictionary<TKey, TValue> {
   [key: string]: TValue
+}
+
+export interface INameValue {
+  name: string
+  value: any
 }

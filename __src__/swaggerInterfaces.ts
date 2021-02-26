@@ -60,7 +60,7 @@ export interface IRequestBody {
   }
 }
 
-export type IParameterIn = 'path' | 'formData' | 'query' | 'body'
+export type IParameterIn = 'path' | 'formData' | 'query' | 'body' | 'header'
 
 export interface IParameter {
   in: IParameterIn

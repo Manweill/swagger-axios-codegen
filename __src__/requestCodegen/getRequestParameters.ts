@@ -7,15 +7,16 @@ import camelcase from 'camelcase'
 /**
  * 参数去重
  * 后台书写不规范,存在参数重名的情况
- * @param params 
+ * @param params
  */
 function getUniqParams(params: IParameter[]): IParameter[] {
   const uniqParams: Record<string, IParameter> = {}
   params.forEach(v => {
     // _${v.in}
     // TODO:同名但是v.in= query |path |body 的情况同时出现如何处理？分出不同的request参数？
-    if (!v.name.includes('[0]')) { //DTO class中存在List<T>时会出现这种参数 (list[0].prop)
-      uniqParams[`${v.name}`] = v;
+    if (!v.name.includes('[0]')) {
+      //DTO class中存在List<T>时会出现这种参数 (list[0].prop)
+      uniqParams[`${v.name}`] = v
     }
   })
   return Object.values(uniqParams)
@@ -25,16 +26,19 @@ function getUniqParams(params: IParameter[]): IParameter[] {
  * 生成参数
  * @param params
  */
-export function getRequestParameters(params: IParameter[]) {
+export function getRequestParameters(params: IParameter[], useHeaderParameters: boolean) {
   params = getUniqParams(params)
   let requestParameters = ''
   let requestFormData = ''
   let requestPathReplace = ''
   let queryParameters: string[] = []
   let bodyParameters: string[] = []
+  let headerParameters: string[] = []
   let imports: string[] = []
   let moreBodyParams = params.filter(item => item.in === 'body').length > 1
   params.forEach(p => {
+    // 根据设置跳过请求头中的参数
+    if (!useHeaderParameters && p.in === 'header') return
     let propType = ''
     // 引用类型定义
     if (p.schema) {
@@ -69,7 +73,13 @@ export function getRequestParameters(params: IParameter[]) {
     // 如果参数是从formData 提交
     if (p.in === 'formData') {
       requestFormData += `if(params['${paramName}']){
-        data.append('${p.name}',params['${paramName}'] as any)
+        if(Object.prototype.toString.call(params['${paramName}']) === '[object Array]'){
+          for (const item of params['${paramName}']) {
+            data.append('${p.name}',item as any)
+          }
+        } else {
+          data.append('${p.name}',params['${paramName}'] as any)
+        }
       }\n
       `
     } else if (p.in === 'path') {
@@ -85,8 +95,18 @@ export function getRequestParameters(params: IParameter[]) {
       //     : `...params['${paramName}']`
       //   : `'${p.name}':params['${paramName}']`
       bodyParameters.push(body)
+    } else if (p.in === 'header') {
+      headerParameters.push(`'${p.name}':params['${paramName}']`)
     }
   })
   const bodyParameter = moreBodyParams ? `{${bodyParameters.join(',')}}` : bodyParameters.join(',')
-  return { requestParameters, requestFormData, requestPathReplace, queryParameters, bodyParameter, imports }
+  return {
+    requestParameters,
+    requestFormData,
+    requestPathReplace,
+    queryParameters,
+    bodyParameter,
+    headerParameters,
+    imports
+  }
 }

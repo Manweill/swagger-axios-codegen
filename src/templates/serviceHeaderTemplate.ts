@@ -4,6 +4,7 @@ import { trimString } from '@/utils/stringUtils'
 import { envConfig } from '@/envConfig'
 import { universalGenericTypeDefinition } from './genericTypeDefinitionTemplate'
 
+/**默认的服务头文件 */
 export function defaultServiceHeader(basePath: string) {
   // TODO: move to class template
   const classTransformerImport = envConfig.options.useClassTransformer
@@ -40,7 +41,7 @@ export function defaultServiceHeader(basePath: string) {
   ${requestHeader()}
   `
 }
-
+/** 自定义请求客户端的服务头文件 */
 export function customerReqClientServiceHeader(basePath: string) {
   return `/* eslint-disable */
   /** Generate by swagger-axios-codegen */

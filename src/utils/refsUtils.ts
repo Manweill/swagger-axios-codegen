@@ -1,5 +1,32 @@
 import { IDefinitionClass, IDefinitionEnum } from '@/types/CodegenInterfaces'
-import { genericsToClassNames } from './genericTypesUtils'
+import { combineGenericsType, genericsToClassNames, isOpenApiGenerics, splitGenericsClassName } from '@/utils/genericTypesUtils'
+import { toBaseType } from './baseTypeUtils'
+import { removeSpecialCharacters } from './stringUtils'
+import _ from "lodash";
+
+/**
+ * 获取引用类型
+ * @param s
+ */
+export function refClassName(s: string): string {
+  let propType = s?.slice(s.lastIndexOf('/') + 1)
+  return isOpenApiGenerics(propType)
+    ? getGenericsClassName(propType)
+    : toBaseType(_.trimEnd(removeSpecialCharacters(propType), '_'))
+}
+
+/**
+ * 获取泛型类名
+ * A[B[C]] => A<B<C>>,* A<<B<<C>>>> => A<B<C>>
+ */
+function getGenericsClassName(className: string) {
+  const genericNames = splitGenericsClassName(className)
+  if (genericNames.length < 0) return ''
+
+  genericNames.filter(Boolean).map(item => toBaseType(_.trimEnd(removeSpecialCharacters(item), '_')))
+
+  return combineGenericsType(genericNames);
+}
 
 /**
  * 查找深层引用

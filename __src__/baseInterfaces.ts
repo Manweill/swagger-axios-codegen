@@ -1,7 +1,9 @@
+import { IRequestMethod } from './swaggerInterfaces'
+
 export interface ISwaggerOptions {
   serviceNameSuffix?: string
   enumNamePrefix?: string
-  methodNameMode?: 'operationId' | 'path'
+  methodNameMode?: 'operationId' | 'path' | 'shortOperationId' | ((reqProps: IRequestMethod) => string)
   outputDir?: string
   fileName?: string
   remoteUrl?: string
@@ -9,6 +11,8 @@ export interface ISwaggerOptions {
   useStaticMethod?: boolean | undefined
   useCustomerRequestInstance?: boolean | undefined
   include?: Array<string | IInclude>
+  /** include types which are not included during the filtering **/
+  includeTypes?: Array<string>
   format?: (s: string) => string
   /** match with tsconfig */
   strictNullChecks?: boolean | undefined
@@ -30,6 +34,8 @@ export interface ISwaggerOptions {
   urlFilters?: string[] | null | undefined
   /** shared service options to multiple service*/
   sharedServiceOptions?: boolean | undefined
+  /** use parameters in header or not*/
+  useHeaderParameters: boolean
 }
 
 export interface IPropDef {

@@ -1,28 +1,37 @@
-import { IDefinitionProperties } from '../swaggerInterfaces'
-import { propTrueType } from './propTrueType'
+import { IClassDef } from '@/types/CodegenInterfaces'
+import { IDefinitionProperties } from '@/types/SwaggerInterfaces.v3'
+import { propRealType } from '@/utils/propTrueTypeUtils'
 import pascalcase from 'pascalcase'
-import { IClassDef } from '../baseInterfaces'
-import { getValidationModel } from '../utils'
+
+type IAdditionalDefinition = {
+  type: 'enum' | 'type'
+  name: string
+  text: string
+}
 
 /**
  * 生成类定义
  * @param className class名称
  * @param properties 属性
- * @param isGenericsType 是否是泛型接口
  */
-
-export function createDefinitionClass(className: string, properties: IDefinitionProperties, required: string[]) {
-  /** 枚举值 */
-  const enums = []
-  const types = []
+export function getClassDefineSpec(className: string, properties: IDefinitionProperties, required: string[]) {
+  /** 附加的定义 */
+  const additionalDefinitions: IAdditionalDefinition[] = []
   const model: IClassDef = { name: className, props: [], imports: [] }
   const propertiesEntities = Object.entries(properties || {})
   for (const [k, v] of propertiesEntities) {
     // console.log('props name', k)
-    let { propType, isEnum, isArray, isType, ref, isUnionType, isCombinedType } = propTrueType(v)
+    let { propType, isEnum, isArray, isType, ref, isUnionType, isCombinedType } = propRealType(v)
     if (isEnum) {
       const enumName = `Enum${className}${pascalcase(k)}`
-      enums.push({
+      // enums.push({
+      //   name: enumName,
+      //   text: `export enum ${enumName}{
+      //   ${propType}
+      // }`
+      // })
+      additionalDefinitions.push({
+        type: 'enum',
         name: enumName,
         text: `export enum ${enumName}{
         ${propType}
@@ -33,7 +42,12 @@ export function createDefinitionClass(className: string, properties: IDefinition
     }
     if (isType) {
       const typeName = `I${className}${pascalcase(k)}`
-      enums.push({
+      // enums.push({
+      //   name: typeName,
+      //   text: `type ${typeName} = ${propType};`
+      // })
+      additionalDefinitions.push({
+        type: 'type',
         name: typeName,
         text: `type ${typeName} = ${propType};`
       })
@@ -43,7 +57,8 @@ export function createDefinitionClass(className: string, properties: IDefinition
     if (isUnionType) {
       const typeName = `All${pascalcase(k)}Types`
       const types = propType.split(',')
-      enums.push({
+      additionalDefinitions.push({
+        type: 'type',
         name: typeName,
         text: `export type ${typeName} = ${types.join(' | ')};`
       })
@@ -54,7 +69,8 @@ export function createDefinitionClass(className: string, properties: IDefinition
     if (isCombinedType) {
       const typeName = `Combined${pascalcase(k)}Types`
       const types = propType.split(',')
-      enums.push({
+      additionalDefinitions.push({
+        type: 'type',
         name: typeName,
         text: `export type ${typeName} = ${types.join(' & ')};`
       })
@@ -66,7 +82,7 @@ export function createDefinitionClass(className: string, properties: IDefinition
     if (ref) {
       model.imports.push(ref)
     }
-    const validationModel = getValidationModel(k, v, required)
+    const validationModel = {} //getValidationModel(k, v, required);
     // propsStr += classPropsTemplate(k, propType, v.description)
     model.props.push({
       name: k,
@@ -79,5 +95,5 @@ export function createDefinitionClass(className: string, properties: IDefinition
     })
   }
   // : classTemplate(className, propsStr, constructorStr)
-  return { enums, model }
+  return { additionalDefinitions, model }
 }

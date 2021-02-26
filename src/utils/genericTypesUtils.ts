@@ -3,7 +3,7 @@ import { envConfig } from '@/envConfig'
 const UniversalGenericTypes = ['IList', 'List']
 const AbpGenericTypes = ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto', 'Dictionary', 'IDictionary']
 
-// 是否是接口类型
+// 是否是泛型类型
 export const isOpenApiGenerics = (s: string) => /^.+\[.+\]$/.test(s) || /^.+\«.+\»$/.test(s) || /^.+\<.+\>$/.test(s)
 
 export const isGenerics = (s: string) => {
@@ -28,4 +28,26 @@ export function genericsToClassNames(modelName: string) {
   else {
     return [modelName]
   }
+}
+
+
+/**
+ * 分解泛型接口
+ * @param className
+ */
+export function splitGenericsClassName(className: string): string[] {
+  if (/^.+\[.+\]$/.test(className)) {
+    return className.split(/[\[\]]+/)
+  } else if (/^.+\«.+\»$/.test(className)) {
+    return className.split(/[«»]+/)
+  } else if (/^.+\<.+\>$/.test(className)) {
+    return className.split(/[<>]+/)
+  }
+  return []
+}
+
+/** 使类型数组转换成泛型名称 */
+export function combineGenericsType(classNameArray: string[]): string {
+  const [interfaceClassName, ...TClassName] = classNameArray
+  return `${interfaceClassName}<${combineGenericsType(TClassName)}>`
 }

@@ -4,5 +4,6 @@
     "trailingComma": "none",
     "jsxBracketSameLine": false,
     "semi": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "parser": 'typescript',
  }

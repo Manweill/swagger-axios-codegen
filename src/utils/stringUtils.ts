@@ -10,3 +10,9 @@ export function trimString(str: string, char: string, type: string) {
   }
   return str.replace(/^\s+|\s+$/g, '')
 }
+
+
+/** 移除特殊字符 */
+export function removeSpecialCharacters(str: string) {
+  return str?.replace(/[`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_')
+}

@@ -12,6 +12,7 @@
   "scripts": {
     "clean": "rm -rf ./swagger/services/**",
     "build:gen": "node ./swagger/codegen.js",
+    "build:genv3": "node ./swagger/codegen.v3.js",
     "build:api": "npm run clean && node ./swagger/codegen.js && npm run build",
     "build:api-include": "node ./swagger/codegen.include.js && npm run build",
     "build:api3": "node ./swagger/codegen.v3.js && npm run build",

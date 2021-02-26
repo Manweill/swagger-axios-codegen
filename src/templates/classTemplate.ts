@@ -1,6 +1,6 @@
-import camelcase from 'camelcase'
-import { IPropDef, ISwaggerOptions } from '../baseInterfaces'
-import { toBaseType, isDefinedGenericTypes, getDefinedGenericTypes } from '../utils'
+import { IPropDef } from "@/types/CodegenInterfaces"
+import { toBaseType } from "@/utils/baseTypeUtils"
+import { isDefinedGenericTypes } from "@/utils/genericTypesUtils"
 
 const baseTypes = ['string', 'number', 'object', 'boolean', 'any']
 
@@ -101,7 +101,7 @@ export function classPropsTemplate(
    *   //description
    *   fieldName: type
    */
-  type = toBaseType(type, format)
+  type = toBaseType(type)
   if (useClassTransformer) {
     const decorators = classTransformTemplate(type, format, isType)
 
@@ -154,104 +154,4 @@ export function classTransformTemplate(type: string, format: string, isType: boo
 /** 类属性模板 */
 export function classConstructorTemplate(name: string) {
   return `this['${name}'] = data['${name}'];\n`
-}
-
-/** 枚举 */
-export function enumTemplate(name: string, enumString: string, prefix?: string) {
-  return `
-  export enum ${name}{
-    ${enumString}
-  }
-  `
-}
-
-export function typeTemplate(name: string, typeString: string, prefix?: string) {
-  return `
-  export type ${name} = ${typeString};
-  `
-}
-
-interface IRequestSchema {
-  summary: string
-  parameters: string
-  responseType: string
-  method: string
-  contentType: string
-  path: string
-  pathReplace: string
-  parsedParameters: any
-  formData: string
-  requestBody: any
-}
-
-/** requestTemplate */
-export function requestTemplate(name: string, requestSchema: IRequestSchema, options: any) {
-  let {
-    summary = '',
-    parameters = '',
-    responseType = '',
-    method = '',
-    contentType = 'multipart/form-data',
-    path = '',
-    pathReplace = '',
-    parsedParameters = <any>{},
-    formData = '',
-    requestBody = null
-  } = requestSchema
-  const { useClassTransformer } = options
-  const { queryParameters = [], bodyParameter = [], headerParameters } = parsedParameters
-  const nonArrayType = responseType.replace('[', '').replace(']', '')
-  const isArrayType = responseType.indexOf('[') > 0
-  const transform = useClassTransformer && baseTypes.indexOf(nonArrayType) < 0
-  const resolveString = transform
-    ? `(response: any${
-    isArrayType ? '[]' : ''
-    }) => resolve(plainToClass(${nonArrayType}, response, {strategy: 'excludeAll'}))`
-    : 'resolve'
-
-  return `
-/**
- * ${summary || ''}
- */
-${options.useStaticMethod ? 'static' : ''} ${camelcase(
-    name
-  )}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
-  return new Promise((resolve, reject) => {
-    let url = basePath+'${path}'
-    ${pathReplace}
-    ${parsedParameters && headerParameters && headerParameters.length > 0
-      ? `options.headers = {${headerParameters}, ...options.headers }`
-      : ''}
-    const configs:IRequestConfig = getConfigs('${method}', '${contentType}', url, options)
-    ${parsedParameters && queryParameters.length > 0 ? 'configs.params = {' + queryParameters.join(',') + '}' : ''}
-    let data = ${
-    parsedParameters && bodyParameter && bodyParameter.length > 0
-      ? // ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
-      bodyParameter
-      : !!requestBody
-        ? 'params.body'
-        : 'null'
-    }
-    ${contentType === 'multipart/form-data' ? formData : ''}
-    configs.data = data;
-    axios(configs, ${resolveString}, reject);
-  });
-}`
-}
-
-/** serviceTemplate */
-export function serviceTemplate(name: string, body: string, imports: string[] = null) {
-  // add base imports
-  let mappedImports = !imports ? '' : `import { ${imports.join(',')}, } from './index.defs'\n`
-
-  // }
-
-
-  return `
-
-  ${mappedImports}
-  export class ${name} {
-    ${body}
-  }
-  `
 }

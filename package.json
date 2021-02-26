@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "main": "./dist/index",
   "typings": "./dist/",
-  "author": "Manwei Leung <mic.liangwenwei@foxmail.com>",
+  "author": "Manweill <manweill@outlook.com>",
   "license": "MIT",
   "repository": {
     "url": "https://github.com/Manweill/swagger-axios-codegen.git",
@@ -19,7 +19,8 @@
   "scripts": {
     "build": "tsc",
     "prestart": "npm run build",
-    "precommit": "prettier --write --config .prettierrc ./src/*.ts",
+    "format": "prettier --write --config .prettierrc ./src/*.ts",
+    "precommit": "npm run lint && npm run format",
     "start": "node ./dist/index",
     "dev": "tsc --watch",
     "prepublish": "npm run build",
@@ -28,6 +29,7 @@
   "dependencies": {
     "axios": "^0.21.0",
     "camelcase": "^5.0.0",
+    "lodash": "^4.17.21",
     "module-alias": "^2.2.2",
     "multimatch": "^4.0.0",
     "pascalcase": "^0.1.1",
@@ -39,6 +41,7 @@
     "@": "./dist"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.168",
     "@types/module-alias": "^2.0.0",
     "@types/node": "^12.7.2",
     "@types/prettier": "^1.12.2",
