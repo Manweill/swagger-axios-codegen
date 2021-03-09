@@ -28,14 +28,14 @@ export function interfaceTemplate(
   export interface ${name} {
 
     ${props.map(p => classPropsTemplate(
-      p.name,
-      p.type,
-      p.format,
-      p.desc,
-      !strictNullChecks || !(p.validationModel as any)?.required,
-      false,
-      false
-    )).join('')}
+    p.name,
+    p.type,
+    p.format,
+    p.desc,
+    !strictNullChecks || !(p.validationModel as any)?.required,
+    false,
+    false
+  )).join('')}
   }
   `
 }
@@ -65,15 +65,15 @@ export function classTemplate(
   export class ${name} {
 
     ${props
-    .map(p =>
-      classPropsTemplate(
+      .map(p =>
+        classPropsTemplate(
           p.name,
           p.type,
           p.format,
           p.desc,
           !strictNullChecks || !(p.validationModel as any)?.required,
           useClassTransformer,
-          p.isEnum || p.isType
+          p.isEnum || p.isType,
         )
       )
       .join('')}
@@ -102,7 +102,7 @@ export function classPropsTemplate(
    *   fieldName: type
    */
   type = toBaseType(type, format)
-  if (useClassTransformer) {
+  if (useClassTransformer && format) {
     const decorators = classTransformTemplate(type, format, isType)
 
     return `
@@ -204,8 +204,7 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
   const isArrayType = responseType.indexOf('[') > 0
   const transform = useClassTransformer && baseTypes.indexOf(nonArrayType) < 0
   const resolveString = transform
-    ? `(response: any${
-    isArrayType ? '[]' : ''
+    ? `(response: any${isArrayType ? '[]' : ''
     }) => resolve(plainToClass(${nonArrayType}, response, {strategy: 'excludeAll'}))`
     : 'resolve'
 
@@ -224,8 +223,7 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
       : ''}
     const configs:IRequestConfig = getConfigs('${method}', '${contentType}', url, options)
     ${parsedParameters && queryParameters.length > 0 ? 'configs.params = {' + queryParameters.join(',') + '}' : ''}
-    let data = ${
-    parsedParameters && bodyParameter && bodyParameter.length > 0
+    let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
       ? // ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
       bodyParameter
       : !!requestBody
