@@ -205,7 +205,7 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
   const transform = useClassTransformer && baseTypes.indexOf(nonArrayType) < 0
   const resolveString = transform
     ? `(response: any${isArrayType ? '[]' : ''
-    }) => resolve(plainToClass(${nonArrayType}, response, {strategy: 'excludeAll'}))`
+    }) => resolve(plainToClass(${nonArrayType}, response))`
     : 'resolve'
 
   return `
