@@ -1,4 +1,8 @@
 
+## 0.11.16
+
+- fix: don't exclude props of untransformed props (#129)
+
 ## 0.11.15
 
 - fix classTransform feature
