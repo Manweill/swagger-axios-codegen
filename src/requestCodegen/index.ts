@@ -24,8 +24,8 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
 
   if (!!paths)
     for (const [path, request] of Object.entries(paths)) {
-      let methodName = getMethodName(path)
       for (const [method, reqProps] of Object.entries(request)) {
+      let methodName = getMethodName(path)
         methodName =
           options.methodNameMode === 'operationId'
             ? reqProps.operationId
@@ -33,7 +33,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
             ? trimSuffix(reqProps.operationId, reqProps.tags?.[0])
             : typeof options.methodNameMode === 'function'
             ? options.methodNameMode(reqProps)
-            : methodName
+            : method + methodName
         if (!methodName) {
           // console.warn('method Name is null：', path);
           continue
