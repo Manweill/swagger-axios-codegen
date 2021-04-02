@@ -11,6 +11,7 @@ export function serviceHeader(options: ISwaggerOptions) {
   return `/** Generate by swagger-axios-codegen */
   // tslint:disable
   /* eslint-disable */
+  // @ts-ignore
   import axiosStatic, { AxiosInstance } from 'axios';
 
   ${classTransformerImport}
