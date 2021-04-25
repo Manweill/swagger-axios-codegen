@@ -14,7 +14,7 @@ import {
   classTemplate,
   typeTemplate
 } from './templates/template'
-import { customerServiceHeader, serviceHeader, definitionHeader } from './templates/serviceHeader'
+import { customerServiceHeader, serviceHeader, definitionHeader, disableLint } from './templates/serviceHeader'
 import { isOpenApi3, findDeepRefs, setDefinedGenericTypes, getDefinedGenericTypes, trimString } from './utils'
 import { requestCodegen, IRequestClass, IRequestMethods } from './requestCodegen'
 import { componentsCodegen } from './componentsCodegen'
@@ -124,7 +124,9 @@ export async function codegen(params: ISwaggerOptions) {
       for (const item of allImport) {
         if (!uniqueImports.includes(item)) uniqueImports.push(item)
       }
+      console.log(disableLint());
 
+      text = disableLint() + text
       text = serviceTemplate(className + options.serviceNameSuffix, text, uniqueImports)
       writeFile(options.outputDir || '', className + 'Service.ts', format(text, options))
     })
@@ -241,7 +243,9 @@ function codegenAll(
       }
       apiSource += text
     })
+    // console.log(disableLint());
 
+    apiSource = disableLint() + apiSource
     writeFile(options.outputDir || '', options.fileName || '', format(apiSource, options))
   } catch (error) {
     console.log('error', error)
@@ -484,6 +488,7 @@ function codegenMultimatchInclude(
     }
   })
 
+  apiSource = disableLint() + apiSource
   apiSource += reqSource + defSource
   writeFile(options.outputDir || '', options.fileName || '', format(apiSource, options))
 }

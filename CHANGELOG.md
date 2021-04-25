@@ -1,4 +1,8 @@
 
+## 0.12.1
+
+- fix: ignore unused import
+
 ## 0.11.16
 
 - fix: don't exclude props of untransformed props (#129)

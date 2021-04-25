@@ -9,7 +9,6 @@ export function serviceHeader(options: ISwaggerOptions) {
     ? `import { Expose, Transform, Type, plainToClass } from 'class-transformer';
   ` : '';
   return `/** Generate by swagger-axios-codegen */
-  // tslint:disable
   /* eslint-disable */
   // @ts-ignore
   import axiosStatic, { AxiosInstance } from 'axios';
@@ -39,12 +38,18 @@ export function serviceHeader(options: ISwaggerOptions) {
   `;
 }
 
+export function disableLint() {
+  return `/** Generate by swagger-axios-codegen */
+// @ts-ignore
+/* eslint-disable */
+  
+`}
 
 
 export function customerServiceHeader(options: ISwaggerOptions) {
 
   return `/** Generate by swagger-axios-codegen */
-  // tslint:disable
+  // @ts-ignore
   /* eslint-disable */
   export interface IRequestOptions {
     headers?: any;
