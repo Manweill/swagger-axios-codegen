@@ -11,7 +11,7 @@ export function serviceHeader(options: ISwaggerOptions) {
   return `/** Generate by swagger-axios-codegen */
   /* eslint-disable */
   // @ts-ignore
-  import axiosStatic, { AxiosInstance } from 'axios';
+  import axiosStatic, { AxiosInstance, AxiosTransformer, CancelToken } from 'axios';
 
   ${classTransformerImport}
 
@@ -19,6 +19,9 @@ export function serviceHeader(options: ISwaggerOptions) {
     headers?: any;
     baseURL?: string;
     responseType?: string;
+    transformRequest?: AxiosTransformer | AxiosTransformer[];
+    transformResponse?: AxiosTransformer | AxiosTransformer[];
+    cancelToken?: CancelToken;
   }
 
   export interface IRequestConfig {
