@@ -102,18 +102,21 @@ export function classPropsTemplate(
    *   fieldName: type
    */
   type = toBaseType(type, format)
+  if (filedName !== '[additionalProperties: string]') {
+    filedName = `'${filedName}'`
+  }
   if (useClassTransformer && format) {
     const decorators = classTransformTemplate(type, format, isType)
 
     return `
   /** ${description || ''} */
   ${decorators}
-  '${filedName}'${canNull ? '?' : ''}:${type};
+  ${filedName}${canNull ? '?' : ''}:${type};
   `
   } else {
     return `
   /** ${description || ''} */
-  '${filedName}'${canNull ? '?' : ''}:${type};
+  ${filedName}${canNull ? '?' : ''}:${type};
   `
   }
 }
