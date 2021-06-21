@@ -95,7 +95,7 @@ export interface IDefinition {
   required: string[]
   type: 'object' | 'array'
   properties: IDefinitionProperties
-  additionalProperties: IDefinitionProperty | undefined
+  additionalProperties: IDefinitionProperty | boolean | undefined
   enum: any[],
   items: IDefinitionProperty
 }
@@ -113,6 +113,7 @@ export interface IDefinitionProperty {
   oneOf: IDefinitionProperty[]
   items: IDefinitionProperty
   description: string
+  additionalProperties: IDefinitionProperty | boolean | undefined
 }
 
 export interface IComponents {
