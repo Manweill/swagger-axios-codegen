@@ -3,6 +3,8 @@ import { IPropDef, ISwaggerOptions } from '../baseInterfaces'
 import { toBaseType, isDefinedGenericTypes, getDefinedGenericTypes } from '../utils'
 
 const baseTypes = ['string', 'number', 'object', 'boolean', 'any']
+const isAdditionalProperties = (x: string) => x === "[additionalProperties: string]"
+const isNotAdditionalProperties = (x: string) => !isAdditionalProperties(x)
 
 /** 类模板 */
 export function interfaceTemplate(
@@ -32,7 +34,7 @@ export function interfaceTemplate(
     p.type,
     p.format,
     p.desc,
-    !strictNullChecks || !(p.validationModel as any)?.required,
+    (!strictNullChecks || !(p.validationModel as any)?.required) && !isAdditionalProperties(p.name),
     false,
     false
   )).join('')}
@@ -102,7 +104,7 @@ export function classPropsTemplate(
    *   fieldName: type
    */
   type = toBaseType(type, format)
-  if (filedName !== '[additionalProperties: string]') {
+  if (isNotAdditionalProperties(filedName)) {
     filedName = `'${filedName}'`
   }
   if (useClassTransformer && format) {

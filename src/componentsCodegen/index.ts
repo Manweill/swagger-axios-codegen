@@ -29,13 +29,7 @@ export function componentsCodegen(definitions: IComponents) {
         // #TODO
       } else {
         // default definition generate
-        if (v.additionalProperties !== undefined) {
-          v.properties = v.properties ?? {}
-          v.required = v.required ?? []
-          v.properties["[additionalProperties: string]"] = v.additionalProperties
-          v.required.push("[additionalProperties: string]")
-        }
-        const { enums, model } = createDefinitionClass(className, v.properties, v.required);
+        const { enums, model } = createDefinitionClass(className, v.properties, v.additionalProperties, v.required);
         // console.log('createDefinitionClass', enums)
         enums.forEach(item => {
           // definitionModels[item.name] = {

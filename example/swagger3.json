@@ -2258,10 +2258,48 @@
           }
         }
       }
+    },
+    "/api/test/additional-parameters": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWithAdditionalParameters"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "ResponseWithOnlyAdditionalParameters": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number",
+          "nullable": true
+        }
+      },
+      "ResponseWithAdditionalParameters": {
+        "type": "object",
+        "properties": {
+          "someValue": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "object",
+          "nullable": true
+        }
+      },
       "ControllerInterfaceApiDescriptionModel": {
         "type": "object",
         "properties": {
