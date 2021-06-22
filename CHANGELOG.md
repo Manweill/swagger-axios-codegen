@@ -1,4 +1,9 @@
 
+## 0.12.2
+
+- feat:support additionalProperties for top level entities
+- feat:axios options for RequestOptions
+
 ## 0.12.1
 
 - fix: ignore unused import
