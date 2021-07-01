@@ -71,8 +71,10 @@ export interface ISwaggerOptions {
   extendDefinitionFile?: string | undefined
   // mark generic type
   extendGenericType?: string[] | undefined
-  // split request service 
+  /** split request service.  Can't use with sharedServiceOptions*/
   multipleFileMode?: boolean | undefined
+  /** shared service options to multiple service. Can't use with MultipleFileMode */
+  sharedServiceOptions?: boolean | undefined
 }
 
 const defaultOptions: ISwaggerOptions = {

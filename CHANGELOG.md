@@ -1,4 +1,10 @@
 
+
+## 0.12.3
+
+- bugfix:
+  - fix multipleFileMode basePath
+
 ## 0.12.2
 
 - feat:support additionalProperties for top level entities
