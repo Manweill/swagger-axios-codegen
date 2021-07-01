@@ -74,7 +74,8 @@ export async function codegen(params: ISwaggerOptions) {
   else {
     apiSource += serviceHeaderSource
   }
-  apiSource += `const basePath = '${trimString(swaggerSource.basePath, '/', 'right')}'`;
+  // 改为到处basePath 可以让 多文件模式使用
+  apiSource += `export const basePath = '${trimString(swaggerSource.basePath, '/', 'right')}'`;
   apiSource += definitionHeader(options.extendDefinitionFile)
 
   // 判断是否是openApi3.0或者swagger3.0
@@ -120,7 +121,7 @@ export async function codegen(params: ISwaggerOptions) {
 
       // unique import
       const uniqueImports: string[] = []
-      allImport.push(...getDefinedGenericTypes(), 'IRequestOptions', 'IRequestConfig', 'getConfigs', 'axios')
+      allImport.push(...getDefinedGenericTypes(), 'IRequestOptions', 'IRequestConfig', 'getConfigs', 'axios', 'basePath')
       for (const item of allImport) {
         if (!uniqueImports.includes(item)) uniqueImports.push(item)
       }

@@ -28,11 +28,11 @@ export interface ISwaggerOptions {
   extendGenericType?: string[] | undefined
   /** generate validation model (class model mode only) */
   generateValidationModel?: boolean
-  /** split request service */
+  /** split request service.  Can't use with sharedServiceOptions*/
   multipleFileMode?: boolean | undefined
   /** url prefix filter*/
   urlFilters?: string[] | null | undefined
-  /** shared service options to multiple service*/
+  /** shared service options to multiple service. Can't use with MultipleFileMode */
   sharedServiceOptions?: boolean | undefined
   /** use parameters in header or not*/
   useHeaderParameters: boolean
