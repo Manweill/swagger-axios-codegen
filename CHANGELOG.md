@@ -1,4 +1,8 @@
 
+## 0.12.4
+
+- feat:
+  - IRequestOptions extends AxiosRequestConfig when httpClient was axios
 
 ## 0.12.3
 
