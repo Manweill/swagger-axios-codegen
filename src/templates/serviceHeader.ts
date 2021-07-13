@@ -10,7 +10,7 @@ export function serviceHeader(options: ISwaggerOptions) {
   ` : '';
   return `/** Generate by swagger-axios-codegen */
   /* eslint-disable */
-  // @ts-ignore
+  // @ts-nocheck
   import axiosStatic, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
   ${classTransformerImport}
@@ -37,7 +37,7 @@ export function serviceHeader(options: ISwaggerOptions) {
 
 export function disableLint() {
   return `/** Generate by swagger-axios-codegen */
-// @ts-ignore
+  // @ts-nocheck
 /* eslint-disable */
   
 `}
@@ -46,7 +46,7 @@ export function disableLint() {
 export function customerServiceHeader(options: ISwaggerOptions) {
 
   return `/** Generate by swagger-axios-codegen */
-  // @ts-ignore
+  // @ts-nocheck
   /* eslint-disable */
   export interface IRequestOptions {
     headers?: any;
