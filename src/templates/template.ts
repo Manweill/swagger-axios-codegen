@@ -172,7 +172,7 @@ export function enumTemplate(name: string, enumString: string, prefix?: string) 
 
 export function typeTemplate(name: string, typeString: string, prefix?: string) {
   return `
-  export type ${name} = ${typeString};
+  export type ${name} = ${typeString || '""'};
   `
 }
 
