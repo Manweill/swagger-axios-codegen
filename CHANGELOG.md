@@ -1,4 +1,9 @@
 
+## 0.12.6
+
+- bugfix:
+  - add quotes string fallback to typeTemplate when typeString is an an empty string;(#145)
+
 ## 0.12.4
 
 - feat:
