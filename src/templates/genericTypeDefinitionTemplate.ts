@@ -26,7 +26,7 @@ export interface IPagedResult<T> extends IListResult<T> {
   items?: T[];
 }
 
-export class PagedResultDto<T> implements IPagedResult<T> {
+export class PagedResultDto<T=any> implements IPagedResult<T> {
   totalCount?: number;
   items?: T[];
 }
