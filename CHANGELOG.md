@@ -1,4 +1,9 @@
 
+## 0.12.7
+
+- optimize:
+  - Optimize PagedResultDto
+
 ## 0.12.6
 
 - bugfix:
