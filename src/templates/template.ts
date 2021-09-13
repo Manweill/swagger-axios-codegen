@@ -32,12 +32,13 @@ export function interfaceTemplate(
 
     ${props.map(p => {
       const validationModel = p.validationModel as any;
+      const isRequired = !strictRequiredChecks ? false : (validationModel?.required && !validationModel?.readOnly);
       return classPropsTemplate(
         p.name,
         p.type,
         p.format,
         p.desc,
-        ((!strictRequiredChecks) || validationModel?.required && !validationModel?.readOnly) && !isAdditionalProperties(p.name),
+        isRequired && !isAdditionalProperties(p.name),
         (!strictNullChecks || validationModel?.nullable) && !isAdditionalProperties(p.name),
         false,
         false
@@ -75,12 +76,19 @@ export function classTemplate(
     ${props
       .map(p => {
           const validationModel = p.validationModel as any;
+          if (p.name === 'dimensions') {
+            console.log("dimensions.strictRequiredChecks", strictRequiredChecks);
+            console.log("dimensions.required", validationModel?.required);
+            console.log("dimensions.readOnly", validationModel?.readOnly);
+            console.log("");
+          }
+          const isRequired = !strictRequiredChecks ? false : (validationModel?.required && !validationModel?.readOnly);
           return classPropsTemplate(
             p.name,
             p.type,
             p.format,
             p.desc,
-            ((!strictRequiredChecks) || validationModel?.required && !validationModel?.readOnly) && !isAdditionalProperties(p.name),
+            isRequired && !isAdditionalProperties(p.name),
             (!strictNullChecks || validationModel?.nullable) && !isAdditionalProperties(p.name),
             false,
             false
