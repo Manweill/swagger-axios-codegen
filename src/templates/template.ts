@@ -11,6 +11,7 @@ export function interfaceTemplate(
   name: string,
   props: IPropDef[],
   imports: string[],
+  strictRequiredChecks: boolean = true,
   strictNullChecks: boolean = true
 ) {
   if (isDefinedGenericTypes(name)) {
@@ -36,7 +37,7 @@ export function interfaceTemplate(
         p.type,
         p.format,
         p.desc,
-        (validationModel?.required && !validationModel?.readOnly) && !isAdditionalProperties(p.name),
+        ((!strictRequiredChecks) || validationModel?.required && !validationModel?.readOnly) && !isAdditionalProperties(p.name),
         (!strictNullChecks || validationModel?.nullable) && !isAdditionalProperties(p.name),
         false,
         false
@@ -51,6 +52,7 @@ export function classTemplate(
   name: string,
   props: IPropDef[],
   imports: string[],
+  strictRequiredChecks: boolean = true,
   strictNullChecks: boolean = true,
   useClassTransformer: boolean,
   generateValidationModel: boolean
@@ -78,7 +80,7 @@ export function classTemplate(
             p.type,
             p.format,
             p.desc,
-            (validationModel?.required && !validationModel?.readOnly) && !isAdditionalProperties(p.name),
+            ((!strictRequiredChecks) || validationModel?.required && !validationModel?.readOnly) && !isAdditionalProperties(p.name),
             (!strictNullChecks || validationModel?.nullable) && !isAdditionalProperties(p.name),
             false,
             false

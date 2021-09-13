@@ -1,5 +1,5 @@
 // const { codegen } = require('swagger-axios-codegen')
-const { codegen } = require('../../dist/index.js')
+const { codegen } = require('../../dist/index.js');
 
 codegen({
   methodNameMode: 'path',
@@ -7,6 +7,7 @@ codegen({
   // remoteUrl: 'http://localhost:44307/swagger/v1/swagger.json',
   outputDir: './swagger/services',
   fileName: 'indexGeneric.ts',
+  strictRequiredChecks: false,
   strictNullChecks: false,
   modelMode: 'interface'
-})
+});

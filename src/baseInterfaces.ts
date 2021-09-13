@@ -15,6 +15,8 @@ export interface ISwaggerOptions {
   includeTypes?: Array<string>
   format?: (s: string) => string
   /** match with tsconfig */
+  strictRequiredChecks?: boolean | undefined
+  /** match with tsconfig */
   strictNullChecks?: boolean | undefined
   /** definition Class mode */
   modelMode?: 'class' | 'interface'

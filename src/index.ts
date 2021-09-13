@@ -31,6 +31,7 @@ const defaultOptions: ISwaggerOptions = {
   modelMode: 'interface',
   include: [],
   includeTypes: [],
+  strictRequiredChecks: true,
   strictNullChecks: true,
   useClassTransformer: false,
   extendGenericType: [],
@@ -139,11 +140,12 @@ export async function codegen(params: ISwaggerOptions) {
     Object.values(models).forEach(item => {
       const text =
         params.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictRequiredChecks, params.strictNullChecks)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
+            params.strictRequiredChecks,
             params.strictNullChecks,
             options.useClassTransformer,
             options.generateValidationModel
@@ -219,11 +221,12 @@ function codegenAll(
     Object.values(models).forEach(item => {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictRequiredChecks, options.strictNullChecks)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
+            options.strictRequiredChecks,
             options.strictNullChecks,
             options.useClassTransformer,
             options.generateValidationModel
@@ -313,11 +316,12 @@ function codegenInclude(
     if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictRequiredChecks, options.strictNullChecks)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
+            options.strictRequiredChecks,
             options.strictNullChecks,
             options.useClassTransformer,
             options.generateValidationModel
@@ -459,11 +463,12 @@ function codegenMultimatchInclude(
     if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictRequiredChecks, options.strictNullChecks)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
+            options.strictRequiredChecks,
             options.strictNullChecks,
             options.useClassTransformer,
             options.generateValidationModel

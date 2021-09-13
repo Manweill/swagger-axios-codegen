@@ -1,5 +1,5 @@
 // const { codegen } = require('swagger-axios-codegen')
-const { codegen } = require('../../dist/index.js')
+const { codegen } = require('../../dist/index.js');
 
 let include = [
   // "products-test",
@@ -11,12 +11,13 @@ let include = [
   // 'Products*',
   '!Products',
   { 'User': ['*', '!history'] },
-]
+];
 codegen({
   methodNameMode: 'path',
+  strictRequiredChecks: false,
   strictNullChecks: false,
   modelMode: 'interface',
   source: require('../swagger.json'),
   outputDir: './swagger/services',
   include
-})
+});

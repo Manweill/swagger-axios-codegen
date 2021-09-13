@@ -60,6 +60,8 @@ export interface ISwaggerOptions {
   /** custom function to format the output file (default: prettier.format()) **/
   format?: (s: string) => string
   /** match with tsconfig */
+  strictRequiredChecks?: boolean | undefined
+  /** match with tsconfig */
   strictNullChecks?: boolean | undefined
   /** definition Class mode */
   modelMode?: 'class' | 'interface'
@@ -86,6 +88,7 @@ const defaultOptions: ISwaggerOptions = {
   useStaticMethod: true,
   useCustomerRequestInstance: false,
   include: [],
+  strictRequiredChecks: true,
   strictNullChecks: true,
   /** definition Class mode ,auto use interface mode to streamlined code*/
   modelMode?: 'interface'
