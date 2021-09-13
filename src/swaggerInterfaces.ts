@@ -107,6 +107,8 @@ export interface IDefinitionProperty {
   type: string
   enum: any[]
   format: string
+  readOnly: boolean
+  nullable: boolean
   maxLength: number
   $ref: string
   allOf: IDefinitionProperty[]

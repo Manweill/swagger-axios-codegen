@@ -29,15 +29,19 @@ export function interfaceTemplate(
 
   export interface ${name} {
 
-    ${props.map(p => classPropsTemplate(
-    p.name,
-    p.type,
-    p.format,
-    p.desc,
-    (!strictNullChecks || !(p.validationModel as any)?.required) && !isAdditionalProperties(p.name),
-    false,
-    false
-  )).join('')}
+    ${props.map(p => {
+      const validationModel = p.validationModel as any;
+      return classPropsTemplate(
+        p.name,
+        p.type,
+        p.format,
+        p.desc,
+        (validationModel?.required && !validationModel?.readOnly) && !isAdditionalProperties(p.name),
+        (!strictNullChecks || validationModel?.nullable) && !isAdditionalProperties(p.name),
+        false,
+        false
+      )
+    }).join('')}
   }
   `
 }
@@ -67,16 +71,19 @@ export function classTemplate(
   export class ${name} {
 
     ${props
-      .map(p =>
-        classPropsTemplate(
-          p.name,
-          p.type,
-          p.format,
-          p.desc,
-          !strictNullChecks || !(p.validationModel as any)?.required,
-          useClassTransformer,
-          p.isEnum || p.isType,
-        )
+      .map(p => {
+          const validationModel = p.validationModel as any;
+          return classPropsTemplate(
+            p.name,
+            p.type,
+            p.format,
+            p.desc,
+            (validationModel?.required && !validationModel?.readOnly) && !isAdditionalProperties(p.name),
+            (!strictNullChecks || validationModel?.nullable) && !isAdditionalProperties(p.name),
+            false,
+            false
+          )
+        }
       )
       .join('')}
 
@@ -94,6 +101,7 @@ export function classPropsTemplate(
   type: string,
   format: string,
   description: string,
+  isRequired: boolean,
   canNull: boolean,
   useClassTransformer: boolean,
   isType: boolean
@@ -113,12 +121,12 @@ export function classPropsTemplate(
     return `
   /** ${description || ''} */
   ${decorators}
-  ${filedName}${canNull ? '?' : ''}:${type};
+  ${filedName}${!isRequired ? '?' : ''}:${type}${canNull === true ? ' | null' : ''};
   `
   } else {
     return `
   /** ${description || ''} */
-  ${filedName}${canNull ? '?' : ''}:${type};
+  ${filedName}${!isRequired ? '?' : ''}:${type}${canNull === true ? ' | null' : ''};
   `
   }
 }

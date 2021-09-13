@@ -280,5 +280,13 @@ export function getValidationModel(propName: string, prop: IDefinitionProperty, 
     validationModel.maxLength = prop.maxLength
     hasValidationRules = true
   }
+  if (prop.nullable) {
+    validationModel.nullable = prop.nullable
+    hasValidationRules = true
+  }
+  if (prop.readOnly) {
+    validationModel.readOnly = prop.readOnly
+    hasValidationRules = true
+  }
   return hasValidationRules ? validationModel : null
 }
