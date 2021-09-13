@@ -35,13 +35,6 @@ export function serviceHeader(options: ISwaggerOptions) {
   `;
 }
 
-export function disableLint() {
-  return `/** Generate by swagger-axios-codegen */
-  // @ts-nocheck
-/* eslint-disable */
-  
-`}
-
 
 export function customerServiceHeader(options: ISwaggerOptions) {
 

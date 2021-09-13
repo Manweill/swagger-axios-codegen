@@ -76,12 +76,6 @@ export function classTemplate(
     ${props
       .map(p => {
           const validationModel = p.validationModel as any;
-          if (p.name === 'dimensions') {
-            console.log("dimensions.strictRequiredChecks", strictRequiredChecks);
-            console.log("dimensions.required", validationModel?.required);
-            console.log("dimensions.readOnly", validationModel?.readOnly);
-            console.log("");
-          }
           const isRequired = !strictRequiredChecks ? false : (validationModel?.required && !validationModel?.readOnly);
           return classPropsTemplate(
             p.name,
