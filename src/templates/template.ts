@@ -106,7 +106,7 @@ export function classPropsTemplate(
   format: string,
   description: string,
   isRequired: boolean,
-  canNull: boolean,
+  isNullable: boolean,
   useClassTransformer: boolean,
   isType: boolean
 ) {
@@ -125,12 +125,12 @@ export function classPropsTemplate(
     return `
   /** ${description || ''} */
   ${decorators}
-  ${filedName}${!isRequired ? '?' : ''}:${type}${canNull === true ? ' | null' : ''};
+  ${filedName}${!isRequired && '?'}:${type}${isNullable && ' | null'};
   `
   } else {
     return `
   /** ${description || ''} */
-  ${filedName}${!isRequired ? '?' : ''}:${type}${canNull === true ? ' | null' : ''};
+  ${filedName}${!isRequired && '?'}:${type}${isNullable && ' | null'};
   `
   }
 }
