@@ -59,9 +59,9 @@ export interface ISwaggerOptions {
   urlFilters?: Array<string>
   /** custom function to format the output file (default: prettier.format()) **/
   format?: (s: string) => string
-  /** match with tsconfig */
+  /** force required option for fields */
   strictRequiredChecks?: boolean | undefined
-  /** match with tsconfig */
+  /** force nullable option for fields */
   strictNullChecks?: boolean | undefined
   /** definition Class mode */
   modelMode?: 'class' | 'interface'
