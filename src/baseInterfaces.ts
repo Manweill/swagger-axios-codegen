@@ -35,7 +35,7 @@ export interface ISwaggerOptions {
   /** shared service options to multiple service. Can't use with MultipleFileMode */
   sharedServiceOptions?: boolean | undefined
   /** use parameters in header or not*/
-  useHeaderParameters: boolean
+  useHeaderParameters?: boolean
 }
 
 export interface IPropDef {
