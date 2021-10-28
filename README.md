@@ -88,7 +88,7 @@ const defaultOptions: ISwaggerOptions = {
   include: [],
   strictNullChecks: true,
   /** definition Class mode ,auto use interface mode to streamlined code*/
-  modelMode?: 'interface'
+  modelMode?: 'interface',
   useClassTransformer: false
 }
 
