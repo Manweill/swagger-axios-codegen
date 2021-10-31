@@ -15,8 +15,8 @@ function getUniqParams(params: IParameter[]): IParameter[] {
     // _${v.in}
     // TODO:同名但是v.in= query |path |body 的情况同时出现如何处理？分出不同的request参数？
     if ('$ref' in v && !('name' in v)) {
-      v.name = refClassName(v.$ref);
-    }    
+      v.name = refClassName(v.$ref)
+    }
     if (!v.name.includes('[0]')) {
       //DTO class中存在List<T>时会出现这种参数 (list[0].prop)
       uniqParams[`${v.name}`] = v
