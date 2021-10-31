@@ -1,13 +1,13 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { trimString } from '@/utils/stringUtils'
-import { envConfig } from '@/envConfig'
+import { EnvConfig } from '@/envConfig'
 import { universalGenericTypeDefinition } from './genericTypeDefinitionTemplate'
 
 /**默认的服务头文件 */
 export function defaultServiceHeader(basePath: string) {
   // TODO: move to class template
-  const classTransformerImport = envConfig.options.useClassTransformer
+  const classTransformerImport = EnvConfig.options.useClassTransformer
     ? `import { Expose, Transform, Type, plainToClass } from 'class-transformer';
   `
     : ''

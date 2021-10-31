@@ -1,4 +1,4 @@
-import { envConfig } from '@/envConfig'
+import { EnvConfig } from '@/envConfig'
 
 const UniversalGenericTypes = ['IList', 'List']
 const AbpGenericTypes = ['IListResult', 'ListResultDto', 'IPagedResult', 'PagedResultDto', 'Dictionary', 'IDictionary']
@@ -9,10 +9,10 @@ export const isOpenApiGenerics = (s: string) => /^.+\[.+\]$/.test(s) || /^.+\«.
 export const isGenerics = (s: string) => {
   return /^.+\<.+\>$/.test(s)
 }
-export const isDefinedGenericTypes = (x: string) => envConfig.definedGenericTypes.some((i) => i === x)
+export const isDefinedGenericTypes = (x: string) => EnvConfig.definedGenericTypes.some((i) => i === x)
 
 export function setDefinedGenericTypes(types: string[] = []) {
-  envConfig.definedGenericTypes.push(...UniversalGenericTypes, ...AbpGenericTypes, ...types)
+  EnvConfig.definedGenericTypes.push(...UniversalGenericTypes, ...AbpGenericTypes, ...types)
 }
 
 /**
@@ -29,7 +29,6 @@ export function genericsToClassNames(modelName: string) {
     return [modelName]
   }
 }
-
 
 /**
  * 分解泛型接口

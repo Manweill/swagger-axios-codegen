@@ -10,7 +10,9 @@ const message = {
 
 export const LogMsg = {
   success: (msg: string | any) => console.log(msgColor.success + msg),
-  error: (msg: any) => console.log(msgColor.error + msg)
+  error: (msg: any) => console.log(msgColor.error + msg),
+  time:(msg:any) => console.time(msg),
+  timeEnd:(msg:any)=> console.timeEnd(msg)
 }
 
 export default message

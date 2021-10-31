@@ -53,7 +53,7 @@ type IEnvConfig = {
   definedGenericTypes: string[]
 }
 
-export const envConfig: IEnvConfig = {
+export const EnvConfig: IEnvConfig = {
   options: {},
   definedGenericTypes: []
 }

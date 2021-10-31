@@ -3,8 +3,8 @@ import Axios from 'axios'
 import * as fs from 'fs'
 import * as path from 'path'
 import { ISwaggerSource } from '@/types/SwaggerInterfaces.v3'
-import { defaultOptions, envConfig, ICodegenOptions } from './envConfig'
-import message from '@/utils/logTipsUtils'
+import { defaultOptions, EnvConfig, ICodegenOptions } from './envConfig'
+import message, { LogMsg } from '@/utils/logTipsUtils'
 import { customerReqClientServiceHeader, defaultServiceHeader } from '@/templates/serviceHeaderTemplate'
 import { FileFormat, writeFile } from '@/utils/fileUtils'
 import { codegenMultipleFile } from '@/codegen/codegen.multiple'
@@ -18,17 +18,17 @@ import { classTemplate, interfaceTemplate } from '@/templates/classTemplate'
  * main
  */
 export async function codegen(params: ICodegenOptions) {
-  console.time('codegen')
+  LogMsg.time('codegen')
   let err
   let swaggerSource: ISwaggerSource
 
   // 合并参数
-  envConfig.options = {
+  EnvConfig.options = {
     ...defaultOptions,
     ...params
   }
   // 获取接口定义文件
-  console.time(message.success('request and format spec'))
+  LogMsg.time(message.success('request and format spec'))
   if (params.remoteUrl) {
     const { data: swaggerJson } = await Axios({ url: params.remoteUrl, responseType: 'text' })
     if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
@@ -43,20 +43,20 @@ export async function codegen(params: ICodegenOptions) {
     console.log(message.error('remoteUrl or source is undefined'))
     return
   }
-  console.timeEnd(message.success('request and format spec'))
+  LogMsg.timeEnd(message.success('request and format spec'))
 
   /**API文件字符串 */
   let apiSourceString = ''
 
   //生成服务文件头
-  const serviceHeaderSource = envConfig.options.useCustomerRequestInstance
+  const serviceHeaderSource = EnvConfig.options.useCustomerRequestInstance
     ? customerReqClientServiceHeader(swaggerSource.basePath)
     : defaultServiceHeader(swaggerSource.basePath)
-  if (envConfig.options.serviceOptionsMode === 'shared') {
+  if (EnvConfig.options.serviceOptionsMode === 'shared') {
     writeFile(
-      envConfig.options.outputDir || '',
+      EnvConfig.options.outputDir || '',
       'serviceOptions.ts' || '',
-      FileFormat(serviceHeaderSource, envConfig.options)
+      FileFormat(serviceHeaderSource, EnvConfig.options)
     )
     apiSourceString += `import { IRequestOptions, IRequestConfig, getConfigs, axios } from "./serviceOptions";`
   } else {
@@ -72,15 +72,15 @@ export async function codegen(params: ICodegenOptions) {
 
   _allModel.forEach((item) => {
     const text =
-      envConfig.options.modelMode === 'interface'
-        ? interfaceTemplate(item.value.name, item.value.props, [], envConfig.options.strictNullChecks)
+      EnvConfig.options.modelMode === 'interface'
+        ? interfaceTemplate(item.value.name, item.value.props, [], EnvConfig.options.strictNullChecks)
         : classTemplate(
             item.value.name,
             item.value.props,
             [],
-            envConfig.options.strictNullChecks,
-            envConfig.options.useClassTransformer,
-            envConfig.options.generateValidationModel
+            EnvConfig.options.strictNullChecks,
+            EnvConfig.options.useClassTransformer,
+            EnvConfig.options.generateValidationModel
           )
     apiSourceString += text
   })
@@ -90,10 +90,10 @@ export async function codegen(params: ICodegenOptions) {
     if (item.value) {
       if (item.value.type == 'string') {
         const enumString = item.value.props.map(({ name, value }) => `'${name}'='${value}'`).join(',')
-        text = enumTemplate(item.value.name, enumString, envConfig.options.enumNamePrefix)
+        text = enumTemplate(item.value.name, enumString, EnvConfig.options.enumNamePrefix)
       } else {
         const enumString = item.value.props.map((item) => item.value).join('|')
-        text = typeTemplate(item.value.name, enumString, envConfig.options.enumNamePrefix)
+        text = typeTemplate(item.value.name, enumString, EnvConfig.options.enumNamePrefix)
       }
     } else {
       text = item.content || ''
@@ -104,20 +104,20 @@ export async function codegen(params: ICodegenOptions) {
   // 获取所有的request定义
 
   // 过滤请求方法已经class
-  if (envConfig.options.include) {
+  if (EnvConfig.options.include) {
     codegenFilter()
   }
 
   // 判断是否是多文件模式，默认单文件模式
-  if (envConfig.options.multipleFileMode) {
+  if (EnvConfig.options.multipleFileMode) {
     codegenMultipleFile()
   } else {
     codegenAll()
   }
   // 生成文件
-  writeFile(envConfig.options.outputDir, envConfig.options.fileName, apiSourceString)
+  writeFile(EnvConfig.options.outputDir, EnvConfig.options.fileName, apiSourceString)
   if (fs.existsSync('./__cache_swagger.json')) {
     fs.unlinkSync('./__cache_swagger.json')
   }
-  console.timeEnd('codegen')
+  LogMsg.timeEnd('codegen')
 }

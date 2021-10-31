@@ -1,23 +1,18 @@
-import { IPropDef } from "@/types/CodegenInterfaces"
-import { toBaseType } from "@/utils/baseTypeUtils"
-import { isDefinedGenericTypes } from "@/utils/genericTypesUtils"
+import { IPropDef } from '@/types/CodegenInterfaces'
+import { toBaseType } from '@/utils/baseTypeUtils'
+import { isDefinedGenericTypes } from '@/utils/genericTypesUtils'
 
 const baseTypes = ['string', 'number', 'object', 'boolean', 'any']
 
 /** 类模板 */
-export function interfaceTemplate(
-  name: string,
-  props: IPropDef[],
-  imports: string[],
-  strictNullChecks: boolean = true
-) {
+export function interfaceTemplate(name: string, props: IPropDef[], imports: string[], strictNullChecks = true) {
   if (isDefinedGenericTypes(name)) {
     // 已经定义过的interface不再生成
     return ''
   }
   // 所有的引用
   const importString = imports
-    .map(imp => {
+    .map((imp) => {
       return `import { ${imp} } from '../definitions/${imp}'\n`
     })
     .join('')
@@ -27,15 +22,19 @@ export function interfaceTemplate(
 
   export interface ${name} {
 
-    ${props.map(p => classPropsTemplate(
-      p.name,
-      p.type,
-      p.format,
-      p.desc,
-      !strictNullChecks || !(p.validationModel as any)?.required,
-      false,
-      false
-    )).join('')}
+    ${props
+      .map((p) =>
+        classPropsTemplate(
+          p.name,
+          p.type,
+          p.format,
+          p.desc,
+          !strictNullChecks || !(p.validationModel as any)?.required,
+          false,
+          false
+        )
+      )
+      .join('')}
   }
   `
 }
@@ -45,12 +44,12 @@ export function classTemplate(
   name: string,
   props: IPropDef[],
   imports: string[],
-  strictNullChecks: boolean = true,
+  strictNullChecks = true,
   useClassTransformer: boolean,
   generateValidationModel: boolean
 ) {
   // 所有的引用
-  const mappedImports = imports.map(imp => {
+  const mappedImports = imports.map((imp) => {
     return `import { ${imp} } from '../definitions/${imp}'\n`
   })
 
@@ -65,8 +64,8 @@ export function classTemplate(
   export class ${name} {
 
     ${props
-    .map(p =>
-      classPropsTemplate(
+      .map((p) =>
+        classPropsTemplate(
           p.name,
           p.type,
           p.format,
@@ -79,7 +78,7 @@ export function classTemplate(
       .join('')}
 
     constructor(data: (undefined | any) = {}){
-        ${props.map(p => classConstructorTemplate(p.name)).join('')}
+        ${props.map((p) => classConstructorTemplate(p.name)).join('')}
     }
     ${generateValidationModel ? classValidationModelTemplate(props) : ''}
   }
@@ -134,9 +133,9 @@ export function classValidationModelTemplate(props: IPropDef[]) {
   return `
     public static validationModel = {
       ${props
-      .filter(p => p.validationModel !== null)
-      .map(p => propValidationModelTemplate(p.name, p.validationModel))
-      .join(',\n')}
+        .filter((p) => p.validationModel !== null)
+        .map((p) => propValidationModelTemplate(p.name, p.validationModel))
+        .join(',\n')}
     }
   `
 }
