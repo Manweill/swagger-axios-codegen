@@ -1,4 +1,15 @@
 
+## 0.12.8
+
+- bugfix:
+  - fix missing comma in example config
+
+- optimize:
+  - chore(IParameter): Add optional $ref property
+
+- feat:
+  - feat(getUniqParams): Use name of $ref if v has no name
+
 ## 0.12.7
 
 - optimize:
