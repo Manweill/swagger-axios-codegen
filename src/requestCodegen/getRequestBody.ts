@@ -4,7 +4,7 @@ import { refClassName } from "../utils";
 
 export function getRequestBody(requestBody: IRequestBody) {
   // 如果是空则直接反回
-  if (isNullOrUndefined(requestBody.content)) return
+  if (!requestBody.content) return
 
   let imports: string[] = []
   let bodyType = ''
@@ -12,10 +12,11 @@ export function getRequestBody(requestBody: IRequestBody) {
   const allContent = Object.keys(requestBody.content)
   // 默认去application/json的定义，如果取不到则直接取第一个
   let reqBody = requestBody.content["application/json"]
-  if (reqBody == null) {
-    reqBody == requestBody.content[allContent[0]]
+  console.log("reqBody 1:", !reqBody);
+  if (!reqBody) {
+    reqBody = requestBody.content[allContent[0]]
   }
-  // console.log("reqBody:", JSON.stringify(reqBody));
+  console.log("reqBody 2:", reqBody);
 
   if (reqBody == null) {
     return { imports, bodyType }
