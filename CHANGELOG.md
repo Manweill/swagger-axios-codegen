@@ -1,3 +1,8 @@
+## 0.12.0
+
+- bugfix
+  -fix requestBody upload file.
+
 
 ## 0.12.8
 
