@@ -12,11 +12,11 @@ export function getRequestBody(requestBody: IRequestBody) {
   const allContent = Object.keys(requestBody.content)
   // 默认去application/json的定义，如果取不到则直接取第一个
   let reqBody = requestBody.content["application/json"]
-  console.log("reqBody 1:", !reqBody);
+  // console.log("reqBody 1:", !reqBody);
   if (!reqBody) {
     reqBody = requestBody.content[allContent[0]]
   }
-  console.log("reqBody 2:", reqBody);
+  // console.log("reqBody 2:", reqBody);
 
   if (reqBody == null) {
     return { imports, bodyType }
