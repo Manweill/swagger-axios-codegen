@@ -228,8 +228,9 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
       : ''}
     const configs:IRequestConfig = getConfigs('${method}', '${contentType}', url, options)
     ${parsedParameters && queryParameters.length > 0 ? 'configs.params = {' + queryParameters.join(',') + '}' : ''}
-    ${requestBodyString(method, parsedParameters, bodyParameter, requestBody)}
+    
     ${contentType === 'multipart/form-data' ? formData : ''}
+    ${requestBodyString(method, parsedParameters, bodyParameter, requestBody)}
     
     axios(configs, ${resolveString}, reject);
   });
