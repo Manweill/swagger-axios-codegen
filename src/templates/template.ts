@@ -228,18 +228,27 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
       : ''}
     const configs:IRequestConfig = getConfigs('${method}', '${contentType}', url, options)
     ${parsedParameters && queryParameters.length > 0 ? 'configs.params = {' + queryParameters.join(',') + '}' : ''}
-    let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
-      ? // ? bodyParameters.length === 1 && bodyParameters[0].startsWith('[') ? bodyParameters[0] : '{' + bodyParameters.join(',') + '}'
-      bodyParameter
-      : !!requestBody
-        ? 'params.body'
-        : 'null'
-    }
+    ${requestBodyString(method, parsedParameters, bodyParameter, requestBody)}
     ${contentType === 'multipart/form-data' ? formData : ''}
-    configs.data = data;
+    
     axios(configs, ${resolveString}, reject);
   });
 }`
+}
+
+function requestBodyString(method: string, parsedParameters: [], bodyParameter: [], requestBody: string) {
+  if (method !== 'get') {
+    return `
+    let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
+        ?
+        bodyParameter
+        : !!requestBody
+          ? 'params.body'
+          : 'null'
+      }
+    configs.data = data;`
+  }
+  return '/** 适配ios13，get请求不允许带body */'
 }
 
 /** serviceTemplate */
