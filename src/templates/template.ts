@@ -229,15 +229,15 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
     const configs:IRequestConfig = getConfigs('${method}', '${contentType}', url, options)
     ${parsedParameters && queryParameters.length > 0 ? 'configs.params = {' + queryParameters.join(',') + '}' : ''}
     
-    ${contentType === 'multipart/form-data' ? formData : ''}
-    ${requestBodyString(method, parsedParameters, bodyParameter, requestBody)}
+    
+    ${requestBodyString(method, parsedParameters, bodyParameter, requestBody, contentType, formData)}
     
     axios(configs, ${resolveString}, reject);
   });
 }`
 }
 
-function requestBodyString(method: string, parsedParameters: [], bodyParameter: [], requestBody: string) {
+function requestBodyString(method: string, parsedParameters: [], bodyParameter: [], requestBody: string, contentType: string, formData: string) {
   if (method !== 'get') {
     return `
     let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
@@ -247,6 +247,7 @@ function requestBodyString(method: string, parsedParameters: [], bodyParameter: 
           ? 'params.body'
           : 'null'
       }
+    ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;`
   }
   return '/** 适配ios13，get请求不允许带body */'
