@@ -107,7 +107,7 @@ export function classPropsTemplate(
   if (isNotAdditionalProperties(filedName)) {
     filedName = `'${filedName}'`
   }
-  if (useClassTransformer && format) {
+  if (useClassTransformer) {
     const decorators = classTransformTemplate(type, format, isType)
 
     return `
