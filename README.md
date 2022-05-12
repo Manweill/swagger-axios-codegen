@@ -310,3 +310,48 @@ var required = isRequired(FooFormVm.validationModel, 'name');
 var maxLength = maxLength(FooFormVm.validationModel, 'description');
 ```
 At the moment there are only two rules are supported - `required` and `maxLength`.
+
+## Some Solution
+
+### 1.Reference parameters
+
+see in [#53](https://github.com/Manweill/swagger-axios-codegen/issues/53), use package [json-schema-ref-parser](https://github.com/APIDevTools/json-schema-ref-parser)
+
+
+### 2.With `Microservice Gateway`
+
+```js
+const {codegen} = require('swagger-axios-codegen')
+const axios = require('axios')
+// host 地址
+const host = 'http://your-host-name'
+
+// 
+const modules = [
+  ...
+]
+
+axios.get(`${host}/swagger-resources`).then(async ({data}) => {
+  console.warn('code', host)
+  for (let n of data) {
+    if (modules.includes(n.name)) {
+      try {
+        await codegen({
+          remoteUrl: `${host}${n.url}`,
+          methodNameMode: 'operationId',
+          modelMode: 'interface',
+          strictNullChecks: false,
+          outputDir: './services',
+          fileName: `${n.name}.ts`,
+          sharedServiceOptions: true,
+          extendDefinitionFile: './customerDefinition.ts',
+        })
+      } catch (e) {
+        console.log(`${n.name} service error`, e.message)
+      }
+    }
+  }
+})
+
+```
+
