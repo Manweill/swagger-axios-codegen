@@ -1,3 +1,8 @@
+## 0.14.0
+
+- feat:
+  - set loading in axios interceptor config
+
 ## 0.13.2
 
 - feat:
