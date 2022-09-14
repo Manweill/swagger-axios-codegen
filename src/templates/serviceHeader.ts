@@ -16,6 +16,8 @@ export function serviceHeader(options: ISwaggerOptions) {
   ${classTransformerImport}
 
   export interface IRequestOptions extends AxiosRequestConfig {
+    /** only in axios interceptor config*/
+    loading:boolean;
   }
 
   export interface IRequestConfig {
@@ -28,7 +30,9 @@ export function serviceHeader(options: ISwaggerOptions) {
 
   // Add options interface
   export interface ServiceOptions {
-    axios?: AxiosInstance,
+    axios?: AxiosInstance;
+    /** only in axios interceptor config*/
+    loading:boolean;
   }
 
   ${requestHeader()}
@@ -50,6 +54,8 @@ export function customerServiceHeader(options: ISwaggerOptions) {
   /* eslint-disable */
   export interface IRequestOptions {
     headers?: any;
+    /** only in axios interceptor config*/
+    loading:boolean;
   }
 
   export interface IRequestPromise<T=any> extends Promise<IRequestResponse<T>> {}
@@ -79,7 +85,9 @@ export function customerServiceHeader(options: ISwaggerOptions) {
 
   // Add options interface
   export interface ServiceOptions {
-    axios?: IRequestInstance,
+    axios?: IRequestInstance;
+    /** only in axios interceptor config*/
+    loading:boolean;
   }
 
   ${requestHeader()}
@@ -109,7 +117,7 @@ function requestHeader() {
   }
   
   export function getConfigs(method: string, contentType: string, url: string,options: any):IRequestConfig {
-    const configs: IRequestConfig = { ...options, method, url };
+    const configs: IRequestConfig = { loading:serviceOptions.loading, ...options, method, url };
     configs.headers = {
       ...options.headers,
       'Content-Type': contentType,
