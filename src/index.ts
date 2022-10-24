@@ -14,7 +14,7 @@ import {
   classTemplate,
   typeTemplate
 } from './templates/template'
-import { customerServiceHeader, serviceHeader, definitionHeader, disableLint } from './templates/serviceHeader'
+import { customerServiceHeader, serviceHeader, definitionHeader } from './templates/serviceHeader'
 import { isOpenApi3, findDeepRefs, setDefinedGenericTypes, getDefinedGenericTypes, trimString } from './utils'
 import { requestCodegen, IRequestClass, IRequestMethods } from './requestCodegen'
 import { componentsCodegen } from './componentsCodegen'
@@ -31,6 +31,7 @@ const defaultOptions: ISwaggerOptions = {
   modelMode: 'interface',
   include: [],
   includeTypes: [],
+  strictRequiredChecks: true,
   strictNullChecks: true,
   useClassTransformer: false,
   extendGenericType: [],
@@ -125,9 +126,7 @@ export async function codegen(params: ISwaggerOptions) {
       for (const item of allImport) {
         if (!uniqueImports.includes(item)) uniqueImports.push(item)
       }
-      console.log(disableLint());
 
-      text = disableLint() + text
       text = serviceTemplate(className + options.serviceNameSuffix, text, uniqueImports)
       writeFile(options.outputDir || '', className + 'Service.ts', format(text, options))
     })
@@ -139,11 +138,12 @@ export async function codegen(params: ISwaggerOptions) {
     Object.values(models).forEach(item => {
       const text =
         params.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictRequiredChecks, params.strictNullChecks)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
+            params.strictRequiredChecks,
             params.strictNullChecks,
             options.useClassTransformer,
             options.generateValidationModel
@@ -219,11 +219,12 @@ function codegenAll(
     Object.values(models).forEach(item => {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictRequiredChecks, options.strictNullChecks)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
+            options.strictRequiredChecks,
             options.strictNullChecks,
             options.useClassTransformer,
             options.generateValidationModel
@@ -244,9 +245,7 @@ function codegenAll(
       }
       apiSource += text
     })
-    // console.log(disableLint());
 
-    apiSource = disableLint() + apiSource
     writeFile(options.outputDir || '', options.fileName || '', format(apiSource, options))
   } catch (error) {
     console.log('error', error)
@@ -313,11 +312,12 @@ function codegenInclude(
     if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictRequiredChecks, options.strictNullChecks)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
+            options.strictRequiredChecks,
             options.strictNullChecks,
             options.useClassTransformer,
             options.generateValidationModel
@@ -459,11 +459,12 @@ function codegenMultimatchInclude(
     if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictRequiredChecks, options.strictNullChecks)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
+            options.strictRequiredChecks,
             options.strictNullChecks,
             options.useClassTransformer,
             options.generateValidationModel
@@ -489,7 +490,6 @@ function codegenMultimatchInclude(
     }
   })
 
-  apiSource = disableLint() + apiSource
   apiSource += reqSource + defSource
   writeFile(options.outputDir || '', options.fileName || '', format(apiSource, options))
 }

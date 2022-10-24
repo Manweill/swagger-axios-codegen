@@ -11,6 +11,7 @@ export function interfaceTemplate(
   name: string,
   props: IPropDef[],
   imports: string[],
+  strictRequiredChecks: boolean = true,
   strictNullChecks: boolean = true
 ) {
   if (isDefinedGenericTypes(name)) {
@@ -29,15 +30,20 @@ export function interfaceTemplate(
 
   export interface ${name} {
 
-    ${props.map(p => classPropsTemplate(
-    p.name,
-    p.type,
-    p.format,
-    p.desc,
-    (!strictNullChecks || !(p.validationModel as any)?.required) && !isAdditionalProperties(p.name),
-    false,
-    false
-  )).join('')}
+    ${props.map(p => {
+      const validationModel = p.validationModel as any;
+      const isRequired = !strictRequiredChecks ? false : (validationModel?.required && !validationModel?.readOnly);
+      return classPropsTemplate(
+        p.name,
+        p.type,
+        p.format,
+        p.desc,
+        isRequired && !isAdditionalProperties(p.name),
+        (!strictNullChecks || validationModel?.nullable) && !isAdditionalProperties(p.name),
+        false,
+        false
+      )
+    }).join('')}
   }
   `
 }
@@ -47,6 +53,7 @@ export function classTemplate(
   name: string,
   props: IPropDef[],
   imports: string[],
+  strictRequiredChecks: boolean = true,
   strictNullChecks: boolean = true,
   useClassTransformer: boolean,
   generateValidationModel: boolean
@@ -67,16 +74,20 @@ export function classTemplate(
   export class ${name} {
 
     ${props
-      .map(p =>
-        classPropsTemplate(
-          p.name,
-          p.type,
-          p.format,
-          p.desc,
-          !strictNullChecks || !(p.validationModel as any)?.required,
-          useClassTransformer,
-          p.isEnum || p.isType,
-        )
+      .map(p => {
+          const validationModel = p.validationModel as any;
+          const isRequired = !strictRequiredChecks ? false : (validationModel?.required && !validationModel?.readOnly);
+          return classPropsTemplate(
+            p.name,
+            p.type,
+            p.format,
+            p.desc,
+            isRequired && !isAdditionalProperties(p.name),
+            (!strictNullChecks || validationModel?.nullable) && !isAdditionalProperties(p.name),
+            false,
+            false
+          )
+        }
       )
       .join('')}
 
@@ -94,7 +105,8 @@ export function classPropsTemplate(
   type: string,
   format: string,
   description: string,
-  canNull: boolean,
+  isRequired: boolean,
+  isNullable: boolean,
   useClassTransformer: boolean,
   isType: boolean
 ) {
@@ -113,12 +125,12 @@ export function classPropsTemplate(
     return `
   /** ${description || ''} */
   ${decorators}
-  ${filedName}${canNull ? '?' : ''}:${type};
+  ${filedName}${!isRequired && '?'}:${type}${isNullable && ' | null'};
   `
   } else {
     return `
   /** ${description || ''} */
-  ${filedName}${canNull ? '?' : ''}:${type};
+  ${filedName}${!isRequired && '?'}:${type}${isNullable && ' | null'};
   `
   }
 }

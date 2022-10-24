@@ -14,7 +14,9 @@ export interface ISwaggerOptions {
   /** include types which are not included during the filtering **/
   includeTypes?: Array<string>
   format?: (s: string) => string
-  /** match with tsconfig */
+  /** force required option for fields */
+  strictRequiredChecks?: boolean | undefined
+  /** force required option for fields */
   strictNullChecks?: boolean | undefined
   /** definition Class mode */
   modelMode?: 'class' | 'interface'
