@@ -33,6 +33,7 @@ export function serviceHeader(options: ISwaggerOptions) {
     axios?: AxiosInstance;
     /** only in axios interceptor config*/
     loading:boolean;
+    showError:boolean;
   }
 
   ${requestHeader()}
@@ -56,6 +57,7 @@ export function customerServiceHeader(options: ISwaggerOptions) {
     headers?: any;
     /** only in axios interceptor config*/
     loading:boolean;
+    showError:boolean;
   }
 
   export interface IRequestPromise<T=any> extends Promise<IRequestResponse<T>> {}
@@ -88,6 +90,7 @@ export function customerServiceHeader(options: ISwaggerOptions) {
     axios?: IRequestInstance;
     /** only in axios interceptor config*/
     loading:boolean;
+    showError:boolean;
   }
 
   ${requestHeader()}
@@ -117,7 +120,7 @@ function requestHeader() {
   }
   
   export function getConfigs(method: string, contentType: string, url: string,options: any):IRequestConfig {
-    const configs: IRequestConfig = { loading:serviceOptions.loading, ...options, method, url };
+    const configs: IRequestConfig = { loading:serviceOptions.loading, showError:serviceOptions.loading, ...options, method, url };
     configs.headers = {
       ...options.headers,
       'Content-Type': contentType,

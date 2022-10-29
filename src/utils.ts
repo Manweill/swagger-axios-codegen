@@ -119,12 +119,21 @@ export function toBaseType(s: string, format?: string) {
   return result
 }
 
-export function getMethodName(path: string) {
+export function getMethodNameByPath(path: string) {
   const paths = path.split('/')
   for (let i = paths.length - 1; i >= 0; i--) {
     if (/\{.+\}/.test(paths[i]) === false) {
       return paths[i]
     }
+  }
+  return ''
+}
+
+
+export function getClassNameByPath(path: string) {
+  const paths = path.split('/')
+  if (paths.length > 1) {
+    return paths[paths.length - 2]
   }
   return ''
 }

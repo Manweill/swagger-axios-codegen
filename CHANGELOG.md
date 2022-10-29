@@ -1,3 +1,8 @@
+## 0.15.0
+- feat: 
+  - set showError in axios interceptor config
+  - add classNameMode. when classNameMode=parentPath, codegen will take url penultimate path
+
 ## 0.14.0
 
 - feat:

@@ -1,9 +1,8 @@
-import { getMethodName, RemoveSpecialCharacters } from '../utils'
+import { getClassNameByPath, getMethodNameByPath, RemoveSpecialCharacters } from '../utils'
 import { IPaths } from '../swaggerInterfaces'
 import { getRequestParameters } from './getRequestParameters'
 import { getResponseType } from './getResponseType'
 import camelcase from 'camelcase'
-import { isNullOrUndefined } from 'util'
 import { getRequestBody } from './getRequestBody'
 import { ISwaggerOptions } from '../baseInterfaces'
 import { getContentType } from './getContentType'
@@ -24,16 +23,16 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
 
   if (!!paths)
     for (const [path, request] of Object.entries(paths)) {
-      let methodName = getMethodName(path)
+      let methodName = getMethodNameByPath(path)
       for (const [method, reqProps] of Object.entries(request)) {
         methodName =
           options.methodNameMode === 'operationId'
             ? reqProps.operationId
             : options.methodNameMode === 'shortOperationId'
-            ? trimSuffix(reqProps.operationId, reqProps.tags?.[0])
-            : typeof options.methodNameMode === 'function'
-            ? options.methodNameMode(reqProps)
-            : methodName
+              ? trimSuffix(reqProps.operationId, reqProps.tags?.[0])
+              : typeof options.methodNameMode === 'function'
+                ? options.methodNameMode(reqProps)
+                : methodName
         if (!methodName) {
           // console.warn('method Name is null：', path);
           continue
@@ -42,8 +41,18 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
         let formData = ''
         let pathReplace = ''
         // 获取类名
-        if (!reqProps.tags) continue
-        const className = camelcase(RemoveSpecialCharacters(reqProps.tags[0]), { pascalCase: true })
+        let className
+        if (options.classNameMode === 'parentPath') {
+          className = getClassNameByPath(path)
+          // 空则归类默认类名
+          if (className === '') {
+            className = options.PathClassNameDefaultName
+          }
+        } else {
+          if (!reqProps.tags) continue
+          className = camelcase(RemoveSpecialCharacters(reqProps.tags[0]), { pascalCase: true })
+        }
+
         if (className === '') continue
         // 是否存在
         if (!requestClasses[className]) {
