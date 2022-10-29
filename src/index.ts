@@ -25,7 +25,7 @@ const defaultOptions: ISwaggerOptions = {
   enumNamePrefix: 'Enum',
   methodNameMode: 'operationId',
   classNameMode: 'normal',
-  PathClassNameDefaultName: 'GlobalService',
+  PathClassNameDefaultName: 'Global',
   outputDir: './service',
   fileName: 'index.ts',
   useStaticMethod: true,
