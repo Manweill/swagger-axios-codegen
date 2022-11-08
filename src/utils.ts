@@ -61,9 +61,13 @@ export function getGenericsClassNames(definitionClassName: string): string {
  */
 export function refClassName(s: string): string {
   let propType = s?.slice(s.lastIndexOf('/') + 1)
-  return isOpenApiGenerics(propType)
+  let result = isOpenApiGenerics(propType)
     ? getGenericsClassNames(propType)
     : toBaseType(trimString(RemoveSpecialCharacters(propType), '_', 'right'))
+
+  // 如果是数字开头，则加上下划线
+  if (!Number.isNaN(result[0])) result = '_' + result
+  return result
 }
 
 /** 移除特殊字符 */

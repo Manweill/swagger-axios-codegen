@@ -1,3 +1,10 @@
+
+## 0.15.1
+
+- bugfix
+  - fix #168
+  - fix className when it is the beginning of the number
+
 ## 0.15.0
 - feat: 
   - set showError in axios interceptor config
