@@ -68,7 +68,7 @@ export function refClassName(s: string): string {
 
 /** 移除特殊字符 */
 export function RemoveSpecialCharacters(str: string) {
-  return str?.replace(/[`-~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_')
+  return str?.replace(/[-`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_')
 }
 
 export function isBaseType(s: string) {
