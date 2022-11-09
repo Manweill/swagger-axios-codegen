@@ -66,7 +66,7 @@ export function refClassName(s: string): string {
     : toBaseType(trimString(RemoveSpecialCharacters(propType), '_', 'right'))
 
   // 如果是数字开头，则加上下划线
-  if (!Number.isNaN(result[0])) result = '_' + result
+  if (!Number.isNaN(Number(result[0]))) result = '_' + result
   return result
 }
 

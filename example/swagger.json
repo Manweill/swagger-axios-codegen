@@ -157,7 +157,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/PriceEstimate"
+                "$ref": "#/definitions/66PriceEstimate"
               }
             }
           },
@@ -469,7 +469,7 @@
         "capacity": "capacity"
       }
     },
-    "PriceEstimate": {
+    "66PriceEstimate": {
       "type": "object",
       "properties": {
         "product_id": {
