@@ -57,7 +57,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
 
         if (className === '') continue
         // 如果是数字开头，则加上下划线
-        if (!Number.isNaN(className[0])) className = '_' + className
+        if (!Number.isNaN(Number(className[0]))) className = '_' + className
 
 
 
