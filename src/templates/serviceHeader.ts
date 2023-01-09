@@ -17,7 +17,8 @@ export function serviceHeader(options: ISwaggerOptions) {
 
   export interface IRequestOptions extends AxiosRequestConfig {
     /** only in axios interceptor config*/
-    loading:boolean;
+    loading?:boolean;
+    showError?:boolean;
   }
 
   export interface IRequestConfig {
