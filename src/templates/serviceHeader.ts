@@ -121,7 +121,7 @@ function requestHeader() {
   }
   
   export function getConfigs(method: string, contentType: string, url: string,options: any):IRequestConfig {
-    const configs: IRequestConfig = { loading:serviceOptions.loading, showError:serviceOptions.loading, ...options, method, url };
+    const configs: IRequestConfig = { loading:serviceOptions.loading, showError:serviceOptions.showError, ...options, method, url };
     configs.headers = {
       ...options.headers,
       'Content-Type': contentType,

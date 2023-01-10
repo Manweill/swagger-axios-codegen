@@ -1,4 +1,10 @@
 
+## 0.15.8
+
+- bugfix
+  - fix IRequestOptions
+  - fix cache spec
+
 ## 0.15.3
 
 - bugfix

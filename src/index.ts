@@ -46,13 +46,14 @@ export async function codegen(params: ISwaggerOptions) {
   console.time('finish')
   let err
   let swaggerSource: ISwaggerSource
+  let swaggerSpecFileName = `./${params.fileName}_cache_swagger.json`
   setDefinedGenericTypes(params.extendGenericType)
   // 获取接口定义文件
   if (params.remoteUrl) {
     const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
     if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
-      fs.writeFileSync('./cache_swagger.json', swaggerJson)
-      swaggerSource = require(path.resolve('./cache_swagger.json'))
+      fs.writeFileSync(swaggerSpecFileName, swaggerJson)
+      swaggerSource = require(path.resolve(swaggerSpecFileName))
     } else {
       swaggerSource = <ISwaggerSource>swaggerJson
     }
@@ -184,8 +185,8 @@ export async function codegen(params: ISwaggerOptions) {
   else {
     codegenAll(apiSource, options, requestClass, models, enums)
   }
-  if (fs.existsSync('./cache_swagger.json')) {
-    fs.unlinkSync('./cache_swagger.json')
+  if (fs.existsSync(swaggerSpecFileName)) {
+    fs.unlinkSync(swaggerSpecFileName)
   }
   console.timeEnd('finish')
   if (err) {
