@@ -1,5 +1,5 @@
 
-## 0.15.10
+## 0.15.11
 
 - optimize
   - optimize loaded spec document fail error
