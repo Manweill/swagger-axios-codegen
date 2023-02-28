@@ -65,6 +65,7 @@ export async function codegen(params: ISwaggerOptions) {
     }
   } catch (error) {
     console.log('loaded spec document fail!', params.remoteUrl ?? params.source)
+    return
   }
 
   const options: ISwaggerOptions = {
