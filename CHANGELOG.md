@@ -1,4 +1,10 @@
 
+## 0.15.9
+
+- optimize
+  - optimize loaded spec document fail error
+  - optimize get uniqueMethodName fail error
+
 ## 0.15.8
 
 - bugfix

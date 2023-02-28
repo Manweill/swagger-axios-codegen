@@ -126,17 +126,22 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
         // TODO 待优化，目前简单处理同名方法
         let uniqueMethodName = camelcase(methodName)
 
-        var uniqueMethodNameReg = new RegExp(`^${uniqueMethodName}[0-9]*$`)
-
-        const methodCount = requestClasses[className].filter(
-          item => uniqueMethodName === item.name || uniqueMethodNameReg.test(item.name)
-        ).length
-
-        // console.log(uniqueMethodName, methodCount)
-        if (methodCount >= 1) {
-          uniqueMethodName = uniqueMethodName + methodCount
-          // console.log(uniqueMethodName)
+        try {
+          var uniqueMethodNameReg = new RegExp(`^${uniqueMethodName}[0-9]*$`)
+          const methodCount = requestClasses[className].filter(
+            item => uniqueMethodName === item.name || uniqueMethodNameReg.test(item.name)
+          ).length
+          // console.log(uniqueMethodName, methodCount)
+          if (methodCount >= 1) {
+            uniqueMethodName = uniqueMethodName + methodCount
+            // console.log(uniqueMethodName)
+          }
+        } catch (error) {
+          // 获取方法名字失败，跳过该请求
+          console.log('error request, url: ', path);
+          continue
         }
+
         requestClasses[className].push({
           name: uniqueMethodName,
           operationId: uniqueMethodName,

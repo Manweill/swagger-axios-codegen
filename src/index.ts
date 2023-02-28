@@ -49,18 +49,22 @@ export async function codegen(params: ISwaggerOptions) {
   let swaggerSpecFileName = `./${params.fileName}_cache_swagger.json`
   setDefinedGenericTypes(params.extendGenericType)
   // 获取接口定义文件
-  if (params.remoteUrl) {
-    const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
-    if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
-      fs.writeFileSync(swaggerSpecFileName, swaggerJson)
-      swaggerSource = require(path.resolve(swaggerSpecFileName))
+  try {
+    if (params.remoteUrl) {
+      const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
+      if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
+        fs.writeFileSync(swaggerSpecFileName, swaggerJson)
+        swaggerSource = require(path.resolve(swaggerSpecFileName))
+      } else {
+        swaggerSource = <ISwaggerSource>swaggerJson
+      }
+    } else if (params.source) {
+      swaggerSource = <ISwaggerSource>params.source
     } else {
-      swaggerSource = <ISwaggerSource>swaggerJson
+      throw new Error('remoteUrl or source must have a value')
     }
-  } else if (params.source) {
-    swaggerSource = <ISwaggerSource>params.source
-  } else {
-    throw new Error('remoteUrl or source must have a value')
+  } catch (error) {
+    console.log('loaded spec document fail!', params.remoteUrl ?? params.source)
   }
 
   const options: ISwaggerOptions = {
