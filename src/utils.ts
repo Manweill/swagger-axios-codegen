@@ -98,7 +98,7 @@ export function toBaseType(s: string, format?: string) {
     case 'int':
     case 'integer':
     case 'number':
-      result = 'number'
+      result = format === 'int64' || format === 'Int64' || format === 'long' ? 'string' : 'number'
       break
     case 'Guid':
     case 'String':
