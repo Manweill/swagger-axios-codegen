@@ -20,6 +20,8 @@ import { requestCodegen, IRequestClass, IRequestMethods } from './requestCodegen
 import { componentsCodegen } from './componentsCodegen'
 import { definitionsCodeGen } from './definitionCodegen'
 
+const https = require('https');
+
 const defaultOptions: ISwaggerOptions = {
   serviceNameSuffix: 'Service',
   enumNamePrefix: 'Enum',
@@ -51,7 +53,7 @@ export async function codegen(params: ISwaggerOptions) {
   // 获取接口定义文件
   try {
     if (params.remoteUrl) {
-      const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text' })
+      const { data: swaggerJson } = await axios({ url: params.remoteUrl, responseType: 'text', httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
       if (Object.prototype.toString.call(swaggerJson) === '[object String]') {
         fs.writeFileSync(swaggerSpecFileName, swaggerJson)
         swaggerSource = require(path.resolve(swaggerSpecFileName))
