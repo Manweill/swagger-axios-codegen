@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "build": "rm -rf ./dist && tsc -p ./src",
+    "build-win": "rd /s /q dist && tsc -p ./src",
     "prestart": "npm run build",
     "precommit": "prettier --write --config .prettierrc ./src/*.ts",
     "start": "node ./dist/index",
