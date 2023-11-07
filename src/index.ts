@@ -64,7 +64,7 @@ export async function codegen(params: ISwaggerOptions) {
       throw new Error('remoteUrl or source must have a value')
     }
   } catch (error) {
-    console.log('loaded spec document fail!', params.remoteUrl ?? params.source)
+    console.log('loaded spec document fail!', params.remoteUrl ?? params.source, ', Error: ' + (error as Error).message)
     return
   }
 
