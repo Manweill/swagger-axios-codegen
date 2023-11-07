@@ -14,7 +14,7 @@ function getUniqParams(params: IParameter[]): IParameter[] {
   params.forEach(v => {
     // _${v.in}
     // TODO:同名但是v.in= query |path |body 的情况同时出现如何处理？分出不同的request参数？
-    if ('$ref' in v && !('name' in v as any)) {
+    if ('$ref' in (v as IParameter) && !('name' in (v as IParameter))) {
       v.name = refClassName(v.$ref)
     }
     if (!v.name.includes('[0]')) {
