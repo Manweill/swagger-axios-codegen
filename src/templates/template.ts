@@ -80,8 +80,8 @@ export function classTemplate(
       )
       .join('')}
 
-    constructor(data: (undefined | any) = {}){
-        ${props.map(p => classConstructorTemplate(p.name)).join('')}
+    constructor(data: ${name} = {}){
+      Object.assign(this, data);
     }
     ${generateValidationModel ? classValidationModelTemplate(props) : ''}
   }
