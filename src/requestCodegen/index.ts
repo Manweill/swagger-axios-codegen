@@ -46,7 +46,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
           className = getClassNameByPath(path)
           // 空则归类默认类名
           if (className === '') {
-            className = options.PathClassNameDefaultName
+            className = options.pathClassNameDefaultName
           } else {
             className = camelcase(className, { pascalCase: true })
           }

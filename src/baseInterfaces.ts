@@ -6,7 +6,7 @@ export interface ISwaggerOptions {
   methodNameMode?: 'operationId' | 'path' | 'shortOperationId' | ((reqProps: IRequestMethod) => string)
   classNameMode?: 'parentPath' | 'normal'
   /** only effect classNameMode='parentPath' */
-  PathClassNameDefaultName?: string
+  pathClassNameDefaultName?: string
   outputDir?: string
   fileName?: string
   remoteUrl?: string
