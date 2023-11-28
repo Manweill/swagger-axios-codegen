@@ -1,7 +1,7 @@
 # swagger-axios-codegen
 A swagger client uses axios and typescript
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/manweill/swagger-axios-codegen/NodeCI)](https://img.shields.io/github/workflow/status/manweill/swagger-axios-codegen/NodeCI)
+
 ￼[![NpmVersion](https://img.shields.io/npm/v/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
 ￼[![npm](https://img.shields.io/npm/dm/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
 [![open issues](https://img.shields.io/github/issues-raw/manweill/swagger-axios-codegen.svg)](https://img.shields.io/github/issues-raw/manweill/swagger-axios-codegen.svg)
@@ -40,7 +40,7 @@ export interface ISwaggerOptions {
   methodNameMode?: 'operationId' | 'path' | 'shortOperationId' | ((reqProps: IRequestMethod) => string)
   classNameMode?: 'parentPath' | 'normal'
   /** only effect classNameMode='parentPath' */
-  PathClassNameDefaultName?: string
+  pathClassNameDefaultName?: string
   outputDir?: string
   fileName?: string
   remoteUrl?: string
