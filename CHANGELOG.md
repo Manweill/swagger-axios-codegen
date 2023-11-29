@@ -1,4 +1,15 @@
 
+## 0.16.0
+
+- feat:
+  - Creating objects with strong type validation #153
+  - Prefer_Json_over_other_content_types (prefer 'form-data' over json)
+  - allow_self_signed_certificates
+- chore:
+  - fix pathClassNameDefaultName params
+
+
+
 ## 0.15.11
 
 - optimize
