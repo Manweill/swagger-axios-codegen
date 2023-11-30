@@ -1,13 +1,13 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { ISwaggerOptions } from "../baseInterfaces";
-import { abpGenericTypeDefinition, universalGenericTypeDefinition } from './genericTypeDefinitionTemplate';
-import { trimString } from '../utils';
+import { ISwaggerOptions } from '../baseInterfaces'
+import { abpGenericTypeDefinition, universalGenericTypeDefinition } from './genericTypeDefinitionTemplate'
 
 export function serviceHeader(options: ISwaggerOptions) {
   const classTransformerImport = options.useClassTransformer
     ? `import { Expose, Transform, Type, plainToClass } from 'class-transformer';
-  ` : '';
+  `
+    : ''
   return `/** Generate by swagger-axios-codegen */
   /* eslint-disable */
   // @ts-nocheck
@@ -16,9 +16,23 @@ export function serviceHeader(options: ISwaggerOptions) {
   ${classTransformerImport}
 
   export interface IRequestOptions extends AxiosRequestConfig {
-    /** only in axios interceptor config*/
-    loading?:boolean;
-    showError?:boolean;
+    /**
+     * show loading status
+     */
+    loading?: boolean;
+    /**
+     * display error message
+     */
+    showError?: boolean;
+    /**
+     * data security, extended fields are encrypted using the specified algorithm
+     */
+    security?: Record<string, 'md5' | 'sha1' | 'aes' | 'des'>;
+    /**
+     * indicates whether Authorization credentials are required for the request
+     * @default true
+     */
+    withAuthorization?: boolean;
   }
 
   export interface IRequestConfig {
@@ -38,7 +52,7 @@ export function serviceHeader(options: ISwaggerOptions) {
   }
 
   ${requestHeader()}
-  `;
+  `
 }
 
 export function disableLint() {
@@ -46,19 +60,33 @@ export function disableLint() {
   // @ts-nocheck
 /* eslint-disable */
   
-`}
-
+`
+}
 
 export function customerServiceHeader(options: ISwaggerOptions) {
-
   return `/** Generate by swagger-axios-codegen */
   // @ts-nocheck
   /* eslint-disable */
-  export interface IRequestOptions {
-    headers?: any;
-    /** only in axios interceptor config*/
-    loading:boolean;
-    showError:boolean;
+  import axiosStatic, { AxiosInstance, AxiosRequestConfig } from 'axios';
+
+  export interface IRequestOptions extends AxiosRequestConfig {
+    /**
+     * show loading status
+     */
+    loading?: boolean;
+    /**
+     * display error message
+     */
+    showError?: boolean;
+    /**
+     * data security, extended fields are encrypted using the specified algorithm
+     */
+    security?: Record<string, 'md5' | 'sha1' | 'aes' | 'des'>;
+    /**
+     * indicates whether Authorization credentials are required for the request
+     * @default true
+     */
+    withAuthorization?: boolean;
   }
 
   export interface IRequestPromise<T=any> extends Promise<IRequestResponse<T>> {}

@@ -17,7 +17,7 @@
     "codegen"
   ],
   "scripts": {
-    "build": "rm -rf ./dist && tsc -p ./src",
+    "build": "rimraf -rf ./dist && tsc -p ./src",
     "build-win": "rd /s /q dist && tsc -p ./src",
     "prestart": "npm run build",
     "precommit": "prettier --write --config .prettierrc ./src/*.ts",
@@ -36,6 +36,7 @@
   "devDependencies": {
     "@types/node": "16",
     "@types/prettier": "^1.12.2",
+    "rimraf": "^5.0.5",
     "tslint": "^5.10.0",
     "typescript": "^4.8.3"
   }
