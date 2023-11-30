@@ -6,9 +6,12 @@ A swagger client uses axios and typescript
 ￼[![npm](https://img.shields.io/npm/dm/swagger-axios-codegen.svg)](https://www.npmjs.com/package/swagger-axios-codegen)
 [![open issues](https://img.shields.io/github/issues-raw/manweill/swagger-axios-codegen.svg)](https://img.shields.io/github/issues-raw/manweill/swagger-axios-codegen.svg)
 
-
+```
 < v0.16 require node > v10.0.0
+
 >= v0.16 require node >= v0.16
+```
+
 it will always resolve `axios.response.data` or reject `axios.error` with Promise
 
 support other similar to `axios` library, for example [Fly.js](https://github.com/wendux/fly), required setting `ISwaggerOptions.useCustomerRequestInstance = true`
