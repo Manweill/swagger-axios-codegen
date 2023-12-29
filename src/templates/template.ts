@@ -238,7 +238,7 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
 }
 
 function requestBodyString(method: string, parsedParameters: [], bodyParameter: [], requestBody: string, contentType: string, formData: string) {
-  if (method !== 'get') {
+  if (method === 'post' || method === 'put') {
     return `
     let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
         ?
@@ -250,7 +250,9 @@ function requestBodyString(method: string, parsedParameters: [], bodyParameter: 
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;`
   }
-  return '/** 适配ios13，get请求不允许带body */'
+  return `/** 适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body */ \n 
+  console.warn('适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body')
+  `
 }
 
 /** serviceTemplate */
