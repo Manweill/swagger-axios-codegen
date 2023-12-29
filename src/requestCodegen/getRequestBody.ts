@@ -1,5 +1,4 @@
 import { IRequestBody } from "../swaggerInterfaces";
-import { isNullOrUndefined } from "util";
 import { refClassName } from "../utils";
 
 export function getRequestBody(requestBody: IRequestBody) {
