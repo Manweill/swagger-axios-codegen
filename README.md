@@ -9,7 +9,7 @@ A swagger client uses axios and typescript
 ```
 < v0.16 require node > v10.0.0
 
->= v0.16 require node >= v0.16
+>= v0.16 require node >= v16
 ```
 
 it will always resolve `axios.response.data` or reject `axios.error` with Promise
