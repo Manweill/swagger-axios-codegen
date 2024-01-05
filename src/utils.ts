@@ -59,11 +59,11 @@ export function getGenericsClassNames(definitionClassName: string): string {
  * 获取引用类型
  * @param s
  */
-export function refClassName(s: string): string {
+export function refClassName(s: string, format?: string): string {
   let propType = s?.slice(s.lastIndexOf('/') + 1)
   let result = isOpenApiGenerics(propType)
     ? getGenericsClassNames(propType)
-    : toBaseType(trimString(RemoveSpecialCharacters(propType), '_', 'right'))
+    : toBaseType(trimString(RemoveSpecialCharacters(propType), '_', 'right'), format)
 
   // 如果是数字开头，则加上下划线
   if (!Number.isNaN(Number(result[0]))) result = '_' + result
@@ -76,7 +76,7 @@ export function RemoveSpecialCharacters(str: string) {
 }
 
 export function isBaseType(s: string) {
-  return ['boolean', 'number', 'string', 'string', 'Date', 'any'].includes(s)
+  return ['boolean', 'number', 'string', 'Date', 'any'].includes(s)
 }
 
 export function toBaseType(s: string, format?: string) {

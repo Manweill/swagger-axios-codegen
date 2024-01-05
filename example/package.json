@@ -12,6 +12,7 @@
   "scripts": {
     "clean": "rm -rf ./swagger/services/**",
     "build:gen": "node ./swagger/codegen.js",
+    "build:gen-long": "node ./swagger/codegen-long.js",
     "build:api": "npm run clean && node ./swagger/codegen.js && npm run build",
     "build:api-shortOperationId": "npm run clean && node ./swagger/codegen-shortOperationId.js && npm run build",
     "build:api-customMethodNameMode": "npm run clean && node ./swagger/codegen-customMethodNameMode.js && npm run build",

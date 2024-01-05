@@ -45,7 +45,7 @@ export function propTrueType(v: IDefinitionProperty): {
         const currentResult = propTrueType(v.items)
         result = { ...result, ...currentResult }
       } else {
-        result.propType = toBaseType(v.items.type) + '[]'
+        result.propType = toBaseType(v.items.type, v.items.format) + '[]'
       }
     }
     result.isArray = true
@@ -78,7 +78,7 @@ export function propTrueType(v: IDefinitionProperty): {
   }
   // 基本类型
   else {
-    result.propType = toBaseType(v.type)
+    result.propType = toBaseType(v.type, v.items.format)
   }
   return result
 }

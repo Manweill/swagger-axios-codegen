@@ -1,0 +1,4166 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "sensor api 描述"
+  },
+  "host": "192.168.59.79:53301",
+  "basePath": "/api/core",
+  "tags": [
+    {
+      "name": "BindDeviceArea",
+      "description": "设备-区域绑定、解绑"
+    },
+    {
+      "name": "ChirpStackDeviceProfile",
+      "description": "chirpStack设备配置profile管理"
+    },
+    {
+      "name": "Device",
+      "description": "设备管理"
+    },
+    {
+      "name": "DeviceArea",
+      "description": "设备区域管理"
+    },
+    {
+      "name": "DeviceMetricData",
+      "description": "设备的遥测历史数据管理"
+    },
+    {
+      "name": "chirpStackDevice",
+      "description": "chirpStack设备管理"
+    },
+    {
+      "name": "default-error-controller",
+      "description": "Default Error Controller"
+    },
+    {
+      "name": "storehouseEnum",
+      "description": "传感器管理系统枚举"
+    }
+  ],
+  "paths": {
+    "/bindDeviceArea/batchBind": {
+      "post": {
+        "tags": [
+          "BindDeviceArea"
+        ],
+        "summary": "在某个区域下批量绑定设备",
+        "operationId": "batchBind",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "BatchBindDeviceAreaInputDto",
+              "$ref": "#/definitions/BatchBindDeviceAreaInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/bindDeviceArea/batchUnbind": {
+      "post": {
+        "tags": [
+          "BindDeviceArea"
+        ],
+        "summary": "根据选择的区域IDS,批量解绑",
+        "operationId": "batchUnBind",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "areaIds",
+            "description": "areaIds",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/bindDeviceArea/batchUnbindByAreaAndDevice": {
+      "post": {
+        "tags": [
+          "BindDeviceArea"
+        ],
+        "summary": "根据选择的区域下的某些设备,对其进行批量解绑",
+        "operationId": "batchUnbindByAreaAndDevice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "BatchUnbindByAreaAndDeviceInputDto",
+              "$ref": "#/definitions/BatchUnbindByAreaAndDeviceInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/FlushDownLinkDeviceQueue/{devEui}": {
+      "delete": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "刷新设备的DownLinkQueue",
+        "operationId": "FlushDownLinkDeviceQueue",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "path",
+            "description": "devEui",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/GetDownLinkDeviceQueue": {
+      "get": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "获取到设备的DownLinkQueue队列信息",
+        "operationId": "GetDownLinkDeviceQueue",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "countOnly",
+            "in": "query",
+            "description": "为true,表示只返回队列中的元素数量，不返回具体的队列元素数据",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "设备的物联ID，不能为空",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "GetDownLinkDeviceQueueResponseDto",
+              "$ref": "#/definitions/GetDownLinkDeviceQueueResponseDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/createChirpStackDevice": {
+      "post": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "往ChirpStack上新增一个设备",
+        "operationId": "createChirpStackDevice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "inputDto",
+            "description": "inputDto",
+            "required": true,
+            "schema": {
+              "originalRef": "CreateChirpStackDeviceInputDto",
+              "$ref": "#/definitions/CreateChirpStackDeviceInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/createDeviceOTAAKey": {
+      "post": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "创建设备的OTAAKeys信息",
+        "operationId": "createDeviceOTAAKey",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "devEui",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "CreateAndUpdateDeviceOtaaKeyInputDto",
+              "$ref": "#/definitions/CreateAndUpdateDeviceOtaaKeyInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/createDeviceQueueItem": {
+      "post": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "将指定项信息加入到队列downlinkQueue",
+        "operationId": "createDeviceQueueItem",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "devEui",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "CreateDeviceQueueItemInputDto",
+              "$ref": "#/definitions/CreateDeviceQueueItemInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/deleteDeviceOTAAKey/{devEui}": {
+      "delete": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "删除设备的OTAAKeys信息",
+        "operationId": "deleteDeviceOTAAKey",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "path",
+            "description": "devEui",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/getChirpStackDeviceInfo/{deviceEui}": {
+      "get": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "根据设备EUI，从ChirpStack上获取到对应的设备信息",
+        "operationId": "getChirpStackDeviceInfo",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "deviceEui",
+            "in": "path",
+            "description": "deviceEui",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "ChirpStackDeviceInfoDto",
+              "$ref": "#/definitions/ChirpStackDeviceInfoDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/getDeviceLinkMetrics": {
+      "get": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "获取到设备的链路指标数据，包括：上行链路、下行链路、RSSI和SNR等",
+        "operationId": "getDeviceLinkMetrics",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "aggregation",
+            "in": "query",
+            "description": "聚合的维度",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "HOUR",
+              "DAY",
+              "MONTH"
+            ]
+          },
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "设备的物联ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "结束时间",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "开始时间",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "DeviceLinkMetricsResponseDto",
+              "$ref": "#/definitions/DeviceLinkMetricsResponseDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/getDeviceMetrics": {
+      "get": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "获取到设备的遥测数据",
+        "operationId": "getDeviceMetrics",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "aggregation",
+            "in": "query",
+            "description": "聚合的维度",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "HOUR",
+              "DAY",
+              "MONTH"
+            ]
+          },
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "设备的物联ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "结束时间",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "开始时间",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "DeviceMetricResponseDto",
+              "$ref": "#/definitions/DeviceMetricResponseDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/getOTAAKeysByDevEui/{devEui}": {
+      "get": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "根据设备的devEUI获取到设备的OTAAKeys信息 ",
+        "operationId": "getOTAAKeysByDevEui",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "path",
+            "description": "devEui",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "GetOtaaKeyInfoDto",
+              "$ref": "#/definitions/GetOtaaKeyInfoDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/removeChirpStackDevice/{devEUI}": {
+      "delete": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "往ChirpStack上删除一个设备",
+        "operationId": "removeChirpStackDevice",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEUI",
+            "in": "path",
+            "description": "devEUI",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/updateChirpStackDevice": {
+      "post": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "往ChirpStack上更新一个设备",
+        "operationId": "updateChirpStackDevice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "inputDto",
+            "description": "inputDto",
+            "required": true,
+            "schema": {
+              "originalRef": "UpdateChirpStackDeviceInputDto",
+              "$ref": "#/definitions/UpdateChirpStackDeviceInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/device/updateDeviceOTAAKey": {
+      "put": {
+        "tags": [
+          "chirpStackDevice"
+        ],
+        "summary": "更新设备的OTAAKeys信息",
+        "operationId": "updateDeviceOTAAKey",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "devEui",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "CreateAndUpdateDeviceOtaaKeyInputDto",
+              "$ref": "#/definitions/CreateAndUpdateDeviceOtaaKeyInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/deviceProfile/getDeviceProfileDetailByProfileId/{profileId}": {
+      "get": {
+        "tags": [
+          "ChirpStackDeviceProfile"
+        ],
+        "summary": "从chirpStack上获取到设备类型的profile配置的详细信息",
+        "operationId": "getDeviceProfileDetailByProfileId",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "profileId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "DeviceProfileDetailDto",
+              "$ref": "#/definitions/DeviceProfileDetailDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/chirpStack/deviceProfile/getDeviceProfileList": {
+      "get": {
+        "tags": [
+          "ChirpStackDeviceProfile"
+        ],
+        "summary": "从ChirpStack获取到设备类型配置信息",
+        "operationId": "getDeviceProfileList",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "设备配置文件的名称，不传，则查询所有的文件",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "originalRef": "DeviceProfileDto",
+                "$ref": "#/definitions/DeviceProfileDto"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/FlushDownLinkDeviceQueue/{devEui}": {
+      "delete": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "删除设备的DownLinkQueue",
+        "operationId": "flushDownLinkDeviceQueue",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "path",
+            "description": "devEui",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/GetDownLinkDeviceQueue": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "获取到设备的DownLinkQueue队列信息",
+        "operationId": "GetDownLinkDeviceQueue",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "countOnly",
+            "in": "query",
+            "description": "为true,表示只返回队列中的元素数量，不返回具体的队列元素数据",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "设备的物联ID，不能为空",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "GetDownLinkDeviceQueueResponseDto",
+              "$ref": "#/definitions/GetDownLinkDeviceQueueResponseDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/createDeviceOTAAKey": {
+      "post": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "创建设备的OTAAKeys信息",
+        "operationId": "createDeviceOTAAKey",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "devEui",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "CreateAndUpdateDeviceOtaaKeyInputDto",
+              "$ref": "#/definitions/CreateAndUpdateDeviceOtaaKeyInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/createDeviceQueueItem": {
+      "post": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "将指定项信息加入到队列downlinkQueue",
+        "operationId": "createDeviceQueueItem",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "devEui",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "CreateDeviceQueueItemInputDto",
+              "$ref": "#/definitions/CreateDeviceQueueItemInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/deleteById/{id}": {
+      "delete": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "删除设备，同时删除物联设备",
+        "operationId": "deleteById",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/deleteDevice": {
+      "delete": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "删除设备的同时，删除设备和区域的绑定关系，同时删除物联设备",
+        "operationId": "deleteDevice",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "query",
+            "description": "设备id",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "nodeId",
+            "in": "query",
+            "description": "区域节点",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/deleteDeviceOTAAKey/{devEui}": {
+      "delete": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "删除设备的OTAAKeys信息",
+        "operationId": "deleteDeviceOTAAKey",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "path",
+            "description": "devEui",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/deleteLogicDeviceById/{id}": {
+      "delete": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "删除设备，只删除逻辑设备",
+        "operationId": "deleteLogicDeviceById",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/getDetailById/{id}": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "查询设备详情,包含了物联信息",
+        "operationId": "getDetailById",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "DeviceDetailDto",
+              "$ref": "#/definitions/DeviceDetailDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/getDeviceLinkMetrics": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "从物联设备处，获取到设备的链路指标数据，包括：上行链路、下行链路、RSSI和SNR等",
+        "operationId": "getDeviceLinkMetrics",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "aggregation",
+            "in": "query",
+            "description": "聚合的维度",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "HOUR",
+              "DAY",
+              "MONTH"
+            ]
+          },
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "设备的物联ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "结束时间",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "开始时间",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "DeviceLinkMetricsResponseDto",
+              "$ref": "#/definitions/DeviceLinkMetricsResponseDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/getDeviceMetrics": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "从物联设备处，获取到设备的遥测数据",
+        "operationId": "getDeviceMetrics",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "aggregation",
+            "in": "query",
+            "description": "聚合的维度",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "HOUR",
+              "DAY",
+              "MONTH"
+            ]
+          },
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "设备的物联ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "结束时间",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "开始时间",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "DeviceMetricResponseDto",
+              "$ref": "#/definitions/DeviceMetricResponseDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/getOTAAKeysByDevEui/{devEui}": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "根据设备的devEUI获取到设备的OTAAKeys信息 ",
+        "operationId": "getOTAAKeysByDevEui",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "path",
+            "description": "devEui",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "GetOtaaKeyInfoDto",
+              "$ref": "#/definitions/GetOtaaKeyInfoDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/listAll": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "查询所有设备列表",
+        "operationId": "listAll",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "设备名",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "页码",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页显示的记录数",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 10
+          },
+          {
+            "name": "sorting",
+            "in": "query",
+            "description": "排序字段名",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortingDirection",
+            "in": "query",
+            "description": "排序的方式",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "ASC",
+              "DESC"
+            ]
+          },
+          {
+            "name": "unPage",
+            "in": "query",
+            "description": "是否不分页，默认分页",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "PagedResultDto«DeviceListDto»",
+              "$ref": "#/definitions/PagedResultDto«DeviceListDto»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/saveDevice": {
+      "post": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "保存设备，同时新增或者更新物联设备信息",
+        "operationId": "saveDevice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "inputDto",
+            "description": "inputDto",
+            "required": true,
+            "schema": {
+              "originalRef": "DeviceDto",
+              "$ref": "#/definitions/DeviceDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/device/updateDeviceOTAAKey": {
+      "put": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "更新设备的OTAAKeys信息",
+        "operationId": "updateDeviceOTAAKey",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "devEui",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "CreateAndUpdateDeviceOtaaKeyInputDto",
+              "$ref": "#/definitions/CreateAndUpdateDeviceOtaaKeyInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceArea/batchBind": {
+      "post": {
+        "tags": [
+          "DeviceArea"
+        ],
+        "summary": "在某个区域下批量绑定设备",
+        "operationId": "batchBind",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "BatchBindDeviceAreaInputDto",
+              "$ref": "#/definitions/BatchBindDeviceAreaInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceArea/batchUnbind": {
+      "post": {
+        "tags": [
+          "DeviceArea"
+        ],
+        "summary": "根据选择的区域IDS,批量解绑",
+        "operationId": "batchUnBind",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "areaIds",
+            "description": "areaIds",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceArea/batchUnbindByAreaAndDevice": {
+      "post": {
+        "tags": [
+          "DeviceArea"
+        ],
+        "summary": "根据选择的区域下的某些设备,对其进行批量解绑",
+        "operationId": "batchUnbindByAreaAndDevice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "BatchUnbindByAreaAndDeviceInputDto",
+              "$ref": "#/definitions/BatchUnbindByAreaAndDeviceInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceArea/createDeviceArea": {
+      "post": {
+        "tags": [
+          "DeviceArea"
+        ],
+        "summary": "新增设备区域",
+        "operationId": "createDeviceArea",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "DeviceAreaInputDto",
+              "$ref": "#/definitions/DeviceAreaInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "DeviceAreaDto",
+              "$ref": "#/definitions/DeviceAreaDto"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceArea/deleteDeviceArea/{areaId}": {
+      "delete": {
+        "tags": [
+          "DeviceArea"
+        ],
+        "summary": "删除设备区域(嵌套删除)",
+        "operationId": "deleteDeviceArea",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "areaId",
+            "in": "path",
+            "description": "areaId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceArea/getAllDeviceArea": {
+      "get": {
+        "tags": [
+          "DeviceArea"
+        ],
+        "summary": "获取所有设备区域",
+        "operationId": "getAllDeviceArea",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "ListResultDto«DeviceAreaDto»",
+              "$ref": "#/definitions/ListResultDto«DeviceAreaDto»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceArea/getDeviceListByArea": {
+      "get": {
+        "tags": [
+          "DeviceArea"
+        ],
+        "summary": "获取到该区域下的设备列表信息",
+        "operationId": "getDeviceListByArea",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "areaId",
+            "in": "query",
+            "description": "区域ID",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "deviceName",
+            "in": "query",
+            "description": "设备名",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "isIncludeAllSubAreas",
+            "in": "query",
+            "description": "是否包含所有子区域",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "页码",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页显示的记录数",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 10
+          },
+          {
+            "name": "sorting",
+            "in": "query",
+            "description": "排序字段名",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortingDirection",
+            "in": "query",
+            "description": "排序的方式",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "ASC",
+              "DESC"
+            ]
+          },
+          {
+            "name": "unPage",
+            "in": "query",
+            "description": "是否不分页，默认分页",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "PagedResultDto«DeviceListDto»",
+              "$ref": "#/definitions/PagedResultDto«DeviceListDto»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceArea/moveDeviceArea": {
+      "post": {
+        "tags": [
+          "DeviceArea"
+        ],
+        "summary": "移动设备区域",
+        "operationId": "moveDeviceArea",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "MoveDeviceAreaInputDto",
+              "$ref": "#/definitions/MoveDeviceAreaInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "DeviceAreaDto",
+              "$ref": "#/definitions/DeviceAreaDto"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceArea/updateDeviceArea": {
+      "post": {
+        "tags": [
+          "DeviceArea"
+        ],
+        "summary": "更新设备区域",
+        "operationId": "updateDeviceArea",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "input",
+            "description": "input",
+            "required": true,
+            "schema": {
+              "originalRef": "UpdateDeviceAreaInputDto",
+              "$ref": "#/definitions/UpdateDeviceAreaInputDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "DeviceAreaDto",
+              "$ref": "#/definitions/DeviceAreaDto"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceMetricData/getDeviceMetricListDataByDeviceEui": {
+      "get": {
+        "tags": [
+          "DeviceMetricData"
+        ],
+        "summary": "根据设备物联ID相关条件，获取到设备遥测的历史数据",
+        "operationId": "getDeviceMetricListDataByDeviceEui",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "devEui",
+            "in": "query",
+            "description": "设备的物联ID",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "deviceFieldName",
+            "in": "query",
+            "description": "设备物联属性key",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "结束时间",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "页码",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页显示的记录数",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 10
+          },
+          {
+            "name": "sorting",
+            "in": "query",
+            "description": "排序字段名",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortingDirection",
+            "in": "query",
+            "description": "排序的方式",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "ASC",
+              "DESC"
+            ]
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "开始时间",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "unPage",
+            "in": "query",
+            "description": "是否不分页，默认分页",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "PagedResultDto«DeviceMetricListDataDto»",
+              "$ref": "#/definitions/PagedResultDto«DeviceMetricListDataDto»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/deviceMetricData/getDeviceMetricListDataByDeviceId": {
+      "get": {
+        "tags": [
+          "DeviceMetricData"
+        ],
+        "summary": "根据设备ID相关条件，获取到设备遥测的历史数据",
+        "operationId": "getDeviceMetricListDataByDeviceId",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "deviceFieldName",
+            "in": "query",
+            "description": "设备的属性名称",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "deviceId",
+            "in": "query",
+            "description": "设备ID",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "结束时间",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "页码",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页显示的记录数",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 10
+          },
+          {
+            "name": "sorting",
+            "in": "query",
+            "description": "排序字段名",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortingDirection",
+            "in": "query",
+            "description": "排序的方式",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "ASC",
+              "DESC"
+            ]
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "开始时间",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "unPage",
+            "in": "query",
+            "description": "是否不分页，默认分页",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "PagedResultDto«DeviceMetricListDataDto»",
+              "$ref": "#/definitions/PagedResultDto«DeviceMetricListDataDto»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/storehouseEnum/getEnums": {
+      "get": {
+        "tags": [
+          "storehouseEnum"
+        ],
+        "summary": "获取枚举定义",
+        "operationId": "getEnums",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "EnumOutputDto",
+              "$ref": "#/definitions/EnumOutputDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT (Bearer $token)": []
+          },
+          {
+            "tenant name": []
+          },
+          {
+            "ORG ID": []
+          }
+        ],
+        "deprecated": false
+      }
+    }
+  },
+  "securityDefinitions": {
+    "JWT (Bearer $token)": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    },
+    "ORG ID": {
+      "type": "apiKey",
+      "name": "ORG-ID",
+      "in": "header"
+    },
+    "tenant name": {
+      "type": "apiKey",
+      "name": "TENANT-NAME",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "BatchBindDeviceAreaInputDto": {
+      "type": "object",
+      "properties": {
+        "areaId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "设备区域ID"
+        },
+        "deviceIdList": {
+          "type": "array",
+          "description": "待绑定的设备ID",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "title": "BatchBindDeviceAreaInputDto"
+    },
+    "BatchUnbindByAreaAndDeviceInputDto": {
+      "type": "object",
+      "properties": {
+        "areaId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "设备区域ID"
+        },
+        "deviceIdList": {
+          "type": "array",
+          "description": "待解绑的设备IDs",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "title": "BatchUnbindByAreaAndDeviceInputDto"
+    },
+    "ChirpStackDeviceInfoDto": {
+      "type": "object",
+      "properties": {
+        "classEnabled": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "设备的创建时间"
+        },
+        "device": {
+          "description": "ChirpStack上的设备基础信息",
+          "originalRef": "ChirpStackDeviceResponseDataDto",
+          "$ref": "#/definitions/ChirpStackDeviceResponseDataDto"
+        },
+        "deviceStatus": {
+          "description": "设备某些状态属性信息",
+          "originalRef": "ChirpStackDeviceStatusDto",
+          "$ref": "#/definitions/ChirpStackDeviceStatusDto"
+        },
+        "lastSeenAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "设备最新的活动时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "设备信息最近的更新时间"
+        }
+      },
+      "title": "ChirpStackDeviceInfoDto"
+    },
+    "ChirpStackDeviceResponseDataDto": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "string",
+          "description": "设备所属应用ID"
+        },
+        "description": {
+          "type": "string"
+        },
+        "devEui": {
+          "type": "string",
+          "description": "设备物联ID"
+        },
+        "deviceProfileId": {
+          "type": "string",
+          "description": "设备模板ID"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "joinEui": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "设备名称"
+        },
+        "skipFcntCheck": {
+          "type": "boolean"
+        },
+        "tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "variables": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "ChirpStackDeviceResponseDataDto"
+    },
+    "ChirpStackDeviceStatusDto": {
+      "type": "object",
+      "properties": {
+        "batteryLevel": {
+          "type": "number",
+          "format": "float"
+        },
+        "externalPowerSource": {
+          "type": "boolean"
+        },
+        "margin": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "ChirpStackDeviceStatusDto"
+    },
+    "CreateAndUpdateDeviceOtaaKeyInputDto": {
+      "type": "object",
+      "properties": {
+        "deviceKeys": {
+          "description": "创建或者更新设备的OTAAKey信息时，所需的信息",
+          "originalRef": "DeviceKeysInfoDto",
+          "$ref": "#/definitions/DeviceKeysInfoDto"
+        }
+      },
+      "title": "CreateAndUpdateDeviceOtaaKeyInputDto"
+    },
+    "CreateChirpStackDeviceInputDto": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "description": "设备的相关信息",
+          "originalRef": "CreateChirpStackDeviceItemInfoInputDto",
+          "$ref": "#/definitions/CreateChirpStackDeviceItemInfoInputDto"
+        }
+      },
+      "title": "CreateChirpStackDeviceInputDto"
+    },
+    "CreateChirpStackDeviceItemInfoInputDto": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "string",
+          "description": "设备所属应用ID"
+        },
+        "description": {
+          "type": "string",
+          "description": "设备描述"
+        },
+        "devEui": {
+          "type": "string",
+          "description": "设备物联ID,长度必须是16位"
+        },
+        "deviceProfileId": {
+          "type": "string",
+          "description": "设备的模板ID"
+        },
+        "isDisabled": {
+          "type": "boolean",
+          "description": "设备是否禁用，默认：否，不禁用"
+        },
+        "joinEui": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "设备名称"
+        },
+        "skipFcntCheck": {
+          "type": "boolean",
+          "description": "设备使用禁用帧验证，默认：否，不禁用"
+        }
+      },
+      "title": "CreateChirpStackDeviceItemInfoInputDto"
+    },
+    "CreateDeviceQueueItemDataDto": {
+      "type": "object",
+      "properties": {
+        "confirmed": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "string"
+        },
+        "fcntDown": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "fport": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "id": {
+          "type": "string"
+        },
+        "isEncrypted": {
+          "type": "boolean",
+          "description": "当这个值为true时，fCntDown的值才能保存"
+        },
+        "isPending": {
+          "type": "boolean"
+        },
+        "object": {
+          "type": "object"
+        }
+      },
+      "title": "CreateDeviceQueueItemDataDto"
+    },
+    "CreateDeviceQueueItemInputDto": {
+      "type": "object",
+      "properties": {
+        "queueItem": {
+          "originalRef": "CreateDeviceQueueItemDataDto",
+          "$ref": "#/definitions/CreateDeviceQueueItemDataDto"
+        }
+      },
+      "title": "CreateDeviceQueueItemInputDto"
+    },
+    "DeviceAreaDto": {
+      "type": "object",
+      "properties": {
+        "areaName": {
+          "type": "string",
+          "description": "区域名称"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "id"
+        },
+        "orgId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "组织id"
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "父设备区域id"
+        },
+        "sortIndex": {
+          "type": "integer",
+          "format": "int32",
+          "description": "序号"
+        }
+      },
+      "title": "DeviceAreaDto"
+    },
+    "DeviceAreaInputDto": {
+      "type": "object",
+      "properties": {
+        "areaName": {
+          "type": "string",
+          "description": "区域名称"
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "父级区域id"
+        },
+        "sortIndex": {
+          "type": "integer",
+          "format": "int32",
+          "description": "顺序"
+        }
+      },
+      "title": "DeviceAreaInputDto"
+    },
+    "DeviceDetailDto": {
+      "type": "object",
+      "properties": {
+        "chirpStackDeviceInfo": {
+          "description": "ChirpStack上的设备信息",
+          "originalRef": "ChirpStackDeviceInfoDto",
+          "$ref": "#/definitions/ChirpStackDeviceInfoDto"
+        },
+        "description": {
+          "type": "string",
+          "description": "设备描述"
+        },
+        "devEui": {
+          "type": "string",
+          "description": "设备物联ID"
+        },
+        "deviceFieldList": {
+          "type": "array",
+          "description": "设备的相关属性",
+          "items": {
+            "originalRef": "DeviceFieldDto",
+            "$ref": "#/definitions/DeviceFieldDto"
+          }
+        },
+        "deviceProfileId": {
+          "type": "string",
+          "description": "设备的模板ID"
+        },
+        "deviceProfileName": {
+          "type": "string",
+          "description": "设备的模板文件名称"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "id"
+        },
+        "isDisabled": {
+          "type": "boolean",
+          "description": "设备是否禁用,默认是false，表示不禁用"
+        },
+        "latestMetricDataList": {
+          "type": "array",
+          "description": "设备最新的遥测数据",
+          "items": {
+            "originalRef": "DeviceLatestMetricDataDto",
+            "$ref": "#/definitions/DeviceLatestMetricDataDto"
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": "设备名称"
+        },
+        "online": {
+          "type": "boolean",
+          "description": "设备是否在线，true表示在线 , 默认是false"
+        },
+        "skipFcntCheck": {
+          "type": "boolean",
+          "description": "禁用设备的帧计数器验证 是否开启 ，默认为false,表示不开启禁用"
+        }
+      },
+      "title": "DeviceDetailDto"
+    },
+    "DeviceDto": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "设备描述"
+        },
+        "devEui": {
+          "type": "string",
+          "description": "设备物联ID"
+        },
+        "deviceFieldList": {
+          "type": "array",
+          "description": "设备的相关属性",
+          "items": {
+            "originalRef": "DeviceFieldDto",
+            "$ref": "#/definitions/DeviceFieldDto"
+          }
+        },
+        "deviceProfileId": {
+          "type": "string",
+          "description": "设备的模板ID"
+        },
+        "deviceProfileName": {
+          "type": "string",
+          "description": "设备的模板文件名称"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "id"
+        },
+        "isDisabled": {
+          "type": "boolean",
+          "description": "设备是否禁用,默认是false，表示不禁用"
+        },
+        "name": {
+          "type": "string",
+          "description": "设备名称"
+        },
+        "online": {
+          "type": "boolean",
+          "description": "设备是否在线，true表示在线 , 默认是false"
+        },
+        "skipFcntCheck": {
+          "type": "boolean",
+          "description": "禁用设备的帧计数器验证 是否开启 ，默认为false,表示不开启禁用"
+        }
+      },
+      "title": "DeviceDto"
+    },
+    "DeviceFieldDto": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "设备属性的描述"
+        },
+        "devEui": {
+          "type": "string",
+          "description": "所属设备的物联ID"
+        },
+        "fieldName": {
+          "type": "string",
+          "description": "设备属性名"
+        },
+        "fieldType": {
+          "type": "string",
+          "description": "设备属性对应的类型",
+          "enum": [
+            "DOUBLE",
+            "STRING",
+            "BOOLEAN",
+            "LONG"
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "id"
+        }
+      },
+      "title": "DeviceFieldDto"
+    },
+    "DeviceKeysInfoDto": {
+      "type": "object",
+      "properties": {
+        "appKey": {
+          "type": "string"
+        },
+        "nwkKey": {
+          "type": "string"
+        }
+      },
+      "title": "DeviceKeysInfoDto"
+    },
+    "DeviceLatestMetricDataDto": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "设备属性的描述"
+        },
+        "devEui": {
+          "type": "string",
+          "description": "设备的物联ID"
+        },
+        "deviceFieldName": {
+          "type": "string",
+          "description": "设备遥测属性名称"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "设备遥测值上报的最新时间"
+        },
+        "value": {
+          "type": "number",
+          "format": "double",
+          "description": "设备最新的遥测数据值"
+        }
+      },
+      "title": "DeviceLatestMetricDataDto"
+    },
+    "DeviceLinkMetricRxPacketsPerDrDto": {
+      "type": "object",
+      "properties": {
+        "datasets": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceMetricPropertyDataItemDto",
+            "$ref": "#/definitions/DeviceMetricPropertyDataItemDto"
+          }
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "timestamps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeviceLinkMetricRxPacketsPerDrDto"
+    },
+    "DeviceLinkMetricsErrorsDto": {
+      "type": "object",
+      "properties": {
+        "datasets": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceMetricPropertyDataItemDto",
+            "$ref": "#/definitions/DeviceMetricPropertyDataItemDto"
+          }
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "timestamps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeviceLinkMetricsErrorsDto"
+    },
+    "DeviceLinkMetricsGwRssiDto": {
+      "type": "object",
+      "properties": {
+        "datasets": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceMetricPropertyDataItemDto",
+            "$ref": "#/definitions/DeviceMetricPropertyDataItemDto"
+          }
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "timestamps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeviceLinkMetricsGwRssiDto"
+    },
+    "DeviceLinkMetricsGwSnrDto": {
+      "type": "object",
+      "properties": {
+        "datasets": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceMetricPropertyDataItemDto",
+            "$ref": "#/definitions/DeviceMetricPropertyDataItemDto"
+          }
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "timestamps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeviceLinkMetricsGwSnrDto"
+    },
+    "DeviceLinkMetricsResponseDto": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "originalRef": "DeviceLinkMetricsErrorsDto",
+          "$ref": "#/definitions/DeviceLinkMetricsErrorsDto"
+        },
+        "gwRssi": {
+          "originalRef": "DeviceLinkMetricsGwRssiDto",
+          "$ref": "#/definitions/DeviceLinkMetricsGwRssiDto"
+        },
+        "gwSnr": {
+          "originalRef": "DeviceLinkMetricsGwSnrDto",
+          "$ref": "#/definitions/DeviceLinkMetricsGwSnrDto"
+        },
+        "rxPackets": {
+          "originalRef": "DeviceLinkMetricsRxPacketsDto",
+          "$ref": "#/definitions/DeviceLinkMetricsRxPacketsDto"
+        },
+        "rxPacketsPerDr": {
+          "originalRef": "DeviceLinkMetricRxPacketsPerDrDto",
+          "$ref": "#/definitions/DeviceLinkMetricRxPacketsPerDrDto"
+        },
+        "rxPacketsPerFreq": {
+          "originalRef": "DeviceLinkMetricsRxPacketsPerFreqDto",
+          "$ref": "#/definitions/DeviceLinkMetricsRxPacketsPerFreqDto"
+        }
+      },
+      "title": "DeviceLinkMetricsResponseDto"
+    },
+    "DeviceLinkMetricsRxPacketsDto": {
+      "type": "object",
+      "properties": {
+        "datasets": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceMetricPropertyDataItemDto",
+            "$ref": "#/definitions/DeviceMetricPropertyDataItemDto"
+          }
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "timestamps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeviceLinkMetricsRxPacketsDto"
+    },
+    "DeviceLinkMetricsRxPacketsPerFreqDto": {
+      "type": "object",
+      "properties": {
+        "datasets": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceMetricPropertyDataItemDto",
+            "$ref": "#/definitions/DeviceMetricPropertyDataItemDto"
+          }
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "timestamps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeviceLinkMetricsRxPacketsPerFreqDto"
+    },
+    "DeviceListDto": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "设备描述"
+        },
+        "devEui": {
+          "type": "string",
+          "description": "设备的物联ID"
+        },
+        "deviceProfileId": {
+          "type": "string",
+          "description": "设备的模板ID"
+        },
+        "deviceProfileName": {
+          "type": "string",
+          "description": "设备的模板文件名称"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "id"
+        },
+        "latestMetricDataList": {
+          "type": "array",
+          "description": "设备最新的遥测数据",
+          "items": {
+            "originalRef": "DeviceLatestMetricDataDto",
+            "$ref": "#/definitions/DeviceLatestMetricDataDto"
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": "设备名称"
+        },
+        "online": {
+          "type": "boolean",
+          "description": "设备是否在线，true表示在线"
+        }
+      },
+      "title": "DeviceListDto"
+    },
+    "DeviceMetricListDataDto": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "设备属性的描述"
+        },
+        "devEui": {
+          "type": "string",
+          "description": "设备物联ID"
+        },
+        "deviceFieldName": {
+          "type": "string",
+          "description": "设备物联属性key"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "id"
+        },
+        "upTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "数据上报时间"
+        },
+        "value": {
+          "type": "number",
+          "format": "double",
+          "description": "浮点格式属性值"
+        }
+      },
+      "title": "DeviceMetricListDataDto"
+    },
+    "DeviceMetricPropertyDataDto": {
+      "type": "object",
+      "properties": {
+        "datasets": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceMetricPropertyDataItemDto",
+            "$ref": "#/definitions/DeviceMetricPropertyDataItemDto"
+          }
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "timestamps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeviceMetricPropertyDataDto"
+    },
+    "DeviceMetricPropertyDataItemDto": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "title": "DeviceMetricPropertyDataItemDto"
+    },
+    "DeviceMetricResponseDto": {
+      "type": "object",
+      "properties": {
+        "metrics": {
+          "type": "object",
+          "description": "遥测的相关遥测数据",
+          "additionalProperties": {
+            "originalRef": "DeviceMetricPropertyDataDto",
+            "$ref": "#/definitions/DeviceMetricPropertyDataDto"
+          }
+        },
+        "states": {
+          "type": "object",
+          "description": "遥测的相关额外信息",
+          "additionalProperties": {
+            "originalRef": "DeviceStatesPropertyDataDto",
+            "$ref": "#/definitions/DeviceStatesPropertyDataDto"
+          }
+        }
+      },
+      "title": "DeviceMetricResponseDto"
+    },
+    "DeviceOtaaKeyInfoDto": {
+      "type": "object",
+      "properties": {
+        "appKey": {
+          "type": "string"
+        },
+        "devEui": {
+          "type": "string"
+        },
+        "nwkKey": {
+          "type": "string"
+        }
+      },
+      "title": "DeviceOtaaKeyInfoDto"
+    },
+    "DeviceProfileDetailDataDto": {
+      "type": "object",
+      "properties": {
+        "abpRx1Delay": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "abpRx1DrOffset": {
+          "type": "string"
+        },
+        "abpRx2Dr": {
+          "type": "string"
+        },
+        "abpRx2Freq": {
+          "type": "string"
+        },
+        "adrAlgorithmId": {
+          "type": "string"
+        },
+        "autoDetectMeasurements": {
+          "type": "boolean"
+        },
+        "classBPingSlotDr": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "classBPingSlotFreq": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "classBPingSlotNbK": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "classBTimeout": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "classCTimeout": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "description": {
+          "type": "string",
+          "description": "profile的描述"
+        },
+        "deviceStatusReqInterval": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "flushQueueOnActivate": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string",
+          "description": "profile的ID"
+        },
+        "macVersion": {
+          "type": "string"
+        },
+        "measurements": {
+          "type": "object",
+          "additionalProperties": {
+            "originalRef": "DeviceProfileMeasurementsDto",
+            "$ref": "#/definitions/DeviceProfileMeasurementsDto"
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": "profile的名称"
+        },
+        "payloadCodecRuntime": {
+          "type": "string"
+        },
+        "payloadCodecScript": {
+          "type": "string"
+        },
+        "regParamsRevision": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "regionConfigId": {
+          "type": "string"
+        },
+        "relay": {
+          "type": "boolean"
+        },
+        "relayCadPeriodicity": {
+          "type": "string"
+        },
+        "relayDefaultChannelIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayEd": {
+          "type": "boolean"
+        },
+        "relayEdActivationMode": {
+          "type": "string"
+        },
+        "relayEdBackOff": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayEdRelayOnly": {
+          "type": "boolean"
+        },
+        "relayEdSmartEnableLevel": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayEdUplinkLimitBucketSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayEdUplinkLimitReloadRate": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayEnabled": {
+          "type": "boolean"
+        },
+        "relayGlobalUplinkLimitBucketSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayGlobalUplinkLimitReloadRate": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayJoinReqLimitBucketSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayJoinReqLimitReloadRate": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayNotifyLimitBucketSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayNotifyLimitReloadRate": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayOverallLimitBucketSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relayOverallLimitReloadRate": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relaySecondChannelAckOffset": {
+          "type": "string"
+        },
+        "relaySecondChannelDr": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "relaySecondChannelFreq": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "supportsClassB": {
+          "type": "boolean"
+        },
+        "supportsClassC": {
+          "type": "boolean"
+        },
+        "supportsOtaa": {
+          "type": "boolean"
+        },
+        "tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "tenantId": {
+          "type": "string",
+          "description": "所属的租户信息"
+        },
+        "uplinkInterval": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "DeviceProfileDetailDataDto"
+    },
+    "DeviceProfileDetailDto": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "profile的创建时间"
+        },
+        "deviceProfile": {
+          "description": "设备的profile信息",
+          "originalRef": "DeviceProfileDetailDataDto",
+          "$ref": "#/definitions/DeviceProfileDetailDataDto"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "profile的更新时间"
+        }
+      },
+      "title": "DeviceProfileDetailDto"
+    },
+    "DeviceProfileDto": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "description": "模版的创建时间"
+        },
+        "id": {
+          "type": "string",
+          "description": "设备模版ID"
+        },
+        "macVersion": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "模版的名称，对应与本系统中的设备类型"
+        },
+        "regParamsRevision": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "supportsClassB": {
+          "type": "string"
+        },
+        "supportsClassC": {
+          "type": "string"
+        },
+        "supportsOtaa": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "模版的更新时间"
+        }
+      },
+      "title": "DeviceProfileDto"
+    },
+    "DeviceProfileMeasurementsDto": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "DeviceProfileMeasurementsDto"
+    },
+    "DeviceStatesPropertyDataDto": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "DeviceStatesPropertyDataDto"
+    },
+    "DownLinkDeviceQueueDataDto": {
+      "type": "object",
+      "properties": {
+        "confirmed": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "string"
+        },
+        "devEui": {
+          "type": "string"
+        },
+        "fcntDown": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "fport": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "id": {
+          "type": "string"
+        },
+        "isEncrypted": {
+          "type": "boolean"
+        },
+        "object": {
+          "type": "object"
+        },
+        "pending": {
+          "type": "boolean"
+        }
+      },
+      "title": "DownLinkDeviceQueueDataDto"
+    },
+    "EnumOutputDto": {
+      "type": "object",
+      "properties": {
+        "deviceType": {
+          "type": "array",
+          "description": "通讯设备类型枚举",
+          "items": {
+            "originalRef": "SelectListOutputDto",
+            "$ref": "#/definitions/SelectListOutputDto"
+          }
+        }
+      },
+      "title": "EnumOutputDto"
+    },
+    "GetDownLinkDeviceQueueResponseDto": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "originalRef": "DownLinkDeviceQueueDataDto",
+            "$ref": "#/definitions/DownLinkDeviceQueueDataDto"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "GetDownLinkDeviceQueueResponseDto"
+    },
+    "GetOtaaKeyInfoDto": {
+      "type": "object",
+      "properties": {
+        "createdAtTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deviceKeys": {
+          "originalRef": "DeviceOtaaKeyInfoDto",
+          "$ref": "#/definitions/DeviceOtaaKeyInfoDto"
+        },
+        "updatedAtTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "GetOtaaKeyInfoDto"
+    },
+    "ListResultDto«DeviceAreaDto»": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceAreaDto",
+            "$ref": "#/definitions/DeviceAreaDto"
+          }
+        }
+      },
+      "title": "ListResultDto«DeviceAreaDto»"
+    },
+    "MoveDeviceAreaInputDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "id"
+        },
+        "newParentId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "新父组织机构id"
+        }
+      },
+      "title": "MoveDeviceAreaInputDto"
+    },
+    "PagedResultDto«DeviceListDto»": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceListDto",
+            "$ref": "#/definitions/DeviceListDto"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "PagedResultDto«DeviceListDto»"
+    },
+    "PagedResultDto«DeviceMetricListDataDto»": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "originalRef": "DeviceMetricListDataDto",
+            "$ref": "#/definitions/DeviceMetricListDataDto"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "PagedResultDto«DeviceMetricListDataDto»"
+    },
+    "SelectListOutputDto": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "显示名称"
+        },
+        "name": {
+          "type": "string"
+        },
+        "selected": {
+          "type": "boolean",
+          "description": "是否被勾选"
+        },
+        "value": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "SelectListOutputDto"
+    },
+    "UpdateChirpStackDeviceInfoItemInputDto": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "string",
+          "description": "设备所属应用ID,后端传值"
+        },
+        "description": {
+          "type": "string",
+          "description": "设备描述"
+        },
+        "devEui": {
+          "type": "string",
+          "description": "设备物联ID,长度必须是16位"
+        },
+        "deviceProfileId": {
+          "type": "string",
+          "description": "设备的模板ID"
+        },
+        "isDisabled": {
+          "type": "boolean",
+          "description": "是否启用，默认：是"
+        },
+        "joinEui": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "设备名称"
+        },
+        "skipFcntCheck": {
+          "type": "boolean"
+        }
+      },
+      "title": "UpdateChirpStackDeviceInfoItemInputDto"
+    },
+    "UpdateChirpStackDeviceInputDto": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "description": "需要更新的设备信息",
+          "originalRef": "UpdateChirpStackDeviceInfoItemInputDto",
+          "$ref": "#/definitions/UpdateChirpStackDeviceInfoItemInputDto"
+        }
+      },
+      "title": "UpdateChirpStackDeviceInputDto"
+    },
+    "UpdateDeviceAreaInputDto": {
+      "type": "object",
+      "properties": {
+        "areaName": {
+          "type": "string",
+          "description": "区域名称"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "id"
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "父设备区域id"
+        },
+        "sortIndex": {
+          "type": "integer",
+          "format": "int32",
+          "description": "顺序"
+        }
+      },
+      "title": "UpdateDeviceAreaInputDto"
+    }
+  }
+}
