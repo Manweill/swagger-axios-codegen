@@ -41,7 +41,7 @@ export interface ISwaggerOptions {
   serviceNameSuffix?: string
   enumNamePrefix?: string
   methodNameMode?: 'operationId' | 'path' | 'shortOperationId' | ((reqProps: IRequestMethod) => string)
-  classNameMode?: 'parentPath' | 'normal' | ((path: string, tag: string[]) => string)
+  classNameMode?: 'parentPath' | 'normal' | ((path: string, method: string, reqProps:IRequestMethod) => string)
   /** only effect classNameMode='parentPath' */
   pathClassNameDefaultName?: string
   outputDir?: string
