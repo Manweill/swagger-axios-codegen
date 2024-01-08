@@ -1,11 +1,11 @@
-import { getClassNameByPath, getMethodNameByPath, RemoveSpecialCharacters } from '../utils'
+import camelcase from 'camelcase'
+import { ISwaggerOptions } from '../baseInterfaces'
 import { IPaths } from '../swaggerInterfaces'
+import { getClassNameByPath, getMethodNameByPath, RemoveSpecialCharacters } from '../utils'
+import { getContentType } from './getContentType'
+import { getRequestBody } from './getRequestBody'
 import { getRequestParameters } from './getRequestParameters'
 import { getResponseType } from './getResponseType'
-import camelcase from 'camelcase'
-import { getRequestBody } from './getRequestBody'
-import { ISwaggerOptions } from '../baseInterfaces'
-import { getContentType } from './getContentType'
 import { mapFormDataToV2 } from './mapFormDataToV2'
 
 export interface IRequestClass {
@@ -29,10 +29,10 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
           options.methodNameMode === 'operationId'
             ? reqProps.operationId
             : options.methodNameMode === 'shortOperationId'
-              ? trimSuffix(reqProps.operationId, reqProps.tags?.[0])
-              : typeof options.methodNameMode === 'function'
-                ? options.methodNameMode(reqProps)
-                : methodName
+            ? trimSuffix(reqProps.operationId, reqProps.tags?.[0])
+            : typeof options.methodNameMode === 'function'
+            ? options.methodNameMode(reqProps)
+            : methodName
         if (!methodName) {
           // console.warn('method Name is null：', path);
           continue
@@ -50,6 +50,8 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
           } else {
             className = camelcase(className, { pascalCase: true })
           }
+        } else if (typeof options.classNameMode === 'function') {
+          className = options.classNameMode(path, reqProps.tags || [])
         } else {
           if (!reqProps.tags) continue
           className = camelcase(RemoveSpecialCharacters(reqProps.tags[0]), { pascalCase: true })
@@ -58,8 +60,6 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
         if (className === '') continue
         // 如果是数字开头，则加上下划线
         if (!Number.isNaN(Number(className[0]))) className = '_' + className
-
-
 
         // 是否存在
         if (!requestClasses[className]) {
@@ -138,7 +138,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
           }
         } catch (error) {
           // 获取方法名字失败，跳过该请求
-          console.log('error request, url: ', path);
+          console.log('error request, url: ', path)
           continue
         }
 
