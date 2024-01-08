@@ -51,7 +51,7 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
             className = camelcase(className, { pascalCase: true })
           }
         } else if (typeof options.classNameMode === 'function') {
-          className = options.classNameMode(path, reqProps.tags || [])
+          className = options.classNameMode(path, method, reqProps)
         } else {
           if (!reqProps.tags) continue
           className = camelcase(RemoveSpecialCharacters(reqProps.tags[0]), { pascalCase: true })
