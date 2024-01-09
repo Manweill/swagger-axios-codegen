@@ -40,7 +40,7 @@ export function getResponseType(reqProps: IRequestMethod, isV3: boolean): { resp
       isRef = true
       result = refType + '[]'
     } else {
-      const refType = toBaseType(resSchema.items.type, resSchema.items.format)
+      const refType = toBaseType(resSchema.items.type, resSchema.items?.format)
       result = refType + '[]'
     }
   } else if (resSchema.$ref) {

@@ -45,7 +45,7 @@ export function propTrueType(v: IDefinitionProperty): {
         const currentResult = propTrueType(v.items)
         result = { ...result, ...currentResult }
       } else {
-        result.propType = toBaseType(v.items.type, v.items.format) + '[]'
+        result.propType = toBaseType(v.items.type, v.items?.format) + '[]'
       }
     }
     result.isArray = true

@@ -60,7 +60,7 @@ export function getRequestParameters(params: IParameter[], useHeaderParameters: 
       }
       imports.push(propType)
     } else if (p.items) {
-      propType = p.items.$ref ? refClassName(p.items.$ref) + '[]' : toBaseType(p.items.type, p.items.format) + '[]'
+      propType = p.items.$ref ? refClassName(p.items.$ref) + '[]' : toBaseType(p.items.type, p.items?.format) + '[]'
       imports.push(propType)
     }
     // 基本类型
