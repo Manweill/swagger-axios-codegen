@@ -65,7 +65,7 @@ export function getRequestParameters(params: IParameter[], useHeaderParameters: 
     }
     // 基本类型
     else {
-      propType = toBaseType(p.type, p.format)
+      propType = toBaseType(p.type, p?.format)
     }
 
     const paramName = camelcase(p.name)

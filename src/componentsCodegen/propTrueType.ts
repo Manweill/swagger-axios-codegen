@@ -78,7 +78,7 @@ export function propTrueType(v: IDefinitionProperty): {
   }
   // 基本类型
   else {
-    result.propType = toBaseType(v.type, v.items.format)
+    result.propType = toBaseType(v.type, v.items?.format)
   }
   return result
 }
