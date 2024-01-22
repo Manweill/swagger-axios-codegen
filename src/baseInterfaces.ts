@@ -39,6 +39,8 @@ export interface ISwaggerOptions {
   sharedServiceOptions?: boolean | undefined
   /** use parameters in header or not*/
   useHeaderParameters?: boolean
+  /** wrapper response type */
+  responseTypeWrapper ?: (responseType: string)=> string
 }
 
 export interface IPropDef {
