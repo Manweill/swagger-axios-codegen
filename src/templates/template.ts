@@ -1,6 +1,6 @@
 import camelcase from 'camelcase'
-import { IPropDef, ISwaggerOptions } from '../baseInterfaces'
-import { toBaseType, isDefinedGenericTypes, getDefinedGenericTypes } from '../utils'
+import { IPropDef } from '../baseInterfaces'
+import { isDefinedGenericTypes, toBaseType } from '../utils'
 
 const baseTypes = ['string', 'number', 'object', 'boolean', 'any']
 const isAdditionalProperties = (x: string) => x === "[additionalProperties: string]"
@@ -201,9 +201,9 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
     pathReplace = '',
     parsedParameters = <any>{},
     formData = '',
-    requestBody = null
+    requestBody = null,
   } = requestSchema
-  const { useClassTransformer } = options
+  const { useClassTransformer, responseTypeWrapper } = options
   const { queryParameters = [], bodyParameter = [], headerParameters } = parsedParameters
   const nonArrayType = responseType.replace('[', '').replace(']', '')
   const isArrayType = responseType.indexOf('[') > 0
@@ -219,7 +219,7 @@ export function requestTemplate(name: string, requestSchema: IRequestSchema, opt
  */
 ${options.useStaticMethod ? 'static' : ''} ${camelcase(
     name
-  )}(${parameters}options:IRequestOptions={}):Promise<${responseType}> {
+  )}(${parameters}options:IRequestOptions={}):Promise<${responseTypeWrapper ? responseTypeWrapper(responseType) : responseType}> {
   return new Promise((resolve, reject) => {
     let url = basePath+'${path}'
     ${pathReplace}
