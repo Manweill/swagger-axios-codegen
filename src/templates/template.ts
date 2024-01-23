@@ -250,9 +250,13 @@ function requestBodyString(method: string, parsedParameters: [], bodyParameter: 
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;`
   }
-  return `/** 适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body */ \n 
-  console.warn('适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body')
-  `
+  else {
+    if (bodyParameter && bodyParameter.length > 0 || !!requestBody) {
+      return `/** 适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body */ \n 
+      console.warn('适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body')
+      `
+    }
+  }
 }
 
 /** serviceTemplate */
