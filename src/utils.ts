@@ -66,13 +66,19 @@ export function refClassName(s: string, format?: string): string {
     : toBaseType(trimString(RemoveSpecialCharacters(propType), '_', 'right'), format)
 
   // 如果是数字开头，则加上下划线
-  if (!Number.isNaN(Number(result[0]))) result = '_' + result
+  if (!Number.isNaN(Number(result[0]))) result = 'IRef' + result
   return result
 }
 
 /** 移除特殊字符 */
 export function RemoveSpecialCharacters(str: string) {
   return str?.replace(/[-`~!@#$%^&*()_+<>«»?:"{},.\/;'[\]]/g, '_')
+}
+
+const reg = new RegExp("^[a-zA-Z_][a-zA-Z0-9_]*$", 'g');
+
+export function validRefTypeName(str: string) {
+  return reg.test(str)
 }
 
 export function isBaseType(s: string) {

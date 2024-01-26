@@ -29,10 +29,10 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
           options.methodNameMode === 'operationId'
             ? reqProps.operationId
             : options.methodNameMode === 'shortOperationId'
-            ? trimSuffix(reqProps.operationId, reqProps.tags?.[0])
-            : typeof options.methodNameMode === 'function'
-            ? options.methodNameMode(reqProps)
-            : methodName
+              ? trimSuffix(reqProps.operationId, reqProps.tags?.[0])
+              : typeof options.methodNameMode === 'function'
+                ? options.methodNameMode(reqProps)
+                : methodName
         if (!methodName) {
           // console.warn('method Name is null：', path);
           continue
