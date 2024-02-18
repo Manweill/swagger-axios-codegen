@@ -257,6 +257,7 @@ function requestBodyString(method: string, parsedParameters: [], bodyParameter: 
     `
     }
   }
+  return ''
 }
 
 /** serviceTemplate */
