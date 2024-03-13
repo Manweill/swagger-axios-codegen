@@ -238,14 +238,8 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
 }
 
 function requestBodyString(method: string, parsedParameters: [], bodyParameter: [], requestBody: string, contentType: string, formData: string) {
-  if (parsedParameters && bodyParameter && bodyParameter.length > 0 || !!requestBody) {
-
-    const tips = `/** 适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body */ \n 
-    console.warn('适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body')`
+  if (method === 'post' || method === 'put') {
     return `
-    
-    ${method === 'post' || method === 'put' ? '' : tips}
-
     let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
         ?
         bodyParameter
@@ -256,7 +250,9 @@ function requestBodyString(method: string, parsedParameters: [], bodyParameter: 
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;`
   }
-  return ''
+  return `/** 适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body */ \n 
+  console.warn('适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body')
+  `
 }
 
 /** serviceTemplate */
