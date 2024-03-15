@@ -238,23 +238,25 @@ ${options.useStaticMethod ? 'static' : ''} ${camelcase(
 }
 
 function requestBodyString(method: string, parsedParameters: [], bodyParameter: [], requestBody: string, contentType: string, formData: string) {
-  let tips = ''
-  if (method != 'post' && method != 'put') {
-    tips = `/** 适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body */ \n 
-    console.warn('适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body')
-    `
-  }
-  return `
-    ${tips}
+  if (parsedParameters && bodyParameter && bodyParameter.length > 0 || !!requestBody || formData.length > 0) {
+
+    const tips = `/** 适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body */ \n 
+    console.warn('适配移动开发（iOS13 等版本），只有 POST、PUT 等请求允许带body')`
+    return `
+    
+    ${method === 'post' || method === 'put' ? '' : tips}
+
     let data = ${parsedParameters && bodyParameter && bodyParameter.length > 0
-      ?
-      bodyParameter
-      : !!requestBody
-        ? 'params.body'
-        : 'null'
-    }
+        ?
+        bodyParameter
+        : !!requestBody
+          ? 'params.body'
+          : 'null'
+      }
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;`
+  }
+  return ''
 }
 
 /** serviceTemplate */
