@@ -97,7 +97,7 @@ export async function codegen(params: ISwaggerOptions) {
   if (options.urlFilters?.length > 0) {
     paths = {}
     Object.keys(swaggerSource.paths).forEach(path => {
-      if (options.urlFilters.some(urlFilter => urlFilter.indexOf(path) > -1)) {
+      if (options.urlFilters.some(urlFilter => path.includes(urlFilter))) {
         paths[path] = swaggerSource.paths[path]
       }
     })
