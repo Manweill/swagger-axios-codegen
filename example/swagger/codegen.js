@@ -12,5 +12,10 @@ codegen({
   extendDefinitionFile: './swagger/customerDefinition.ts',
   extendGenericType: ['JsonResult'],
   sharedServiceOptions: true,
-  classNameMode: 'parentPath'
+  classNameMode: 'parentPath',
+  customDefinition: `type SecurityTye = 'md5' | 'sha1' | 'aes' | 'des'`,
+  requestOptionsWrapper: (str) => {
+    return str + `    retryCount?: number
+    security?: Record<string, SecurityTye>`
+  }
 })

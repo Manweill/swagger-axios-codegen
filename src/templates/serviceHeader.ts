@@ -4,18 +4,24 @@ import { ISwaggerOptions } from '../baseInterfaces'
 import { abpGenericTypeDefinition, universalGenericTypeDefinition } from './genericTypeDefinitionTemplate'
 
 export function serviceHeader(options: ISwaggerOptions) {
+  const customDefinition = options.customDefinition || ''
+  const requestOptionsWrapper = options.requestOptionsWrapper || ((str)=> str)
   const classTransformerImport = options.useClassTransformer
     ? `import { Expose, Transform, Type, plainToClass } from 'class-transformer';
   `
     : ''
+  
   return `/** Generate by swagger-axios-codegen */
   /* eslint-disable */
   // @ts-nocheck
   import axiosStatic, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
   ${classTransformerImport}
+  ${customDefinition}
 
   export interface IRequestOptions extends AxiosRequestConfig {
+  ${
+requestOptionsWrapper(`
     /**
      * show loading status
      */
@@ -25,14 +31,11 @@ export function serviceHeader(options: ISwaggerOptions) {
      */
     showError?: boolean;
     /**
-     * data security, extended fields are encrypted using the specified algorithm
-     */
-    security?: Record<string, 'md5' | 'sha1' | 'aes' | 'des'>;
-    /**
      * indicates whether Authorization credentials are required for the request
      * @default true
      */
-    withAuthorization?: boolean;
+    withAuthorization?: boolean;`
+  )}
   }
 
   export interface IRequestConfig {
@@ -64,12 +67,17 @@ export function disableLint() {
 }
 
 export function customerServiceHeader(options: ISwaggerOptions) {
+  const customDefinition = options.customDefinition || ''
+  const requestOptionsWrapper = options.requestOptionsWrapper || ((str)=> str)
   return `/** Generate by swagger-axios-codegen */
   // @ts-nocheck
   /* eslint-disable */
   import axiosStatic, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
+  ${customDefinition}
   export interface IRequestOptions extends AxiosRequestConfig {
+  ${
+requestOptionsWrapper(`
     /**
      * show loading status
      */
@@ -79,14 +87,11 @@ export function customerServiceHeader(options: ISwaggerOptions) {
      */
     showError?: boolean;
     /**
-     * data security, extended fields are encrypted using the specified algorithm
-     */
-    security?: Record<string, 'md5' | 'sha1' | 'aes' | 'des'>;
-    /**
      * indicates whether Authorization credentials are required for the request
      * @default true
      */
-    withAuthorization?: boolean;
+    withAuthorization?: boolean;`
+  )}
   }
 
   export interface IRequestPromise<T=any> extends Promise<IRequestResponse<T>> {}

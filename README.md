@@ -76,6 +76,12 @@ export interface ISwaggerOptions {
   sharedServiceOptions?: boolean | undefined
   /** use parameters in header or not*/
   useHeaderParameters?: boolean
+  /** wrapper response type */
+  responseTypeWrapper?: (responseType: string)=> string
+  /** wrapper IRequestOptions */
+  requestOptionsWrapper?: (IRequestOptionsStr: string)=> string
+  /** add an additional declaration before the IRequestOptions */
+  customDefinition?: string
 }
 
 const defaultOptions: ISwaggerOptions = {
