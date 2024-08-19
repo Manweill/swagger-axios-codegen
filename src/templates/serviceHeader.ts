@@ -25,10 +25,6 @@ export function serviceHeader(options: ISwaggerOptions) {
      */
     showError?: boolean;
     /**
-     * data security, extended fields are encrypted using the specified algorithm
-     */
-    security?: Record<string, 'md5' | 'sha1' | 'aes' | 'des'>;
-    /**
      * indicates whether Authorization credentials are required for the request
      * @default true
      */
@@ -78,10 +74,6 @@ export function customerServiceHeader(options: ISwaggerOptions) {
      * display error message
      */
     showError?: boolean;
-    /**
-     * data security, extended fields are encrypted using the specified algorithm
-     */
-    security?: Record<string, 'md5' | 'sha1' | 'aes' | 'des'>;
     /**
      * indicates whether Authorization credentials are required for the request
      * @default true
