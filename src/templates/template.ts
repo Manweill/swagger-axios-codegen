@@ -251,7 +251,7 @@ function requestBodyString(method: string, parsedParameters: [], bodyParameter: 
         bodyParameter
         : !!requestBody
           ? 'params.body'
-          : 'null'
+          : 'undefined'
       }
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;`
