@@ -1,3 +1,7 @@
+## 0.17.0
+
+- feat: Supper `Class` `Interface` description.
+- chore: now `config.data = undefined` 
 
 ## 0.16.0
 

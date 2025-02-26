@@ -4,7 +4,7 @@ export interface ISwaggerOptions {
   serviceNameSuffix?: string
   enumNamePrefix?: string
   methodNameMode?: 'operationId' | 'path' | 'shortOperationId' | ((reqProps: IRequestMethod) => string)
-  classNameMode?: 'parentPath' | 'normal' | ((path: string, method: string, reqProps:IRequestMethod) => string)
+  classNameMode?: 'parentPath' | 'normal' | ((path: string, method: string, reqProps: IRequestMethod) => string)
   /** only effect classNameMode='parentPath' */
   pathClassNameDefaultName?: string
   outputDir?: string
@@ -40,7 +40,7 @@ export interface ISwaggerOptions {
   /** use parameters in header or not*/
   useHeaderParameters?: boolean
   /** wrapper response type */
-  responseTypeWrapper ?: (responseType: string)=> string
+  responseTypeWrapper?: (responseType: string) => string
 }
 
 export interface IPropDef {
@@ -58,6 +58,7 @@ export interface IInclude {
 }
 export interface IClassDef {
   name: string
+  description: string
   props: IPropDef[]
   imports: string[]
 }

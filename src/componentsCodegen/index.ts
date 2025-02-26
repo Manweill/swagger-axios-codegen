@@ -14,6 +14,7 @@ export function componentsCodegen(definitions: IComponents) {
   }
   if (!!definitions)
     for (const [k, v] of Object.entries(definitions.schemas)) {
+
       let className = refClassName(k)
       // 如果已经转为泛型类型，则不需要重新定义
       if (isGenerics(className)) continue
@@ -29,7 +30,8 @@ export function componentsCodegen(definitions: IComponents) {
         // #TODO
       } else {
         // default definition generate
-        const { enums, model } = createDefinitionClass(className, v.properties, v.additionalProperties, v.required);
+        console.log('createDefinitionClass', v.description);
+        const { enums, model } = createDefinitionClass(className, v.properties, v.additionalProperties, v.required, v.description ?? className);
         // console.log('createDefinitionClass', enums)
         enums.forEach(item => {
           // definitionModels[item.name] = {

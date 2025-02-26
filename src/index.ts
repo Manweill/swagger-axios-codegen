@@ -78,7 +78,7 @@ export async function codegen(params: ISwaggerOptions) {
 
   let serviceHeaderSource = options.useCustomerRequestInstance ? customerServiceHeader(options) : serviceHeader(options)
   if (options.sharedServiceOptions) {
-    writeFile(options.outputDir || '', 'serviceOptions.ts' || '', format(serviceHeaderSource, options))
+    writeFile(options.outputDir || '', 'serviceOptions.ts', format(serviceHeaderSource, options))
     apiSource += `import { IRequestOptions, IRequestConfig, getConfigs, axios } from "./serviceOptions";`
   }
   else {
@@ -149,14 +149,15 @@ export async function codegen(params: ISwaggerOptions) {
     Object.values(models).forEach(item => {
       const text =
         params.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], params.strictNullChecks, item.value.description)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
             params.strictNullChecks,
             options.useClassTransformer,
-            options.generateValidationModel
+            options.generateValidationModel,
+            item.value.description
           )
       // const fileDir = path.join(options.outputDir || '', 'definitions')
       // writeFile(fileDir, item.name + '.ts', format(text, options))
@@ -229,14 +230,15 @@ function codegenAll(
     Object.values(models).forEach(item => {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks, item.value.description)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
             options.strictNullChecks,
             options.useClassTransformer,
-            options.generateValidationModel
+            options.generateValidationModel,
+            item.value.description
           )
       apiSource += text
     })
@@ -323,14 +325,15 @@ function codegenInclude(
     if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks, item.value.description)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
             options.strictNullChecks,
             options.useClassTransformer,
-            options.generateValidationModel
+            options.generateValidationModel,
+            item.value.description
           )
       defSource += text
     }
@@ -469,14 +472,14 @@ function codegenMultimatchInclude(
     if (allImport.includes(item.name) || options.includeTypes.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks, item.value.description)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
             options.strictNullChecks,
             options.useClassTransformer,
-            options.generateValidationModel
+            options.generateValidationModel, item.value.description
           )
       defSource += text
     }

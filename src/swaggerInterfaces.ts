@@ -97,6 +97,7 @@ export interface IDefinition {
   type: 'object' | 'array'
   properties: IDefinitionProperties
   additionalProperties: IDefinitionProperty | boolean | undefined
+  description: string
   enum: any[],
   items: IDefinitionProperty
 }

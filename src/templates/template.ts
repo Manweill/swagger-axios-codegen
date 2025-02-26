@@ -11,7 +11,8 @@ export function interfaceTemplate(
   name: string,
   props: IPropDef[],
   imports: string[],
-  strictNullChecks: boolean = true
+  strictNullChecks: boolean = true,
+  description: string,
 ) {
   if (isDefinedGenericTypes(name)) {
     // 已经定义过的interface不再生成
@@ -27,6 +28,7 @@ export function interfaceTemplate(
   return `
   ${importString}
 
+  /** ${description} */
   export interface ${name} {
 
     ${props.map(p => classPropsTemplate(
@@ -49,7 +51,8 @@ export function classTemplate(
   imports: string[],
   strictNullChecks: boolean = true,
   useClassTransformer: boolean,
-  generateValidationModel: boolean
+  generateValidationModel: boolean,
+  description: string
 ) {
   // 所有的引用
   const mappedImports = imports.map(imp => {
@@ -64,6 +67,7 @@ export function classTemplate(
   return `
   ${importString}
 
+  /** ${description} */
   export class ${name} {
 
     ${props
@@ -251,11 +255,12 @@ function requestBodyString(method: string, parsedParameters: [], bodyParameter: 
         bodyParameter
         : !!requestBody
           ? 'params.body'
-          : 'null'
+          : 'undefined'
       }
     ${contentType === 'multipart/form-data' ? formData : ''}
     configs.data = data;`
   }
+
   return ''
 }
 

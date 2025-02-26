@@ -79,14 +79,15 @@ function codegenInclude(
     if (allImport.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks, item.value.description)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
             options.strictNullChecks,
             options.useClassTransformer,
-            options.generateValidationModel
+            options.generateValidationModel,
+            item.value.description
           )
       defSource += text
     }
@@ -225,14 +226,15 @@ function codegenMultimatchInclude(
     if (allImport.includes(item.name)) {
       const text =
         options.modelMode === 'interface'
-          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks)
+          ? interfaceTemplate(item.value.name, item.value.props, [], options.strictNullChecks, item.value.description)
           : classTemplate(
             item.value.name,
             item.value.props,
             [],
             options.strictNullChecks,
             options.useClassTransformer,
-            options.generateValidationModel
+            options.generateValidationModel,
+            item.value.description
           )
       defSource += text
     }

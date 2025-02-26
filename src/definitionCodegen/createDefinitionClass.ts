@@ -15,12 +15,13 @@ import { getValidationModel } from "../utils";
 export function createDefinitionClass(
   className: string,
   properties: IDefinitionProperties,
-  required: string[]
+  required: string[],
+  description: string
 ) {
   /** 枚举值 */
   let enums = []
   let types = []
-  let model: IClassDef = { name: className, props: [], imports: [] }
+  let model: IClassDef = { name: className, description, props: [], imports: [] }
   const propertiesEntities = Object.entries(properties || {})
   for (const [k, v] of propertiesEntities) {
     // console.log('props name', k)

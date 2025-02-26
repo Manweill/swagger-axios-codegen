@@ -5,6 +5,73 @@
     "version": "v1"
   },
   "paths": {
+    "/admin/api/v1/oss/files": {
+      "post": {
+        "tags": [
+          "admin-oss-upload-download-controller"
+        ],
+        "summary": "上传文件",
+        "operationId": "uploadUsingPOST",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "attr": {
+                    "description": "attr",
+                    "type": "array",
+                    "$ref": "#/components/schemas/UploadFileAttributeDTO"
+                  },
+                  "file": {
+                    "type": "string",
+                    "description": "file",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult«UserData»"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ],
+        "extensions": {
+          "x-order": "2147483647"
+        }
+      }
+    },
     "/api/abp/api-definition": {
       "get": {
         "tags": [
@@ -3662,7 +3729,8 @@
             "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Paginated query form"
       },
       "IdentityUserUpdateRolesDto": {
         "required": [
