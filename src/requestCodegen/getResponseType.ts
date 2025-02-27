@@ -39,13 +39,16 @@ export function getResponseType(reqProps: IRequestMethod, isV3: boolean): { resp
       const refType = refClassName(resSchema.items.$ref)
       isRef = true
       result = refType + '[]'
-    } else {
+    }  else {
       const refType = toBaseType(resSchema.items.type, resSchema.items?.format)
       result = refType + '[]'
     }
   } else if (resSchema.$ref) {
     // 如果是引用对象
     result = refClassName(resSchema.$ref) || 'any'
+    isRef = true
+  } else if (resSchema.oneOf) {
+    result = resSchema.oneOf.map((refType) => refClassName(refType.$ref)).join(" | ")
     isRef = true
   } else {
     result = checkType

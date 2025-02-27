@@ -30,6 +30,12 @@ export function getRequestBody(requestBody: IRequestBody) {
     } else if (reqBody.schema.$ref) {
       bodyType = refClassName(reqBody.schema.$ref)
       // console.log('propType', refClassName(p.schema.$ref))
+    } else if (reqBody.schema.oneOf?.length > 0) {
+      bodyType = reqBody.schema.oneOf.map((refType) => {
+        const ref = refClassName(refType.$ref);
+        imports.push(ref)
+        return ref;
+      }).join(" | ")
     }
     if (bodyType) {
       imports.push(bodyType)

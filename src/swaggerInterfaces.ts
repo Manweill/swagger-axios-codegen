@@ -31,21 +31,11 @@ export interface IRequestMethod {
     [key: string]: {
       description: string
       // v2
-      schema: {
-        '$ref': string,
-        'type'?: string,
-        'items'?: IParameterItems,
-        'format'?: string,
-      },
+      schema: Omit<ISchema, "properties">,
       // v3
       content: {
         [key: string]: {
-          schema: {
-            '$ref': string,
-            'type'?: string,
-            'items'?: IParameterItems,
-            'format'?: string,
-          }
+          schema: Omit<ISchema, "properties">
         }
       }
     }
@@ -129,6 +119,7 @@ export interface ISchema {
   'type'?: string
   'items'?: IParameterItems
   'format'?: string,
+  'oneOf'?: { $ref: string }[];
   'properties'?: { [key: string]: IParameterItems }
 }
 
