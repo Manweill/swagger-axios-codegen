@@ -1,6 +1,6 @@
 import camelcase from 'camelcase'
 import { ISwaggerOptions } from '../baseInterfaces'
-import { IPaths } from '../swaggerInterfaces'
+import { IParameter, IPaths, IRequestUrl } from '../swaggerInterfaces'
 import { getClassNameByPath, getMethodNameByPath, RemoveSpecialCharacters } from '../utils'
 import { getContentType } from './getContentType'
 import { getRequestBody } from './getRequestBody'
@@ -22,7 +22,14 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
   const requestClasses: IRequestClass = {}
 
   if (!!paths)
-    for (const [path, request] of Object.entries(paths)) {
+    for (const [path, requestAndParams] of Object.entries(paths)) {
+      // are there parameters that are needed for all methods of this path?
+      const pathLevelParams = requestAndParams.parameters
+      // if there were path level parameters present, we delete them
+      // so we do not accidentally interpret them as a http method later
+      if (pathLevelParams) delete requestAndParams['parameters']
+      const request = requestAndParams as IRequestUrl
+      
       let methodName = getMethodNameByPath(path)
       for (const [method, reqProps] of Object.entries(request)) {
         methodName =
@@ -73,9 +80,15 @@ export function requestCodegen(paths: IPaths, isV3: boolean, options: ISwaggerOp
 
         const multipartDataProperties = reqProps?.requestBody?.content['multipart/form-data']
 
-        if (reqProps.parameters || multipartDataProperties) {
+        if (pathLevelParams || reqProps.parameters || multipartDataProperties) {
           // 获取到接口的参数
-          let tempParameters = reqProps.parameters || []
+          let tempParameters: IParameter[] = []
+          if (reqProps.parameters) {
+            tempParameters = tempParameters.concat(reqProps.parameters)
+          }
+          if (pathLevelParams) {
+            tempParameters = tempParameters.concat(pathLevelParams)
+          }
 
           // 合并两个参数类型
           if (multipartDataProperties) {
