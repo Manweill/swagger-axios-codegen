@@ -11,11 +11,15 @@ export interface ISwaggerSource {
 }
 
 export interface IPaths {
-  [url: string]: IRequestUrl
+  [url: string]: IRequestUrlAndParameters
 }
 
 export interface IRequestUrl {
   [method: string]: IRequestMethod
+}
+
+export type IRequestUrlAndParameters = IRequestUrl & {
+  parameters?: IParameter[]
 }
 
 export interface IRequestMethod {
