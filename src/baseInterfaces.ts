@@ -41,6 +41,8 @@ export interface ISwaggerOptions {
   useHeaderParameters?: boolean
   /** wrapper response type */
   responseTypeWrapper?: (responseType: string) => string
+  /** use type imports for axios to be compatible with Vite */
+  useTypeImports?: boolean
 }
 
 export interface IPropDef {

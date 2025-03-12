@@ -8,10 +8,15 @@ export function serviceHeader(options: ISwaggerOptions) {
     ? `import { Expose, Transform, Type, plainToClass } from 'class-transformer';
   `
     : ''
+  const axiosImport = options.useTypeImports 
+    ? `import axiosStatic from 'axios';
+  import type { AxiosInstance, AxiosRequestConfig } from 'axios';` 
+    : `import axiosStatic, { AxiosInstance, AxiosRequestConfig } from 'axios';`
+
   return `/** Generate by swagger-axios-codegen */
   /* eslint-disable */
   // @ts-nocheck
-  import axiosStatic, { AxiosInstance, AxiosRequestConfig } from 'axios';
+  ${axiosImport}
 
   ${classTransformerImport}
 
@@ -60,10 +65,15 @@ export function disableLint() {
 }
 
 export function customerServiceHeader(options: ISwaggerOptions) {
+  const axiosImport = options.useTypeImports 
+    ? `import axiosStatic from 'axios';
+  import type { AxiosInstance, AxiosRequestConfig } from 'axios';` 
+    : `import axiosStatic, { AxiosInstance, AxiosRequestConfig } from 'axios';`
+
   return `/** Generate by swagger-axios-codegen */
   // @ts-nocheck
   /* eslint-disable */
-  import axiosStatic, { AxiosInstance, AxiosRequestConfig } from 'axios';
+  ${axiosImport}
 
   export interface IRequestOptions extends AxiosRequestConfig {
     /**
