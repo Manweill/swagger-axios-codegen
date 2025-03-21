@@ -76,6 +76,8 @@ export interface ISwaggerOptions {
   sharedServiceOptions?: boolean | undefined
   /** use parameters in header or not*/
   useHeaderParameters?: boolean
+  /** use type imports for axios to be compatible with Vite */
+  useTypeImports?: boolean
 }
 
 const defaultOptions: ISwaggerOptions = {
