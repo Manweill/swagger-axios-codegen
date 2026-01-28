@@ -41,8 +41,8 @@ export function getGenericsClassNames(definitionClassName: string): string {
     const TClassName = definitionClassName.slice(splitIndex + 1, -1)
     if (isDefinedGenericTypes(interfaceClassName)) {
       str = interfaceClassName === 'IDictionary' || interfaceClassName === 'Dictionary'
-        ? `${interfaceClassName}<object>`
-        : `${interfaceClassName}<${refClassName(TClassName)}>`
+          ? `${interfaceClassName}<object>`
+          : `${interfaceClassName}<${refClassName(TClassName)}>`
 
     } else {
       str = trimString(RemoveSpecialCharacters(definitionClassName), '_', 'right')
@@ -81,39 +81,46 @@ export function validRefTypeName(str: string) {
   return reg.test(str)
 }
 
-export function isBaseType(s: string) {
+export function isBaseType(s: string): boolean {
   return ['boolean', 'number', 'string', 'Date', 'any'].includes(s)
 }
 
-export function toBaseType(s: string, format?: string) {
+export function toBaseType(s: string, format?: string): string {
   if (s === undefined || s === null || s.length === 0) {
     return 'any | null'
   }
+
+  const s_lower = s.toLowerCase()
+  const format_lower = format?.toLowerCase()
+
   let result = ''
-  switch (s) {
+  switch (s_lower) {
     case 'boolean':
     case 'bool':
-    case 'Boolean':
       result = 'boolean'
       break
     case 'array':
       result = '[]'
       break
-    case 'Int64':
-    case 'Int32':
+    case 'int64':
+    case 'int32':
     case 'int':
     case 'integer':
     case 'number':
-      result = format === 'int64' || format === 'Int64' || format === 'long' ? 'string' : 'number'
+      result = format_lower === 'int64' || format_lower === 'long' ? 'string' : 'number'
       break
-    case 'Guid':
-    case 'String':
-    case 'string':
     case 'uuid':
-      switch (format) {
+    case 'guid':
+      result = 'string'
+      break
+    case 'string':
+      switch (format_lower) {
         case 'date':
         case 'date-time':
           result = 'Date'
+          break
+        case 'binary':
+          result = 'any'
           break
         default:
           result = 'string'
@@ -161,7 +168,7 @@ export function trimString(str: string, char: string, type: string) {
   return str.replace(/^\s+|\s+$/g, '')
 }
 
-/** 
+/**
  * 泛型类名提取数组
  * A<B<C>> => [A,B,C]
  **/
