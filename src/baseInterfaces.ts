@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios'
 import { IRequestMethod } from './swaggerInterfaces'
 
 export interface ISwaggerOptions {
@@ -10,6 +11,7 @@ export interface ISwaggerOptions {
   outputDir?: string
   fileName?: string
   remoteUrl?: string
+  remoteUrlAxiosConfig?: Omit<AxiosRequestConfig, 'url' | 'responseType' | 'httpsAgent'>
   source?: any
   useStaticMethod?: boolean | undefined
   useCustomerRequestInstance?: boolean | undefined

@@ -47,6 +47,8 @@ export interface ISwaggerOptions {
   outputDir?: string
   fileName?: string
   remoteUrl?: string
+  /** extra axios config for the remote url fetch request (url, responseType and httpsAgent are ignored) */
+  remoteUrlAxiosConfig?: Omit<AxiosRequestConfig, 'url' |  'responseType' | 'httpsAgent'>
   source?: any
   useStaticMethod?: boolean | undefined
   useCustomerRequestInstance?: boolean | undefined
